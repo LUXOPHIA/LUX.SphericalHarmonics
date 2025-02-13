@@ -138,18 +138,17 @@ end;
 
 class function TLegendre.PM012( const N_,M_:Integer; const X_,PM0_,PM1_:Double ) :Double;
 begin
-     Result := -2 * ( M_ - 1 ) * X_ / Sqrt( 1 - Pow2( X_ ) ) * PM1_
-                         - ( N_ + M_ - 1 ) * ( N_ - M_ + 2 ) * PM0_;
+     Result := ( ( 2 * M_ - 1 ) * X_ / M_ ) * PM1_ - ( ( N_ + M_ - 1 ) / M_ ) * PM0_;
 end;
 
 class function TLegendre.PM201( const N_,M_:Integer; const X_,PM2_,PM0_:Double ) :Double;
 begin
-     Result := -Sqrt( 1 - Pow2( X_ ) ) / ( 2 * M_ * X_ ) * ( PM2_ + ( N_ + M_ ) * ( N_ - M_ + 1 ) * PM0_ );
+     Result := ( ( M_ + 1 ) * PM2_ + ( N_ + M_ ) * PM0_ ) / ( ( 2 * M_ + 1 ) * X_ );
 end;
 
 class function TLegendre.PM120( const N_,M_:Integer; const X_,PM1_,PM2_:Double ) :Double;
 begin
-     Result := -( 2 * ( M_ + 1 ) * X_ / Sqrt( 1 - Pow2( X_ ) ) * PM1_ + PM2_ ) / ( ( N_ + M_ + 1 ) * ( N_ - M_ ) );
+     Result := ( ( 2 * M_ + 3 ) * X_ * PM1_ - ( M_ + 2 ) * PM2_ ) / ( N_ + M_ + 1 );
 end;
 
 //------------------------------------------------------------------------------
