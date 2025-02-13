@@ -134,3 +134,20 @@ P_8^8(x) &= 2027025\,s^8
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_DD.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_DD_ON.png) | $`P_n^m(x) = \dfrac{1}{n-m}\Bigl\lbrace (2n-1)\,x\,P_{n-1}^m(x)-(n+m-1)\,P_{n-2}^m(x)\Bigr\rbrace`$ |
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UD.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UD_ON.png) | $`P_n^m(x) = \dfrac{1}{(2n+1)\,x}\Bigl\lbrace (n+m)\,P_{n-1}^m(x)+(n-m+1)\,P_{n+1}^m(x)\Bigr\rbrace`$ |
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UU.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UU_ON.png) | $`P_n^m(x) = \dfrac{1}{n+m+1}\Bigl\lbrace (2n+3)\,x\,P_{n+1}^m(x)-(n-m+2)\,P_{n+2}^m(x)\Bigr\rbrace`$ |
+
+## ■ Reference
+
+### ◆ Handbook of Mathematical Functions With Formulas, Graphs, and Mathematical Tables
+- Edited by: Milton Abramowitz, Irene A. Stegun
+
+| 332 | 333 | 334 | 335 | 336 |
+|:----:|:----:|:----:|:----:|:----:|
+| ![](https://personal.math.ubc.ca/~cbm/aands/page_332.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_333.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_334.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_335.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_336.jpg) |
+| 337 | 338 | 339 | 340 | 341 |
+| ![](https://personal.math.ubc.ca/~cbm/aands/page_337.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_338.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_339.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_340.jpg) | ![](https://personal.math.ubc.ca/~cbm/aands/page_341.jpg) |
+
+- [Abramowitz and Stegun: Handbook of Mathematical Functions](https://personal.math.ubc.ca/~cbm/aands/)
+  - [Electronic page index using frames](https://personal.math.ubc.ca/~cbm/aands/frameindex.htm)
+  - [abramowitz_and_stegun.pdf](https://personal.math.ubc.ca/~cbm/aands/abramowitz_and_stegun.pdf)
+
+
