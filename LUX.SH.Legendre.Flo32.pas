@@ -18,7 +18,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        ///// M E T H O D
        // Recurrence relation
-       class function NM( const NM_:Integer; const X_:Single ) :Single;
+       class function PNM( const NM_:Integer; const X_:Single ) :Single;
        class function PN01( const M_:Integer; const X_,PN0_:Single ) :Single;
        class function PN10( const M_:Integer; const X_,PN1_:Single ) :Single;
        class function PM012( const N_,M_:Integer; const X_,PM0_,PM1_:Single ) :Single;
@@ -103,7 +103,7 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-class function TLegendre.NM( const NM_:Integer; const X_:Single ) :Single;
+class function TLegendre.PNM( const NM_:Integer; const X_:Single ) :Single;
 var
    I :Integer;
    S :Single;
