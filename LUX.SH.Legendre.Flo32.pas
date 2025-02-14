@@ -18,8 +18,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        ///// M E T H O D
        // Recurrence relation
-       class function NM0( const NM_:Integer; const X_:Single ) :Single;
-       class function NM1( const NM_:Integer; const X_:Single ) :Single;
+       class function NM( const NM_:Integer; const X_:Single ) :Single;
        class function PN01( const M_:Integer; const X_,PN0_:Single ) :Single;
        class function PN10( const M_:Integer; const X_,PN1_:Single ) :Single;
        class function PM012( const N_,M_:Integer; const X_,PM0_,PM1_:Single ) :Single;
@@ -104,22 +103,15 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-class function TLegendre.NM0( const NM_:Integer; const X_:Single ) :Single;
+class function TLegendre.NM( const NM_:Integer; const X_:Single ) :Single;
 var
    I :Integer;
+   S :Single;
 begin
      Result := 1;
      for I := 1 to NM_ do Result := Result * ( 2 * I - 1 );
-     Result := +Result * Power( 1 - Pow2( X_ ), NM_ / 2 );
-end;
-
-class function TLegendre.NM1( const NM_:Integer; const X_:Single ) :Single;
-var
-   I :Integer;
-begin
-     Result := 1;
-     for I := 1 to NM_ do Result := Result * ( 2 * I - 1 );
-     Result := -Result * Power( 1 - Pow2( X_ ), NM_ / 2 );
+     S := Sqrt( 1 - Pow2( X_ ) );
+     Result := Result * IntPower( -S, NM_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -463,7 +455,7 @@ var
    X2, S :Single;
 begin
      X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
-     Result := -135135 * Power( S, 7 );
+     Result := -135135 * IntPower( S, 7 );
 end;
 
 //------------------------------------------------------------------------------
@@ -529,7 +521,7 @@ var
    X2, S :Single;
 begin
      X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
-     Result := -2027025 * X_ * Power( S, 7 );
+     Result := -2027025 * X_ * IntPower( S, 7 );
 end;
 
 class function TLegendre.P88( const X_:Single ) :Single;
