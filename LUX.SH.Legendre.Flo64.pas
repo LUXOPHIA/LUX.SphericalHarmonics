@@ -170,314 +170,374 @@ end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P00( const X_: Double ): Double;
+class function TLegendre.P00( const X_:Double ) :Double;
 begin
      Result := 1;
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P10( const X_: Double ): Double;
+class function TLegendre.P10( const X_:Double ) :Double;
 begin
      Result := X_;
 end;
 
-class function TLegendre.P11( const X_: Double ): Double;
+class function TLegendre.P11( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := -Sqrt( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -S;
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P20( const X_: Double ): Double;
+class function TLegendre.P20( const X_:Double ) :Double;
+var
+   X2 :Double;
 begin
-     Result := +1/2 * ( 3 * Pow2( X_ ) - 1 );
+     X2 := Pow2( X_ );
+     Result := 1/2 * ( 3 * X2 - 1 );
 end;
 
-class function TLegendre.P21( const X_: Double ): Double;
+class function TLegendre.P21( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := -3 * X_ * Sqrt( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -3 * X_ * S;
 end;
 
-class function TLegendre.P22( const X_: Double ): Double;
+class function TLegendre.P22( const X_:Double ) :Double;
+var
+   X2 :Double;
 begin
-     Result := +3 * ( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );
+     Result := 3 * ( 1 - X2 );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P30( const X_: Double ): Double;
-begin
-     Result := +1/2 * X_ * ( 5 * Pow2( X_ ) - 3 );
-end;
-
-class function TLegendre.P31( const X_: Double ): Double;
+class function TLegendre.P30( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -3/2 * ( 5 * X2 - 1 ) * Sqrt( 1 - X2 );
+     Result := 1/2 * X_ * ( 5 * X2 - 3 );
 end;
 
-class function TLegendre.P32( const X_: Double ): Double;
+class function TLegendre.P31( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := +15 * X_ * ( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -3/2 * ( 5 * X2 - 1 ) * S;
 end;
 
-class function TLegendre.P33( const X_: Double ): Double;
+class function TLegendre.P32( const X_:Double ) :Double;
+var
+   X2 :Double;
 begin
-     Result := -15 * Power( 1 - Pow2( X_ ), 3/2 );
+     X2 := Pow2( X_ );
+     Result := 15 * X_ * ( 1 - X2 );
+end;
+
+class function TLegendre.P33( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -15 * Pow3( S );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P40( const X_: Double ): Double;
-begin
-     Result := +1/8 * ( 35 * Pow4( X_ ) - 30 * Pow2( X_ ) + 3 );
-end;
-
-class function TLegendre.P41( const X_: Double ): Double;
-begin
-     Result := -5/2 * Sqrt( 1 - Pow2( X_ ) ) * ( 7 * Pow3( X_ ) - 3 * X_ );
-end;
-
-class function TLegendre.P42( const X_: Double ): Double;
+class function TLegendre.P40( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +15/2 * ( 1 - X2 ) * ( 7 * X2 - 1 );
+     Result := 1/8 * ( ( 35 * X2 - 30 ) * X2 + 3 );
 end;
 
-class function TLegendre.P43( const X_: Double ): Double;
+class function TLegendre.P41( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := -105 * X_ * Power( 1 - Pow2( X_ ), 3/2 );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -5/2 * S * ( X_ * ( 7 * X2 - 3 ) );
 end;
 
-class function TLegendre.P44( const X_: Double ): Double;
+class function TLegendre.P42( const X_:Double ) :Double;
+var
+   X2 :Double;
 begin
-     Result := +105 * Pow2( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );
+     Result := 15/2 * ( 1 - X2 ) * ( 7 * X2 - 1 );
+end;
+
+class function TLegendre.P43( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -105 * X_ * Pow3( S );
+end;
+
+class function TLegendre.P44( const X_:Double ) :Double;
+var
+   X2 :Double;
+begin
+     X2 := Pow2( X_ );
+     Result := 105 * Pow2( 1 - X2 );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P50( const X_: Double ): Double;
-begin
-     Result := +1/8 * X_ * ( 63 * Pow4( X_ ) - 70 * Pow2( X_ ) + 15 );
-end;
-
-class function TLegendre.P51( const X_: Double ): Double;
+class function TLegendre.P50( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -15/8 * Sqrt( 1 - X2 ) * ( 21 * Pow4( X_ ) - 14 * X2 + 1 );
+     Result := 1/8 * X_ * ( ( 63 * X2 - 70 ) * X2 + 15 );
 end;
 
-class function TLegendre.P52( const X_: Double ): Double;
+class function TLegendre.P51( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -15/8 * S * ( ( 21 * X2 - 14 ) * X2 + 1 );
+end;
+
+class function TLegendre.P52( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +105/2 * X_ * ( 1 - X2 ) * ( 3 * X2 - 1 );
+     Result := 105/2 * X_ * ( 1 - X2 ) * ( 3 * X2 - 1 );
 end;
 
-class function TLegendre.P53( const X_: Double ): Double;
+class function TLegendre.P53( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -105/2 * Pow3( S ) * ( 9 * X2 - 1 );
+end;
+
+class function TLegendre.P54( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -105/2 * Power( 1 - X2, 3/2 ) * ( 9 * X2 - 1 );
+     Result := 945 * X_ * Pow2( 1 - X2 );
 end;
 
-class function TLegendre.P54( const X_: Double ): Double;
+class function TLegendre.P55( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := +945 * X_ * Pow2( 1 - Pow2( X_ ) );
-end;
-
-class function TLegendre.P55( const X_: Double ): Double;
-begin
-     Result := -945 * Power( 1 - Pow2( X_ ), 5/2 );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -945 * Power( S, 5 );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P60( const X_: Double ): Double;
-var
-   X2, X4 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );
-     Result := +1/16 * ( 231 * X4 * X2 - 315 * X4 + 105 * X2 - 5 );
-end;
-
-class function TLegendre.P61( const X_: Double ): Double;
+class function TLegendre.P60( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -21/8 * X_ * Sqrt( 1 - X2 ) * ( 33 * Pow4( X_ ) - 30 * X2 + 5 );
+     Result := 1/16 * ( ( ( 231 * X2 - 315 ) * X2 + 105 ) * X2 - 5 );
 end;
 
-class function TLegendre.P62( const X_: Double ): Double;
+class function TLegendre.P61( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -21/8 * X_ * S * ( ( 33 * X2 - 30 ) * X2 + 5 );
+end;
+
+class function TLegendre.P62( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +105/8 * ( 1 - X2 ) * ( 33 * Pow4( X_ ) - 18 * X2 + 1 );
+     Result := 105/8 * ( 1 - X2 ) * ( ( 33 * X2 - 18 ) * X2 + 1 );
 end;
 
-class function TLegendre.P63( const X_: Double ): Double;
+class function TLegendre.P63( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -315/2 * X_ * Pow3( S ) * ( 11 * X2 - 3 );
+end;
+
+class function TLegendre.P64( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -315/2 * X_ * Power( 1 - X2, 3/2 ) * ( 11 * X2 - 3 );
+     Result := 945/2 * Pow2( 1 - X2 ) * ( 11 * X2 - 1 );
 end;
 
-class function TLegendre.P64( const X_: Double ): Double;
+class function TLegendre.P65( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -10395 * X_ * Power( S, 5 );
+end;
+
+class function TLegendre.P66( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +945/2 * Pow2( 1 - X2 ) * ( 11 * X2 - 1 );
-end;
-
-class function TLegendre.P65( const X_: Double ): Double;
-begin
-     Result := -10395 * X_ * Power( 1 - Pow2( X_ ), 5/2 );
-end;
-
-class function TLegendre.P66( const X_: Double ): Double;
-begin
-     Result := +10395 * Pow3( 1 - Pow2( X_ ) );
+     Result := 10395 * Pow3( 1 - X2 );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P70( const X_: Double ): Double;
-var
-   X2, X4 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );
-     Result := +1/16 * X_ * ( 429 * X4 * X2 - 693 * X4 + 315 * X2 - 35 );
-end;
-
-class function TLegendre.P71( const X_: Double ): Double;
-var
-   X2, X4 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );
-     Result := -7/16 * Sqrt( 1 - X2 ) * ( 429 * X4 * X2 - 495 * X4 + 135 * X2 - 5 );
-end;
-
-class function TLegendre.P72( const X_: Double ): Double;
+class function TLegendre.P70( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +63/8 * X_ * ( 1 - X2 ) * ( 143 * Pow4( X_ ) - 110 * X2 + 15 );
+     Result := 1/16 * X_ * ( ( ( 429 * X2 - 693 ) * X2 + 315 ) * X2 - 35 );
 end;
 
-class function TLegendre.P73( const X_: Double ): Double;
+class function TLegendre.P71( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -7/16 * S * ( ( ( 429 * X2 - 495 ) * X2 + 135 ) * X2 - 5 );
+end;
+
+class function TLegendre.P72( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -315/8 * Power( 1 - X2, 3/2 ) * ( 143 * Pow4( X_ ) - 66 * X2 + 3 );
+     Result := 63/8 * X_ * ( 1 - X2 ) * ( ( 143 * X2 - 110 ) * X2 + 15 );
 end;
 
-class function TLegendre.P74( const X_: Double ): Double;
+class function TLegendre.P73( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -315/8 * Pow3( S ) * ( ( 143 * X2 - 66 ) * X2 + 3 );
+end;
+
+class function TLegendre.P74( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +3465/2 * X_ * Pow2( 1 - X2 ) * ( 13 * X2 - 3 );
+     Result := 3465/2 * X_ * Pow2( 1 - X2 ) * ( 13 * X2 - 3 );
 end;
 
-class function TLegendre.P75( const X_: Double ): Double;
+class function TLegendre.P75( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -10395/2 * Power( S, 5 ) * ( 13 * X2 - 1 );
+end;
+
+class function TLegendre.P76( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -10395/2 * Power( 1 - X2, 5/2 ) * ( 13 * X2 - 1 );
+     Result := 135135 * X_ * Pow3( 1 - X2 );
 end;
 
-class function TLegendre.P76( const X_: Double ): Double;
+class function TLegendre.P77( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := +135135 * X_ * Pow3( 1 - Pow2( X_ ) );
-end;
-
-class function TLegendre.P77( const X_: Double ): Double;
-begin
-     Result := -135135 * Power( 1 - Pow2( X_ ), 7/2 );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -135135 * Power( S, 7 );
 end;
 
 //------------------------------------------------------------------------------
 
-class function TLegendre.P80( const X_: Double ): Double;
-var
-   X2, X4, X8 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );  X8 := Pow2( X4 );
-     Result := +1/128 * ( 6435 * X8 - 12012 * (X4 * X2 ) + 6930 * X4 - 1260 * X2 + 35 );
-end;
-
-class function TLegendre.P81( const X_: Double ): Double;
-var
-   X2, X4 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );
-     Result := -9/16 * X_ * Sqrt( 1 - X2 ) * ( 715 * (X4 * X2 ) - 1001 * X4 + 385 * X2 - 35 );
-end;
-
-class function TLegendre.P82( const X_: Double ): Double;
-var
-   X2, X4 :Double;
-begin
-     X2 := Pow2( X_ );  X4 := Pow2( X2 );
-     Result := +315/16 * ( 1 - X2 ) * ( 143 * (X4 * X2 ) - 143 * X4 + 33 * X2 - 1 );
-end;
-
-class function TLegendre.P83( const X_: Double ): Double;
+class function TLegendre.P80( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -3465/8 * X_ * Power( 1 - X2, 3/2 ) * ( 39 * Pow4( X_ ) - 26 * X2 + 3 );
+     Result := 1/128 * ( ( ( ( 6435 * X2 - 12012 ) * X2 + 6930 ) * X2 - 1260 ) * X2 + 35 );
 end;
 
-class function TLegendre.P84( const X_: Double ): Double;
+class function TLegendre.P81( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -9/16 * X_ * S * ( ( ( 715 * X2 - 1001 ) * X2 + 385 ) * X2 - 35 );
+end;
+
+class function TLegendre.P82( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +10395/8 * Pow2( 1 - X2 ) * ( 65 * Pow4( X_ ) - 26 * X2 + 1 );
+     Result := 315/16 * ( 1 - X2 ) * ( ( ( 143 * X2 - 143 ) * X2 + 33 ) * X2 - 1 );
 end;
 
-class function TLegendre.P85( const X_: Double ): Double;
+class function TLegendre.P83( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -3465/8 * X_ * Pow3( S ) * ( ( 39 * X2 - 26 ) * X2 + 3 );
+end;
+
+class function TLegendre.P84( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := -135135/2 * X_ * Power( 1 - X2, 5/2 ) * ( 5 * X2 - 1 );
+     Result := 10395/8 * Pow2( 1 - X2 ) * ( ( 65 * X2 - 26 ) * X2 + 1 );
 end;
 
-class function TLegendre.P86( const X_: Double ): Double;
+class function TLegendre.P85( const X_:Double ) :Double;
+var
+   X2, S :Double;
+begin
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -135135/2 * X_ * Power( S, 5 ) * ( 5 * X2 - 1 );
+end;
+
+class function TLegendre.P86( const X_:Double ) :Double;
 var
    X2 :Double;
 begin
      X2 := Pow2( X_ );
-     Result := +135135/2 * Pow3( 1 - X2 ) * ( 15 * X2 - 1 );
+     Result := 135135/2 * Pow3( 1 - X2 ) * ( 15 * X2 - 1 );
 end;
 
-class function TLegendre.P87( const X_: Double ): Double;
+class function TLegendre.P87( const X_:Double ) :Double;
+var
+   X2, S :Double;
 begin
-     Result := -2027025 * X_ * Power( 1 - Pow2( X_ ), 7/2 );
+     X2 := Pow2( X_ );  S := Sqrt( 1 - X2 );
+     Result := -2027025 * X_ * Power( S, 7 );
 end;
 
-class function TLegendre.P88( const X_: Double ): Double;
+class function TLegendre.P88( const X_:Double ) :Double;
+var
+   X2 :Double;
 begin
-     Result := +2027025 * Pow4( 1 - Pow2( X_ ) );
+     X2 := Pow2( X_ );
+     Result := 2027025 * Pow4( 1 - X2 );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
