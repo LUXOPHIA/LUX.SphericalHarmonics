@@ -16,9 +16,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TALFsSimple = class( TMapALFs )
      private
      protected
+       _S :Double;
        ///// M E T H O D
        procedure CalcALPs; override;
-       function PNM( const NM_:Integer ) :Double;
+       function P01( const NM_:Integer; const P0_:Double ) :Double;
        function PN01( const M_:Integer; const PN0_:Double ) :Double;
        function PN10( const M_:Integer; const PN1_:Double ) :Double;
        function PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
@@ -50,26 +51,26 @@ uses System.Math, System.Threading;
 
 procedure TALFsSimple.CalcALPs;
 var
-   N, M :Integer;
-   P0, P1, P2 :Double;
+   M :Integer;
+   P0, P1 :Double;
 begin
-     for M := 0 to DegN do
+     _S := Sqrt( 1 - Pow2( X ) );
+     P0 := 1;  _Ps[ 0, 0 ] := P0;
+     for M := 1 to DegN do
      begin
-          N := M;
+          P1 := P01( M, P0 );
 
-          P0 := PNM( N );
+          _Ps[ M, M ] := P1;
 
-          _Ps[ N, M ] := P0;
+          P0 := P1;
      end;
 
      for M := 0 to DegN-1 do
      begin
-          N := M+1;
-
-          P0 := _Ps[ N-1, M ];
+          P0 := _Ps[ M, M ];
           P1 := PN01( M, P0 );
 
-          _Ps[ N, M ] := P1;
+          _Ps[ M+1, M ] := P1;
      end;
 
      TParallel.For( 0, DegN-2, procedure( M:Integer )
@@ -93,14 +94,9 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.PNM( const NM_:Integer ) :Double;
-var
-   S :Double;
-   I :Integer;
+function TALFsSimple.P01( const NM_:Integer; const P0_:Double ) :Double;
 begin
-     S := Sqrt( 1 - Pow2( X ) );
-     Result := 1;
-     for I := 1 to NM_ do Result := Result * ( 1 - 2 * I ) * S;
+     Result := ( 1 - 2 * NM_ ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
