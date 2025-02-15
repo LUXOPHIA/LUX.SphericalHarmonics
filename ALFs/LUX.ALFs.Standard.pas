@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsSimple
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsStandard
 
-     TALFsSimple = class( TMapALFs )
+     TALFsStandard = class( TMapALFs )
      private
      protected
        _S :Double;
@@ -41,7 +41,7 @@ uses System.Math, System.Threading;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsSimple
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsStandard
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -49,7 +49,7 @@ uses System.Math, System.Threading;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TALFsSimple.CalcALPs;
+procedure TALFsStandard.CalcALPs;
 var
    M :Integer;
    P0, P1 :Double;
@@ -94,53 +94,53 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.P01( const M_:Integer; const P0_:Double ) :Double;
+function TALFsStandard.P01( const M_:Integer; const P0_:Double ) :Double;
 begin
      Result := ( 1 - 2 * M_ ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.PN01( const M_:Integer; const PN0_:Double ) :Double;
+function TALFsStandard.PN01( const M_:Integer; const PN0_:Double ) :Double;
 begin
      Result := ( 2 * M_ + 1 ) * X * PN0_;
 end;
 
-function TALFsSimple.PN10( const M_:Integer; const PN1_:Double ) :Double;
+function TALFsStandard.PN10( const M_:Integer; const PN1_:Double ) :Double;
 begin
      Result := PN1_ / ( ( 2 * M_ + 1 ) * X );
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
+function TALFsStandard.PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
 begin
      Result := ( ( 2 * M_ - 1 ) * X / M_ ) * PM1_ - ( ( N_ + M_ - 1 ) / M_ ) * PM0_;
 end;
 
-function TALFsSimple.PM201( const N_,M_:Integer; const PM2_,PM0_:Double ) :Double;
+function TALFsStandard.PM201( const N_,M_:Integer; const PM2_,PM0_:Double ) :Double;
 begin
      Result := ( ( M_ + 1 ) * PM2_ + ( N_ + M_ ) * PM0_ ) / ( ( 2 * M_ + 1 ) * X );
 end;
 
-function TALFsSimple.PM120( const N_,M_:Integer; const PM1_,PM2_:Double ) :Double;
+function TALFsStandard.PM120( const N_,M_:Integer; const PM1_,PM2_:Double ) :Double;
 begin
      Result := ( ( 2 * M_ + 3 ) * X * PM1_ - ( M_ + 2 ) * PM2_ ) / ( N_ + M_ + 1 );
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
+function TALFsStandard.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 begin
      Result := ( ( 2 * N_ - 1 ) * X * PN1_ - ( N_ + M_ - 1 ) * PN0_ ) / ( N_ - M_ );
 end;
 
-function TALFsSimple.PN201( const N_,M_:Integer; const PN2_,PN0_:Double ) :Double;
+function TALFsStandard.PN201( const N_,M_:Integer; const PN2_,PN0_:Double ) :Double;
 begin
      Result := ( ( N_ + M_ ) * PN0_ + ( N_ - M_ + 1 ) * PN2_ ) / ( ( 2 * N_ + 1 ) * X );
 end;
 
-function TALFsSimple.PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
+function TALFsStandard.PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
 begin
      Result := ( ( 2 * N_ + 3 ) * X * PN1_ - ( N_ - M_ + 2 ) * PN2_ ) / ( N_ + M_ + 1 );
 end;
