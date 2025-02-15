@@ -16,11 +16,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFsEnomoto = class( TMapNALFs )
      private
      protected
-       _S :Double;
        ///// M E T H O D
        procedure CalcALPs; override;
-       function P01( const M_:Integer; const P0_:Double ) :Double;
-       function PN01( const M_:Integer; const PN0_:Double ) :Double;
        function PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
        function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
      public
@@ -46,16 +43,23 @@ uses System.Math, System.Threading;
 
 procedure TNALFsEnomoto.CalcALPs;
 var
+   S :Double;
    N, M :Integer;
    P0, P1, P2, P00, P02, P20, P22 :Double;
 begin
-     _S := Sqrt( 1 - Pow2( X ) );
+     S := Sqrt( 1 - Pow2( X ) );
 
      _NPs[ 0, 0 ] :=  Sqrt(1/2);
+
+     if DegN = 0 then Exit;
+
      _NPs[ 1, 0 ] :=  Sqrt(3/2) * X;
-     _NPs[ 1, 1 ] := -Sqrt(3)/2 * _S;
+     _NPs[ 1, 1 ] := -Sqrt(3)/2 * S;
+
+     if DegN = 1 then Exit;
+
      _NPs[ 2, 0 ] :=  Sqrt(5/2)/2 * ( 3 * Pow2( X ) - 1 );
-     _NPs[ 2, 1 ] := -Sqrt(5/12)*3 * X * _S;
+     _NPs[ 2, 1 ] := -Sqrt(5/12)*3 * X * S;
 
      for M := 0 to 1 do
      begin
@@ -89,7 +93,7 @@ begin
 
           _NPs[ N, M ] := P22;
 
-          if N = DegN then Break;
+          if DegN = N then Break;
 
           //      0     1     2   M
           //  0  P00
@@ -120,25 +124,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsEnomoto.P01( const M_:Integer; const P0_:Double ) :Double;
-begin
-     Result := -Sqrt( ( 2 * M_ + 1 ) / ( 2 * M_ ) ) * _S * P0_;
-end;
-
-//------------------------------------------------------------------------------
-
-function TNALFsEnomoto.PN01( const M_:Integer; const PN0_:Double ) :Double;
-begin
-     Result := Sqrt( 2 * M_ + 3 ) * X * PN0_;
-end;
-
-//------------------------------------------------------------------------------
-
 function TNALFsEnomoto.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 var
    N2, NuM, NnM, NM2, A, B :Double;
 begin
-     N2  := 2 * N_;
+     N2  := N_ * 2 ;
      NuM := N_ + M_;
      NnM := N_ - M_;
      NM2 := NuM * NnM;
@@ -151,26 +141,29 @@ end;
 
 //------------------------------------------------------------------------------
 
+//      0     1     2   M
+//  0 [P00]--P01--[P02]
+//      |     |     |
+//  1  P10---P11---P12
+//      |     |     |
+//  2 [P20]--P21--[P22]
+//  N
+
 function TNALFsEnomoto.PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
 var
+   N2, NM0, NM1,
    A00, A02, A20 :Double;
 begin
-     //      0     1     2   M
-     //  0 [P00]--P01--[P02]
-     //      |     |     |
-     //  1  P10---P11---P12
-     //      |     |     |
-     //  2 [P20]--P21--[P22]
-     //  N
+     N2  := N_ * 2 ;
+     NM0 := N_ - M_;
+     NM1 := N_ + M_;
 
-     A00 := Sqrt( ( ( 2 * N_ + 1 ) * ( N_ + M_ - 3 ) * ( N_ + M_ - 2) )
-                / ( ( 2 * N_ - 3 ) * ( N_ + M_ - 1 ) * ( N_ + M_    ) ) );
-
-     A02 := Sqrt( ( ( 2 * N_ + 1 ) * ( N_ - M_ - 1 ) * ( N_ - M_ ) )
-                / ( ( 2 * N_ - 3 ) * ( N_ + M_ - 1 ) * ( N_ + M_ ) ) );
-
-     A20 := Sqrt( ( ( N_ - M_ + 1 ) * ( N_ - M_ + 2 ) )
-                / ( ( N_ + M_ - 1 ) * ( N_ + M_     ) ) );
+     A00 := Sqrt( ( ( N2 + 1 ) * ( NM1 - 3 ) * ( NM1 - 2 ) )
+                / ( ( N2 - 3 ) * ( NM1 - 1 ) * ( NM1     ) ) );
+     A02 := Sqrt( ( ( N2 + 1 ) * ( NM0 - 1 ) * ( NM0     ) )
+                / ( ( N2 - 3 ) * ( NM1 - 1 ) * ( NM1     ) ) );
+     A20 := Sqrt( (              ( NM0 + 1 ) * ( NM0 + 2 ) )
+                / (              ( NM1 - 1 ) * ( NM1     ) ) );
 
      Result := A00 * P00_ + A02 * P02_ - A20 * P20_;
 end;
