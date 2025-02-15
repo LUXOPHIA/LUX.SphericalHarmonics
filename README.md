@@ -163,11 +163,13 @@ end;
 ```
 
 #### 🟦 ４点漸化式：4 term recurrence relation
+
 ```math
 \begin{aligned}
-\tilde{P}_n^m(x) &= \sqrt{\frac{(2n+1)(n+m-3)(n+m-2)}{(2n-3)(n+m-1)(n+m)}}\,\tilde{P}_{n-2}^{m-2}(x)\\
-&- \sqrt{\frac{(n-m+1)(n-m+2)}{(n+m-1)(n+m)}}\,\tilde{P}_{n-2}^m(x)\\
-&+ \sqrt{\frac{(2n+1)(n-m-1)(n-m)}{(2n-3)(n+m-1)(n+m)}}\,\tilde{P}_n^{m-2}(x).
+\tilde{P}_n^m(x) &= \sqrt{\frac{(2n+1)(n+m-3)(n+m-2)}{(2n-3)(n+m-1)(n+m)}}\,\tilde{P}_{n-2}^{m-2}(x)\\[20pt]
+&- \sqrt{\frac{(n-m+1)(n-m+2)}{(n+m-1)(n+m)}}\,\tilde{P}_n^{m-2}(x)\\
+&+ \sqrt{\frac{(2n+1)(n-m-1)(n-m)}{(2n-3)(n+m-1)(n+m)}}\,\tilde{P}_{n-2}^m(x)\\
+\tilde{P}_n^m(x) &= 0, \quad n < m
 \end{aligned}
 ```
 
