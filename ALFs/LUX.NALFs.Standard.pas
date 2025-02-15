@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsSimple
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsStandard
 
-     TNALFsSimple = class( TMapNALFs )
+     TNALFsStandard = class( TMapNALFs )
      private
      protected
        _S :Double;
@@ -35,7 +35,7 @@ uses System.Math, System.Threading;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsSimple
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsStandard
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -43,7 +43,7 @@ uses System.Math, System.Threading;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TNALFsSimple.CalcALPs;
+procedure TNALFsStandard.CalcALPs;
 var
    M :Integer;
    P0, P1 :Double;
@@ -88,21 +88,21 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsSimple.P01( const M_:Integer; const P0_:Double ) :Double;
+function TNALFsStandard.P01( const M_:Integer; const P0_:Double ) :Double;
 begin
      Result := -Sqrt( ( 2 * M_ + 1 ) / ( 2 * M_ ) ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsSimple.PN01( const M_:Integer; const PN0_:Double ) :Double;
+function TNALFsStandard.PN01( const M_:Integer; const PN0_:Double ) :Double;
 begin
      Result := Sqrt( 2 * M_ + 3 ) * X * PN0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsSimple.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
+function TNALFsStandard.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 var
    N2, NuM, NnM, NM2, A, B :Double;
 begin
