@@ -19,7 +19,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _S :Double;
        ///// M E T H O D
        procedure CalcALPs; override;
-       function P01( const NM_:Integer; const P0_:Double ) :Double;
+       function P01( const M_:Integer; const P0_:Double ) :Double;
        function PN01( const M_:Integer; const PN0_:Double ) :Double;
        function PN10( const M_:Integer; const PN1_:Double ) :Double;
        function PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
@@ -94,9 +94,9 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TALFsSimple.P01( const NM_:Integer; const P0_:Double ) :Double;
+function TALFsSimple.P01( const M_:Integer; const P0_:Double ) :Double;
 begin
-     Result := ( 1 - 2 * NM_ ) * _S * P0_;
+     Result := ( 1 - 2 * M_ ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
