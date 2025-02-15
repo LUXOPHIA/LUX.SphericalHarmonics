@@ -172,6 +172,29 @@ end;
 \tilde{P}_n^m(x) &= 0, \quad n < m
 \end{aligned}
 ```
+##### 🟪 Implementation for Delphi
+```Delphi
+//      0     1     2   M
+//  0 [P00]--P01--[P02]
+//      |     |     |
+//  1  P10---P11---P12
+//      |     |     |
+//  2 [P20]--P21--[P22]
+//  N
+
+function TNALFsEnomoto.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
+var
+   A00, A02, A20 :Double;
+begin
+     A00 := Sqrt( ( ( 2 * N + 1 ) * ( N + M - 3 ) * ( N + M - 2 ) )
+                / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
+     A02 := Sqrt( ( ( 2 * N + 1 ) * ( N - M - 1 ) * ( N - M     ) )
+                / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
+     A20 := Sqrt( (                 ( N - M + 1 ) * ( N - M + 2 ) )
+                / (                 ( N + M - 1 ) * ( N + M     ) ) );
+     Result := A00 * P00 + A02 * P02 - A20 * P20;
+end;
+```
 
 ## 🟥 完全正規化ルジャンドル関数：Fully Normalized Associated Legendre polynomials
 
