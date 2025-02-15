@@ -23,7 +23,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
 
-     TMapNALFs = class( TALFs )
+     TMapNALFs = class( TNALFs )
      private
      protected
        _DegN :Integer;
