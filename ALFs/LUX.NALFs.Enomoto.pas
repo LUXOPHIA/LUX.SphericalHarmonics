@@ -22,7 +22,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function P01( const M_:Integer; const P0_:Double ) :Double;
        function PN01( const M_:Integer; const PN0_:Double ) :Double;
        function PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
-       function PNM22( const N,M:Integer; const P00_,P02_,P20_:Double ) :Double;
+       function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
      public
      end;
 
@@ -151,7 +151,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsEnomoto.PNM22( const N,M:Integer; const P00_,P02_,P20_:Double ) :Double;
+function TNALFsEnomoto.PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
 var
    A00, A02, A20 :Double;
 begin
@@ -163,14 +163,14 @@ begin
      //  2 [P20]--P21--[P22]
      //  N
 
-     A00 := Sqrt( ( ( 2 * n + 1 ) * ( n + m - 3 ) * ( n + m - 2) )
-                / ( ( 2 * n - 3 ) * ( n + m - 1 ) * ( n + m    ) ) );
+     A00 := Sqrt( ( ( 2 * N_ + 1 ) * ( N_ + M_ - 3 ) * ( N_ + M_ - 2) )
+                / ( ( 2 * N_ - 3 ) * ( N_ + M_ - 1 ) * ( N_ + M_    ) ) );
 
-     A02 := Sqrt( ( ( 2 * n + 1 ) * ( n - m - 1 ) * ( n - m ) )
-                / ( ( 2 * n - 3 ) * ( n + m - 1 ) * ( n + m ) ) );
+     A02 := Sqrt( ( ( 2 * N_ + 1 ) * ( N_ - M_ - 1 ) * ( N_ - M_ ) )
+                / ( ( 2 * N_ - 3 ) * ( N_ + M_ - 1 ) * ( N_ + M_ ) ) );
 
-     A20 := Sqrt( ( ( n - m + 1 ) * ( n - m + 2 ) )
-                / ( ( n + m - 1 ) * ( n + m     ) ) );
+     A20 := Sqrt( ( ( N_ - M_ + 1 ) * ( N_ - M_ + 2 ) )
+                / ( ( N_ + M_ - 1 ) * ( N_ + M_     ) ) );
 
      Result := A00 * P00_ + A02 * P02_ - A20 * P20_;
 end;
