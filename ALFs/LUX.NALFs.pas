@@ -50,7 +50,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _ALFs :TALFs_;
-       _Ns   :TArray2<Double>;  upNs:Boolean;
+       _NFs  :TArray2<Double>;  upNFs:Boolean;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure SetDegN( const DegN_:Integer ); override;
@@ -182,7 +182,7 @@ procedure TALFsToNALFs<TALFs_>.SetDegN( const DegN_:Integer );
 begin
      inherited;
 
-     _ALFs.DegN := DegN_;  upNs := True;
+     _ALFs.DegN := DegN_;  upNFs := True;
 end;
 
 //------------------------------------------------------------------------------
@@ -203,14 +203,14 @@ end;
 
 function TALFsToNALFs<TALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
-     if upNs then
+     if upNFs then
      begin
-          upNs := False;
+          upNFs := False;
 
           InitNs;
      end;
 
-     Result := _Ns[ N_, M_ ];
+     Result := _NFs[ N_, M_ ];
 end;
 
 //------------------------------------------------------------------------------
@@ -231,12 +231,12 @@ procedure TALFsToNALFs<TALFs_>.InitNs;
 var
    N, M :Integer;
 begin
-     SetLength( _Ns, DegN+1 );
+     SetLength( _NFs, DegN+1 );
      for N := 0 to DegN do
      begin
-          SetLength( _Ns[ N ], N+1 );
+          SetLength( _NFs[ N ], N+1 );
 
-          for M := 0 to N do _Ns[ N, M ] := inherited GetNFs( N, M );
+          for M := 0 to N do _NFs[ N, M ] := inherited GetNFs( N, M );
      end;
 end;
 
