@@ -1,4 +1,4 @@
-﻿unit LUX.NALFs.Enomoto;
+﻿unit LUX.NALFs.Term4;
 
 interface //#################################################################### ■
 
@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsEnomoto
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsTerm4
 
-     TNALFsEnomoto = class( TMapNALFs )
+     TNALFsTerm4 = class( TMapNALFs )
      private
      protected
        ///// M E T H O D
@@ -33,7 +33,7 @@ uses System.Math, System.Threading;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsEnomoto
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsTerm4
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -41,7 +41,7 @@ uses System.Math, System.Threading;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TNALFsEnomoto.CalcALPs;
+procedure TNALFsTerm4.CalcALPs;
 var
    S :Double;
    N, M :Integer;
@@ -124,7 +124,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsEnomoto.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
+function TNALFsTerm4.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 var
    N2, NuM, NnM, NM2, A, B :Double;
 begin
@@ -149,7 +149,7 @@ end;
 //  2 [P20]--P21--[P22]
 //  N
 
-function TNALFsEnomoto.PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
+function TNALFsTerm4.PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
 var
    N2, NM0, NM1,
    A00, A02, A20 :Double;
