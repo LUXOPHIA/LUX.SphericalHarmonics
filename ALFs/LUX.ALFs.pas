@@ -23,14 +23,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetX :Double; virtual; abstract;
        procedure SetX( const X_:Double ); virtual;
        function GetPs( const N_,M_:Integer ) :Double; virtual; abstract;
+       function GetdPs( const N_,M_:Integer ) :Double; virtual;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
        ///// P R O P E R T Y
-       property DegN                      :Integer read GetDegN write SetDegN;
-       property X                         :Double  read GetX    write SetX   ;
-       property Ps[ const N_,M_:Integer ] :Double  read GetPs                ; default;
+       property DegN                       :Integer read GetDegN write SetDegN;
+       property X                          :Double  read GetX    write SetX   ;
+       property Ps[ const N_,M_:Integer ]  :Double  read GetPs                ; default;
+       property dPs[ const N_,M_:Integer ] :Double  read GetdPs               ;
        ///// E V E N T
        property OnChange :TDelegates read _OnChange;
      end;
@@ -81,6 +83,17 @@ end;
 procedure TALFs.SetX( const X_:Double );
 begin
      OnChange.Run( Self );
+end;
+
+//------------------------------------------------------------------------------
+
+function TALFs.GetdPs( const N_,M_:Integer ) :Double;
+begin
+     Result := -N_ * X * Ps[ N_, M_ ];
+
+     if M_ < N_ then Result := Result + ( N_ + M_ ) * Ps[ N_-1, M_ ];
+
+     Result := Result / ( 1 - Pow2( X ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
