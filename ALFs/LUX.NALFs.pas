@@ -16,9 +16,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFs = class( TALFs )
      private
      protected
+       ///// A C C E S S O R
+       function GetNFs( const N_,M_:Integer ) :Double; virtual;
+       function GetdPs( const N_,M_:Integer ) :Double; override;
      public
-       ///// M E T H O D
-       function NormFactor( N,M:Integer ) :Double;
+       ///// P R O P E R T Y
+       property NFs[ const N_,M_:Integer ] :Double read GetNFs;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
@@ -53,7 +56,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure SetX( const X_:Double ); override;
+       function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
+       function GetdPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
        procedure InitNs;
      public
@@ -78,17 +83,29 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+//////////////////////////////////////////////////////////////// A C C E S S O R
 
-//////////////////////////////////////////////////////////////////// M E T H O D
-
-function TNALFs.NormFactor( N,M:Integer ) :Double;
+function TNALFs.GetNFs( const N_,M_:Integer ) :Double;
 var
    I :Integer;
 begin
-     Result := Sqrt( ( 2 * N + 1 ) / 2 );
-     for I := N - M + 1 to N + M do Result := Result / Sqrt( I );
+     Result := Sqrt( ( 2 * N_ + 1 ) / 2 );
+
+     for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
 end;
+
+//------------------------------------------------------------------------------
+
+function TNALFs.GetdPs( const N_,M_:Integer ) :Double;
+begin
+     Result := N_ * X * Ps[ N_, M_ ];
+
+     if M_ < N_ then Result := Result - Sqrt( ( 2 * N_ + 1 ) / ( 2 * N_ - 1 ) * ( N_ + M_ ) * ( N_ - M_ ) ) * Ps[ N_-1, M_ ];
+
+     Result := Result / ( 1 - Pow2( X ) );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
 
@@ -184,7 +201,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TALFsToNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
+function TALFsToNALFs<TALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
      if upNs then
      begin
@@ -193,7 +210,19 @@ begin
           InitNs;
      end;
 
-     Result := _Ns[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
+     Result := _Ns[ N_, M_ ];
+end;
+
+//------------------------------------------------------------------------------
+
+function TALFsToNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
+begin
+     Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
+end;
+
+function TALFsToNALFs<TALFs_>.GetdPs( const N_,M_:Integer ) :Double;
+begin
+     Result := NFs[ N_, M_ ] * _ALFs.dPs[ N_, M_ ];
 end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
@@ -207,7 +236,7 @@ begin
      begin
           SetLength( _Ns[ N ], N+1 );
 
-          for M := 0 to N do _Ns[ N, M ] := NormFactor( N, M );
+          for M := 0 to N do _Ns[ N, M ] := inherited GetNFs( N, M );
      end;
 end;
 
