@@ -60,7 +60,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetPs( const N_,M_:Integer ) :Double; override;
        function GetdPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
-       procedure InitNs;
+       procedure InitNFs;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
@@ -207,7 +207,7 @@ begin
      begin
           upNFs := False;
 
-          InitNs;
+          InitNFs;
      end;
 
      Result := _NFs[ N_, M_ ];
@@ -227,7 +227,7 @@ end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TALFsToNALFs<TALFs_>.InitNs;
+procedure TALFsToNALFs<TALFs_>.InitNFs;
 var
    N, M :Integer;
 begin
