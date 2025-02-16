@@ -89,9 +89,9 @@ end;
 
 function TALFs.GetdPs( const N_,M_:Integer ) :Double;
 begin
-     Result := -N_ * X * Ps[ N_, M_ ];
+     Result := N_ * X * Ps[ N_, M_ ];
 
-     if M_ < N_ then Result := Result + ( N_ + M_ ) * Ps[ N_-1, M_ ];
+     if M_ < N_ then Result := Result - ( N_ + M_ ) * Ps[ N_-1, M_ ];
 
      Result := Result / ( 1 - Pow2( X ) );
 end;
@@ -135,6 +135,8 @@ end;
 
 procedure TMapALFs.SetDegN( const DegN_:Integer );
 begin
+     if _DegN = DegN_ then Exit;
+
      inherited;
 
      _DegN := DegN_;  InitALPs;  upALPs := True;
@@ -149,6 +151,8 @@ end;
 
 procedure TMapALFs.SetX( const X_:Double );
 begin
+     if _X = X_ then Exit;
+
      inherited;
 
      _X := X_;  upALPs := True;
