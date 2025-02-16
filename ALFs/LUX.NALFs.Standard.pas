@@ -29,8 +29,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Math, System.Threading;
-
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
@@ -45,8 +43,8 @@ uses System.Math, System.Threading;
 
 procedure TNALFsStandard.CalcALPs;
 var
-   M :Integer;
-   P0, P1 :Double;
+   M, N :Integer;
+   P0, P1, P2 :Double;
 begin
      _S := Sqrt( 1 - Pow2( X ) );
      P0 := 1/Sqrt(2);  _NPs[ 0, 0 ] := P0;
@@ -67,10 +65,7 @@ begin
           _NPs[ M+1, M ] := P1;
      end;
 
-     TParallel.For( 0, DegN-2, procedure( M:Integer )
-     var
-        P0, P1, P2 :Double;
-        N :Integer;
+     for M := 0 to DegN-2 do
      begin
           P0 := _NPs[ M+0, M ];
           P1 := _NPs[ M+1, M ];
@@ -83,7 +78,7 @@ begin
 
                P0 := P1; P1 := P2;
           end;
-     end );
+     end;
 end;
 
 //------------------------------------------------------------------------------
