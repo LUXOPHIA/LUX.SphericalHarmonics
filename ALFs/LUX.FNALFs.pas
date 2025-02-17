@@ -24,7 +24,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToFNALFs
 
-     TALFsToFNALFs<TALFs_:TALFs,constructor> = class( TNALFs )
+     TALFsToFNALFs<TALFs_:TALFs,constructor> = class( TFNALFs )
      private
      protected
        _ALFs :TALFs_;
@@ -46,7 +46,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property ALFs :TALFs_ read _ALFs;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsToFNALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsToFNALFs<TNALFs_>
 
      TNALFsToFNALFs<TNALFs_:TNALFs,constructor> = class( TFNALFs )
      private
@@ -191,7 +191,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsToFNALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsToFNALFs<TNALFs_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -229,8 +229,8 @@ end;
 
 function TNALFsToFNALFs<TNALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
-     if M_ = 0 then Result := 1
-               else Result := Sqrt(2);
+     if M_ = 0 then Result := Sqrt(2)
+               else Result :=      2;
 end;
 //------------------------------------------------------------------------------
 
@@ -243,16 +243,16 @@ end;
 
 constructor TNALFsToFNALFs<TNALFs_>.Create;
 begin
-     inherited;
-
      _NALFs := TNALFs_.Create;
+
+     inherited;
 end;
 
 constructor TNALFsToFNALFs<TNALFs_>.Create( const DegN_:Integer );
 begin
-     Create;
+     _NALFs := TNALFs_.Create;
 
-     _NALFs.DegN := DegN_;
+     inherited;
 end;
 
 destructor TNALFsToFNALFs<TNALFs_>.Destroy;

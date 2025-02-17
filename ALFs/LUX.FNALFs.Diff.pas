@@ -25,7 +25,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToFNALFs
 
-     TdALFsToFNALFs<TdALFs_:TdALFs,constructor> = class( TdNALFs )
+     TdALFsToFNALFs<TdALFs_:TdALFs,constructor> = class( TdFNALFs )
      private
      protected
        _dALFs :TdALFs_;
@@ -230,8 +230,8 @@ end;
 
 function TdNALFsToFNALFs<TdNALFs_>.GetNFs( const N_,M_:Integer ) :TdDouble;
 begin
-     if M_ = 0 then Result := 1
-               else Result := Sqrt(2);
+     if M_ = 0 then Result := Sqrt(2)
+               else Result :=      2;
 end;
 //------------------------------------------------------------------------------
 
@@ -244,16 +244,16 @@ end;
 
 constructor TdNALFsToFNALFs<TdNALFs_>.Create;
 begin
-     inherited;
-
      _dNALFs := TdNALFs_.Create;
+
+     inherited;
 end;
 
 constructor TdNALFsToFNALFs<TdNALFs_>.Create( const DegN_:Integer );
 begin
-     Create;
+     _dNALFs := TdNALFs_.Create;
 
-     _dNALFs.DegN := DegN_;
+     inherited;
 end;
 
 destructor TdNALFsToFNALFs<TdNALFs_>.Destroy;
