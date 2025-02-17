@@ -123,8 +123,6 @@ end;
 
 procedure TdMapALFs.SetDegN( const DegN_:Integer );
 begin
-     if _DegN = DegN_ then Exit;
-
      inherited;
 
      _DegN := DegN_;  InitALPs;  upALPs := True;
@@ -139,8 +137,6 @@ end;
 
 procedure TdMapALFs.SetX( const X_:TdDouble );
 begin
-     if _X = X_ then Exit;
-
      inherited;
 
      _X := X_;  upALPs := True;

@@ -90,8 +90,6 @@ end;
 
 procedure TSPHarmonics3D.SetDivX( const DivX_:Integer );
 begin
-     if _DivX = DivX_ then Exit;
-
      _DivX := DivX_;
 
      upGeometry := True;
@@ -102,8 +100,6 @@ end;
 
 procedure TSPHarmonics3D.SetDivY( const DivY_:Integer );
 begin
-     if _DivY = DivY_ then Exit;
-
      _DivY := DivY_;
 
      upGeometry := True;
@@ -121,8 +117,6 @@ end;
 
 procedure TSPHarmonics3D.SetSPHarm( const SPHarm_:TdSPHarmonics );
 begin
-     if _SPHarm = SPHarm_ then Exit;
-
      _SPHarm := SPHarm_;
 
      upGeometry := True;
@@ -140,8 +134,6 @@ end;
 
 procedure TSPHarmonics3D.SetN( const N_:Integer );
 begin
-     if _N = N_ then Exit;
-
      _N := N_;
 
      upGeometry := True;
@@ -157,8 +149,6 @@ end;
 
 procedure TSPHarmonics3D.SetM( const M_:Integer );
 begin
-     if _M = M_ then Exit;
-
      _M := M_;
 
      upGeometry := True;
@@ -176,8 +166,6 @@ end;
 
 procedure TSPHarmonics3D.SetRadius( const Radius_:Single );
 begin
-     if _Radius = Radius_ then Exit;
-
      _Radius := Radius_;
 
      upGeometry := True;
@@ -204,7 +192,7 @@ begin
 
      H := SPHarm[ N, M ];
 
-     L := Abs( H.R ) * Radius;
+     L := Abso( H.R ) * Radius;
 
      Result.Y :=  L * Cos( T_.Y );
             R :=  L * Sin( T_.Y );
