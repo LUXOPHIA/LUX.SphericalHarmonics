@@ -19,7 +19,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        ///// A C C E S S O R
        function GetNFs( const N_,M_:Integer ) :Double; override;
-       function GetdPs( const N_,M_:Integer ) :Double; override;
      public
      end;
 
@@ -37,7 +36,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetX( const X_:Double ); override;
        function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
-       function GetdPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
        procedure InitNFs;
      public
@@ -61,7 +59,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetX( const X_:Double ); override;
        function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
-       function GetdPs( const N_,M_:Integer ) :Double; override;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
@@ -97,17 +94,6 @@ begin
      Result := Sqrt( K * ( 2 * N_ + 1 ) );
 
      for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
-end;
-
-//------------------------------------------------------------------------------
-
-function TFNALFs.GetdPs( const N_,M_:Integer ) :Double;
-begin
-     Result := N_ * X * Ps[ N_, M_ ];
-
-     if M_ < N_ then Result := Result - Sqrt( ( N_ - M_ ) * ( N_ + M_ + 1 ) ) * Ps[ N_-1, M_ ];
-
-     Result := Result / ( 1 - Pow2( X ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -165,11 +151,6 @@ end;
 function TALFsToFNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
 begin
      Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
-end;
-
-function TALFsToFNALFs<TALFs_>.GetdPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _ALFs.dPs[ N_, M_ ];
 end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
@@ -256,11 +237,6 @@ end;
 function TNALFsToFNALFs<TNALFs_>.GetPs( const N_,M_:Integer ) :Double;
 begin
      Result := NFs[ N_, M_ ] * _NALFs.Ps[ N_, M_ ];
-end;
-
-function TNALFsToFNALFs<TNALFs_>.GetdPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _NALFs.dPs[ N_, M_ ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public

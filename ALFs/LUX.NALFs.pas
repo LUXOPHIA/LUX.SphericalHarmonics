@@ -18,7 +18,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        ///// A C C E S S O R
        function GetNFs( const N_,M_:Integer ) :Double; virtual;
-       function GetdPs( const N_,M_:Integer ) :Double; override;
      public
        ///// P R O P E R T Y
        property NFs[ const N_,M_:Integer ] :Double read GetNFs;
@@ -58,7 +57,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetX( const X_:Double ); override;
        function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
-       function GetdPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
        procedure InitNFs;
      public
@@ -92,17 +90,6 @@ begin
      Result := Sqrt( ( 2 * N_ + 1 ) / 2 );
 
      for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
-end;
-
-//------------------------------------------------------------------------------
-
-function TNALFs.GetdPs( const N_,M_:Integer ) :Double;
-begin
-     Result := N_ * X * Ps[ N_, M_ ];
-
-     if M_ < N_ then Result := Result - Sqrt( ( 2 * N_ + 1 ) / ( 2 * N_ - 1 ) * ( N_ + M_ ) * ( N_ - M_ ) ) * Ps[ N_-1, M_ ];
-
-     Result := Result / ( 1 - Pow2( X ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -218,11 +205,6 @@ end;
 function TALFsToNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
 begin
      Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
-end;
-
-function TALFsToNALFs<TALFs_>.GetdPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _ALFs.dPs[ N_, M_ ];
 end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
