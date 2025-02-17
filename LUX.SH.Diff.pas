@@ -34,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetAngleX( const AngleX_:TdDouble );
        function GetAngleY :TdDouble;
        procedure SetAngleY( const AngleY_:TdDouble );
-       function GetSHs( const N_,M_:Integer ) :TdDoubleC;
+       function GetSHs( const N_,M_:Integer ) :TdDoubleC; virtual; abstract;
      public
        constructor Create( const DegN_:Integer ); overload;
        ///// P R O P E R T Y
@@ -52,6 +52,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSPHarmonics<TdNALFs_:TdNALFs,constructor> = class( TdSPHarmonics )
      private
      protected
+       ///// A C C E S S O R
+       function GetSHs( const N_,M_:Integer ) :TdDoubleC; override;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
@@ -139,20 +141,6 @@ begin
      _dALFs.X := Cos( _AngleY );
 end;
 
-//------------------------------------------------------------------------------
-
-function TdSPHarmonics.GetSHs( const N_,M_:Integer ) :TdDoubleC;
-var
-   A, C, S :TdDouble;
-begin
-     A := _dALFs[ N_, M_ ] / Sqrt( Pi2 );
-
-     SinCos( M_ * _AngleX, S, C );
-
-     Result.R := A * C;
-     Result.I := A * S;
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TdSPHarmonics.Create( const DegN_:Integer );
@@ -163,6 +151,22 @@ begin
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonics<TdNALFs_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+function TdSPHarmonics<TdNALFs_>.GetSHs( const N_,M_:Integer ) :TdDoubleC;
+var
+   A, C, S :TdDouble;
+begin
+     A := _dALFs[ N_, M_ ] / Sqrt( Pi2 );
+
+     SinCos( M_ * _AngleX, S, C );
+
+     Result.R := A * C;
+     Result.I := A * S;
+end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
