@@ -5,7 +5,8 @@ interface //####################################################################
 uses LUX,
      LUX.Complex,
      LUX.ALFs,
-     LUX.NALFs;
+     LUX.NALFs,
+     LUX.FNALFs;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
@@ -33,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetAngleX( const AngleX_:Double );
        function GetAngleY :Double;
        procedure SetAngleY( const AngleY_:Double );
-       function GetSHs( const N_,M_:Integer ) :TDoubleC;
+       function GetSHs( const N_,M_:Integer ) :TDoubleC; virtual; abstract;
      public
        constructor Create( const DegN_:Integer ); overload;
        ///// P R O P E R T Y
@@ -51,6 +52,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSPHarmonics<TNALFs_:TNALFs,constructor> = class( TSPHarmonics )
      private
      protected
+       ///// A C C E S S O R
+       function GetSHs( const N_,M_:Integer ) :TDoubleC; override;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
@@ -140,9 +143,22 @@ begin
      _ALFs.X := Cos( _AngleY );
 end;
 
-//------------------------------------------------------------------------------
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-function TSPHarmonics.GetSHs( const N_,M_:Integer ) :TDoubleC;
+constructor TSPHarmonics.Create( const DegN_:Integer );
+begin
+     inherited Create;
+
+     _ALFs.DegN := DegN_;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics<TNALFs_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+function TSPHarmonics<TNALFs_>.GetSHs( const N_,M_:Integer ) :TDoubleC;
 var
    A, C, S :Double;
 begin
@@ -153,17 +169,6 @@ begin
      Result.R := A * C;
      Result.I := A * S;
 end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TSPHarmonics.Create( const DegN_:Integer );
-begin
-     inherited Create;
-
-     _ALFs.DegN := DegN_;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics<TALFs_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
