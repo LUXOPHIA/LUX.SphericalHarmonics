@@ -220,12 +220,15 @@ end;
 
 ```math
 \begin{gathered}
-\overline{P}_n^m(x) = \sqrt{k\,(2n+1)\,\frac{(n-m)!}{(n+m)!}}\,P_n^m(x),\quad
+\begin{aligned}
+\overline{P}_n^m(x) &= \sqrt{k\,(2n+1)\,\frac{(n-m)!}{(n+m)!}}\,P_n^m(x),\quad
 k =
 \begin{cases}
 1 & m = 0\\
 2 & m \neq 0
 \end{cases}\\
+&= \sqrt{2k}\,\tilde{P}_n^m(x)
+\end{aligned}\\
 
 \int \bigl\lvert Y_{n,m}(\theta,\phi) \bigr\rvert^2 \, d\Omega
 = \int_{0}^{2\pi}\int_{0}^{\pi}\bigl\lvert Y_n^m(\theta,\phi)\bigr\rvert^2\,\sin\theta\,d\theta\,d\phi = 1
