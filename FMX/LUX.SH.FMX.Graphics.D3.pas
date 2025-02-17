@@ -184,18 +184,12 @@ end;
 
 function TSPHarmonics3D.AngToPos( const T_:TdDouble2D ) :TdDouble3D;
 var
-   H :TdDoubleC;
    L, R :TdDouble;
 begin
      SPHarm.AngleY := T_.Y;
      SPHarm.AngleX := T_.X;
 
-     H := SPHarm[ N, Abs( M ) ];
-
-     if M < 0 then L := Abso( H.I )
-              else L := Abso( H.R );
-
-     L := L * Sqrt(Pi4) * Radius;
+     L := Abso( SPHarm.RSHs[ N, M ] ) * Sqrt(Pi4) * Radius;
 
      Result.Y :=  L * Cos( T_.Y );
             R :=  L * Sin( T_.Y );
