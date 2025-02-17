@@ -93,8 +93,6 @@ end;
 
 procedure TdSPHarmonics.SetALFs( const ALFs_:TdALFs );
 begin
-     if _dALFs = ALFs_ then Exit;
-
      if Assigned( _dALFs ) then _dALFs.OnChange.Del( OnUpALFs );
 
      _dALFs := ALFs_;
@@ -113,8 +111,6 @@ end;
 
 procedure TdSPHarmonics.SetDegN( const DegN_:Integer );
 begin
-     if _dALFs.DegN = DegN_ then Exit;
-
      _dALFs.DegN := DegN_;
 end;
 
@@ -127,8 +123,6 @@ end;
 
 procedure TdSPHarmonics.SetAngleX( const AngleX_:TdDouble );
 begin
-     if _AngleX = AngleX_ then Exit;
-
      _AngleX := AngleX_;
 end;
 
@@ -139,8 +133,6 @@ end;
 
 procedure TdSPHarmonics.SetAngleY( const AngleY_:TdDouble );
 begin
-     if _AngleY = AngleY_ then Exit;
-
      _AngleY := AngleY_;
 
      _dALFs.X := Cos( _AngleY );
