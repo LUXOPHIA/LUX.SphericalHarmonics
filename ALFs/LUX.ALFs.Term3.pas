@@ -1,4 +1,4 @@
-﻿unit LUX.ALFs.Standard;
+﻿unit LUX.ALFs.Term3;
 
 interface //#################################################################### ■
 
@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsStandard
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsTerm3
 
-     TALFsStandard = class( TMapALFs )
+     TALFsTerm3 = class( TMapALFs )
      private
      protected
        _S :Double;
@@ -39,7 +39,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsStandard
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsTerm3
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -47,7 +47,7 @@ implementation //###############################################################
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TALFsStandard.CalcALPs;
+procedure TALFsTerm3.CalcALPs;
 var
    M, N :Integer;
    P0, P1, P2 :Double;
@@ -89,53 +89,53 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TALFsStandard.P01( const M_:Integer; const P0_:Double ) :Double;
+function TALFsTerm3.P01( const M_:Integer; const P0_:Double ) :Double;
 begin
      Result := ( 1 - 2 * M_ ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsStandard.PN01( const M_:Integer; const PN0_:Double ) :Double;
+function TALFsTerm3.PN01( const M_:Integer; const PN0_:Double ) :Double;
 begin
      Result := ( 2 * M_ + 1 ) * X * PN0_;
 end;
 
-function TALFsStandard.PN10( const M_:Integer; const PN1_:Double ) :Double;
+function TALFsTerm3.PN10( const M_:Integer; const PN1_:Double ) :Double;
 begin
      Result := PN1_ / ( ( 2 * M_ + 1 ) * X );
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsStandard.PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
+function TALFsTerm3.PM012( const N_,M_:Integer; const PM0_,PM1_:Double ) :Double;
 begin
      Result := ( ( 2 * M_ - 1 ) * X / M_ ) * PM1_ - ( ( N_ + M_ - 1 ) / M_ ) * PM0_;
 end;
 
-function TALFsStandard.PM201( const N_,M_:Integer; const PM2_,PM0_:Double ) :Double;
+function TALFsTerm3.PM201( const N_,M_:Integer; const PM2_,PM0_:Double ) :Double;
 begin
      Result := ( ( M_ + 1 ) * PM2_ + ( N_ + M_ ) * PM0_ ) / ( ( 2 * M_ + 1 ) * X );
 end;
 
-function TALFsStandard.PM120( const N_,M_:Integer; const PM1_,PM2_:Double ) :Double;
+function TALFsTerm3.PM120( const N_,M_:Integer; const PM1_,PM2_:Double ) :Double;
 begin
      Result := ( ( 2 * M_ + 3 ) * X * PM1_ - ( M_ + 2 ) * PM2_ ) / ( N_ + M_ + 1 );
 end;
 
 //------------------------------------------------------------------------------
 
-function TALFsStandard.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
+function TALFsTerm3.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 begin
      Result := ( ( 2 * N_ - 1 ) * X * PN1_ - ( N_ + M_ - 1 ) * PN0_ ) / ( N_ - M_ );
 end;
 
-function TALFsStandard.PN201( const N_,M_:Integer; const PN2_,PN0_:Double ) :Double;
+function TALFsTerm3.PN201( const N_,M_:Integer; const PN2_,PN0_:Double ) :Double;
 begin
      Result := ( ( N_ + M_ ) * PN0_ + ( N_ - M_ + 1 ) * PN2_ ) / ( ( 2 * N_ + 1 ) * X );
 end;
 
-function TALFsStandard.PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
+function TALFsTerm3.PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
 begin
      Result := ( ( 2 * N_ + 3 ) * X * PN1_ - ( N_ - M_ + 2 ) * PN2_ ) / ( N_ + M_ + 1 );
 end;
