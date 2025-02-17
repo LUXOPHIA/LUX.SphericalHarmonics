@@ -1,11 +1,12 @@
-﻿unit LUX.SH;
+﻿unit LUX.SH.Diff;
 
 interface //#################################################################### ■
 
 uses LUX,
-     LUX.Complex,
-     LUX.ALFs,
-     LUX.NALFs;
+     LUX.D1.Diff,
+     LUX.Complex.Diff,
+     LUX.ALFs.Diff,
+     LUX.NALFs.Diff;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
@@ -13,42 +14,42 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonics
 
-     TSPHarmonics = class
+     TdSPHarmonics = class
      private
      protected
-       _ALFs   :TALFs;
-       _AngleX :Double;
-       _AngleY :Double;
+       _dALFs  :TdALFs;
+       _AngleX :TdDouble;
+       _AngleY :TdDouble;
        ///// E V E N T
        _OnChange :TDelegates;
        ///// A C C E S S O R
        procedure OnUpALFs( Sender:TObject );
-       function GetALFs :TALFs;
-       procedure SetALFs( const ALFs_:TALFs );
+       function GetALFs :TdALFs;
+       procedure SetALFs( const ALFs_:TdALFs );
        function GetDegN :Integer;
        procedure SetDegN( const DegN_:Integer );
-       function GetAngleX :Double;
-       procedure SetAngleX( const AngleX_:Double );
-       function GetAngleY :Double;
-       procedure SetAngleY( const AngleY_:Double );
-       function GetSHs( const N_,M_:Integer ) :TDoubleC;
+       function GetAngleX :TdDouble;
+       procedure SetAngleX( const AngleX_:TdDouble );
+       function GetAngleY :TdDouble;
+       procedure SetAngleY( const AngleY_:TdDouble );
+       function GetSHs( const N_,M_:Integer ) :TdDoubleC;
      public
        constructor Create( const DegN_:Integer ); overload;
        ///// P R O P E R T Y
-       property ALFs                       :TALFs    read GetALFs   write SetALFs  ;
-       property DegN                       :Integer  read GetDegN   write SetDegN  ;
-       property AngleX                     :Double   read GetAngleX write SetAngleX;
-       property AngleY                     :Double   read GetAngleY write SetAngleY;
-       property SHs[ const N_,M_:Integer ] :TDoubleC read GetSHs                   ; default;
+       property dALFs                      :TdALFs    read GetALFs   write SetALFs  ;
+       property DegN                       :Integer   read GetDegN   write SetDegN  ;
+       property AngleX                     :TdDouble  read GetAngleX write SetAngleX;
+       property AngleY                     :TdDouble  read GetAngleY write SetAngleY;
+       property SHs[ const N_,M_:Integer ] :TdDoubleC read GetSHs                   ; default;
        ///// E V E N T
        property OnChange :TDelegates read _OnChange;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics<TNALFs_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonics<TdNALFs_>
 
-     TSPHarmonics<TNALFs_:TNALFs,constructor> = class( TSPHarmonics )
+     TdSPHarmonics<TdNALFs_:TdNALFs,constructor> = class( TdSPHarmonics )
      private
      protected
      public
@@ -61,13 +62,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Math;
-
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonics
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -75,78 +74,78 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TSPHarmonics.OnUpALFs( Sender:TObject );
+procedure TdSPHarmonics.OnUpALFs( Sender:TObject );
 begin
      _OnChange.Run( Self );
 end;
 
-function TSPHarmonics.GetALFs :TALFs;
+function TdSPHarmonics.GetALFs :TdALFs;
 begin
-     Result := _ALFs;
+     Result := _dALFs;
 end;
 
-procedure TSPHarmonics.SetALFs( const ALFs_:TALFs );
+procedure TdSPHarmonics.SetALFs( const ALFs_:TdALFs );
 begin
-     if _ALFs = ALFs_ then Exit;
+     if _dALFs = ALFs_ then Exit;
 
-     if Assigned( _ALFs ) then _ALFs.OnChange.Del( OnUpALFs );
+     if Assigned( _dALFs ) then _dALFs.OnChange.Del( OnUpALFs );
 
-     _ALFs := ALFs_;
+     _dALFs := ALFs_;
 
-     if Assigned( _ALFs ) then _ALFs.OnChange.Add( OnUpALFs );
+     if Assigned( _dALFs ) then _dALFs.OnChange.Add( OnUpALFs );
 
      OnUpALFs( Self );
 end;
 
 //------------------------------------------------------------------------------
 
-function TSPHarmonics.GetDegN :Integer;
+function TdSPHarmonics.GetDegN :Integer;
 begin
-     Result := _ALFs.DegN;
+     Result := _dALFs.DegN;
 end;
 
-procedure TSPHarmonics.SetDegN( const DegN_:Integer );
+procedure TdSPHarmonics.SetDegN( const DegN_:Integer );
 begin
-     if _ALFs.DegN = DegN_ then Exit;
+     if _dALFs.DegN = DegN_ then Exit;
 
-     _ALFs.DegN := DegN_;
+     _dALFs.DegN := DegN_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TSPHarmonics.GetAngleX :Double;
+function TdSPHarmonics.GetAngleX :TdDouble;
 begin
      Result := _AngleX;
 end;
 
-procedure TSPHarmonics.SetAngleX( const AngleX_:Double );
+procedure TdSPHarmonics.SetAngleX( const AngleX_:TdDouble );
 begin
      if _AngleX = AngleX_ then Exit;
 
      _AngleX := AngleX_;
 end;
 
-function TSPHarmonics.GetAngleY :Double;
+function TdSPHarmonics.GetAngleY :TdDouble;
 begin
      Result := _AngleY;
 end;
 
-procedure TSPHarmonics.SetAngleY( const AngleY_:Double );
+procedure TdSPHarmonics.SetAngleY( const AngleY_:TdDouble );
 begin
      if _AngleY = AngleY_ then Exit;
 
      _AngleY := AngleY_;
 
-     _ALFs.X := Cos( _AngleY );
+     _dALFs.X := Cos( _AngleY );
 end;
 
 //------------------------------------------------------------------------------
 
-function TSPHarmonics.GetSHs( const N_,M_:Integer ) :TDoubleC;
+function TdSPHarmonics.GetSHs( const N_,M_:Integer ) :TdDoubleC;
 var
-   A, C, S :Double;
+   A, C, S :TdDouble;
 begin
-     A := _ALFs[ N_, M_ ] / Sqrt( Pi2 );
+     A := _dALFs[ N_, M_ ] / Sqrt( Pi2 );
 
      SinCos( M_ * _AngleX, S, C );
 
@@ -156,36 +155,36 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TSPHarmonics.Create( const DegN_:Integer );
+constructor TdSPHarmonics.Create( const DegN_:Integer );
 begin
      inherited Create;
 
-     _ALFs.DegN := DegN_;
+     _dALFs.DegN := DegN_;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonics<TALFs_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonics<TdNALFs_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TSPHarmonics<TNALFs_>.Create;
+constructor TdSPHarmonics<TdNALFs_>.Create;
 begin
-     _ALFs := TNALFs_.Create;
+     _dALFs := TdNALFs_.Create;
 
      inherited;
 end;
 
-constructor TSPHarmonics<TNALFs_>.Create( const DegN_:Integer );
+constructor TdSPHarmonics<TdNALFs_>.Create( const DegN_:Integer );
 begin
-     _ALFs := TNALFs_.Create;
+     _dALFs := TdNALFs_.Create;
 
      inherited Create;
 
-     _ALFs.DegN := DegN_;
+     _dALFs.DegN := DegN_;
 end;
 
-destructor TSPHarmonics<TNALFs_>.Destroy;
+destructor TdSPHarmonics<TdNALFs_>.Destroy;
 begin
-     _ALFs.Free;
+     _dALFs.Free;
 
      inherited;
 end;
