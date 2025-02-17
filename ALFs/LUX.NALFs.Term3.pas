@@ -1,4 +1,4 @@
-﻿unit LUX.NALFs.Standard;
+﻿unit LUX.NALFs.Term3;
 
 interface //#################################################################### ■
 
@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsStandard
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsTerm3
 
-     TNALFsStandard = class( TMapNALFs )
+     TNALFsTerm3 = class( TMapNALFs )
      private
      protected
        _S :Double;
@@ -33,7 +33,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsStandard
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsTerm3
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -41,7 +41,7 @@ implementation //###############################################################
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TNALFsStandard.CalcALPs;
+procedure TNALFsTerm3.CalcALPs;
 var
    M, N :Integer;
    P0, P1, P2 :Double;
@@ -83,21 +83,21 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsStandard.P01( const M_:Integer; const P0_:Double ) :Double;
+function TNALFsTerm3.P01( const M_:Integer; const P0_:Double ) :Double;
 begin
      Result := -Sqrt( ( 2 * M_ + 1 ) / ( 2 * M_ ) ) * _S * P0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsStandard.PN01( const M_:Integer; const PN0_:Double ) :Double;
+function TNALFsTerm3.PN01( const M_:Integer; const PN0_:Double ) :Double;
 begin
      Result := Sqrt( 2 * M_ + 3 ) * X * PN0_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TNALFsStandard.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
+function TNALFsTerm3.PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
 var
    N2, NuM, NnM, NM2, A, B :Double;
 begin
