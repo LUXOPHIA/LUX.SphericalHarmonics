@@ -120,7 +120,6 @@ begin
      _SPHarm := SPHarm_;
 
      upGeometry := True;
-     upTopology := True;
 
      Repaint;
 end;
@@ -137,7 +136,6 @@ begin
      _N := N_;
 
      upGeometry := True;
-     upTopology := True;
 
      Repaint;
 end;
@@ -152,7 +150,6 @@ begin
      _M := M_;
 
      upGeometry := True;
-     upTopology := True;
 
      Repaint;
 end;
@@ -326,7 +323,7 @@ begin
      DivY   := 180;
      N      := 0;
      M      := 0;
-     Radius := 4;
+     Radius := 3;
 end;
 
 destructor TSPHarmonics3D.Destroy;
