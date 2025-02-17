@@ -1,7 +1,30 @@
 ﻿# LUX.SphericalHarmonics
 Spherical Harmonics Library for Delphi.
 
-## 🟥 ルジャンドル陪関数
+```math
+\begin{aligned}
+Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
+&= \frac{1}{\sqrt{2\pi}}\;\tilde{P}_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
+\overline{Y}_n^m(\theta,\phi)
+&= \dfrac{1}{\sqrt{4\pi}}\,
+\begin{cases}
+\overline{P}_n^0\!\left(\cos\theta\right), 
+& m=0,\\[1.2em]
+\overline{P}_n^m\!\left(\cos\theta\right)\,\cos\left(m\,\phi\right), 
+& m>0,\\[1.2em]
+\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right),
+& m<0,
+\end{cases}
+\end{aligned}
+```
+
+- $`Y_n^m(\theta,\phi)`$：(Complex) Spherical Harmonics
+- $`\overline{Y}_n^m(\theta,\phi)`$：Real Spherical Harmonics
+- $`P_n^m(x)`$：Associated Legendre functions (ALFs)
+- $`\tilde{P}_n^m(x)`$：Normalized Associated Legendre functions (nALFs)
+- $`\overline{P}_n^m(x)`$：Fully Normalized Associated Legendre functions (fnALFs)
+
+## 🟥 ルジャンドル陪関数：Associated Legendre functions
 [ルジャンドル陪関数](https://ja.wikipedia.org/wiki/%E3%83%AB%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%89%E3%83%AB%E5%A4%9A%E9%A0%85%E5%BC%8F#%E3%83%AB%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%89%E3%83%AB%E9%99%AA%E5%A4%9A%E9%A0%85%E5%BC%8F)([Associated Legendre polynomials](https://en.wikipedia.org/wiki/Associated_Legendre_polynomials))は、ルジャンドル陪微分方程式([Associated Legendre Differential Equation](https://mathworld.wolfram.com/AssociatedLegendreDifferentialEquation.html)):
 ```math
 \left(1-x^2\right)\,\frac{d^2}{dx^2}\,P_n^m(x)-2x\,\frac{d}{dx}\,P_n^m(x)+\biggl[n
@@ -123,7 +146,7 @@ end;
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UD.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UD_ON.png) | $`P_n^m(x) = \dfrac{1}{(2n+1)\,x}\Bigl\lbrace (n+m)\,P_{n-1}^m(x)+(n-m+1)\,P_{n+1}^m(x)\Bigr\rbrace`$ |
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UU.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UU_ON.png) | $`P_n^m(x) = \dfrac{1}{n+m+1}\Bigl\lbrace (2n+3)\,x\,P_{n+1}^m(x)-(n-m+2)\,P_{n+2}^m(x)\Bigr\rbrace`$ |
 
-## 🟥 正規化ルジャンドル関数：Normalized Associated Legendre polynomials
+## 🟥 正規化ルジャンドル関数：Normalized Associated Legendre functions
 ```math
 \begin{gathered}
 \tilde{P}_n^m(x) = \sqrt{\dfrac{2n+1}{2}\,\dfrac{(n-m)!}{(n+m)!}}\,P_n^m(x)\\
@@ -196,7 +219,7 @@ begin
 end;
 ```
 
-## 🟥 完全正規化ルジャンドル関数：Fully Normalized Associated Legendre polynomials
+## 🟥 完全正規化ルジャンドル関数：Fully Normalized Associated Legendre functions
 
 ```math
 \begin{gathered}
