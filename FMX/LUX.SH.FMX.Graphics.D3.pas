@@ -37,6 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _SPHarm   :TdSPHarmonics;
        _N        :Integer;
        _M        :Integer;
+       _Radius   :Single;
        ///// A C C E S S O R
        procedure SetDivX( const DivX_:Integer );
        procedure SetDivY( const DivY_:Integer );
@@ -46,6 +47,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetN( const N_:Integer );
        function GetM :Integer;
        procedure SetM( const M_:Integer );
+       function GetRadius :Single;
+       procedure SetRadius( const Radius_:Single );
        ///// M E T H O D
        procedure Render; override;
        function MeshVertexs( const T_:TdDouble2D ) :TdDouble3D;
@@ -61,6 +64,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property SPHarm   :TdSPHarmonics        read GetSPHarm   write SetSPHarm  ;
        property N        :Integer              read GetN        write SetN       ;
        property M        :Integer              read GetM        write SetM       ;
+       property Radius   :Single               read GetRadius   write SetRadius  ;
      end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
@@ -136,6 +140,8 @@ end;
 
 procedure TSPHarmonics3D.SetN( const N_:Integer );
 begin
+     if _N = N_ then Exit;
+
      _N := N_;
 
      upGeometry := True;
@@ -151,10 +157,30 @@ end;
 
 procedure TSPHarmonics3D.SetM( const M_:Integer );
 begin
+     if _M = M_ then Exit;
+
      _M := M_;
 
      upGeometry := True;
      upTopology := True;
+
+     Repaint;
+end;
+
+//------------------------------------------------------------------------------
+
+function TSPHarmonics3D.GetRadius :Single;
+begin
+     Result := _Radius;
+end;
+
+procedure TSPHarmonics3D.SetRadius( const Radius_:Single );
+begin
+     if _Radius = Radius_ then Exit;
+
+     _Radius := Radius_;
+
+     upGeometry := True;
 
      Repaint;
 end;
@@ -178,12 +204,12 @@ begin
 
      H := SPHarm[ N, M ];
 
-     L := LUX.D1.Diff.Abs( H.R ) * 10;
+     L := Abs( H.R ) * Radius;
 
-     Result.Y := L * LUX.D1.Diff.Cos( T_.Y );
-            R := L * LUX.D1.Diff.Sin( T_.Y );
-     Result.X := +R * LUX.D1.Diff.Cos( T_.X );
-     Result.Z := -R * LUX.D1.Diff.Sin( T_.X );
+     Result.Y :=  L * Cos( T_.Y );
+            R :=  L * Sin( T_.Y );
+     Result.X := +R * Cos( T_.X );
+     Result.Z := -R * Sin( T_.X );
 end;
 
 procedure TSPHarmonics3D.MakeGeometry;
@@ -213,7 +239,7 @@ begin
                I := XYtoI( X, Y );
 
                Vertices [ I ] := P;
-               Normals  [ I ] := P.Unitor;
+               Normals  [ I ] := TDouble3D.Create( 0, +1, 0 );
                TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
           end;
 
@@ -257,7 +283,7 @@ begin
                I := XYtoI( X, Y );
 
                Vertices [ I ] := P;
-               Normals  [ I ] := P.Unitor;
+               Normals  [ I ] := TDouble3D.Create( 0, -1, 0 );
                TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
           end;
      end;
@@ -311,10 +337,11 @@ begin
      _Material := TLightMaterialSource.Create( Self );
      _Material.Specular := TAlphaColors.Null;
 
-     DivX := 360;
-     DivY := 180;
-     N    := 0;
-     M    := 0;
+     DivX   := 360;
+     DivY   := 180;
+     N      := 0;
+     M      := 0;
+     Radius := 10;
 end;
 
 destructor TSPHarmonics3D.Destroy;
