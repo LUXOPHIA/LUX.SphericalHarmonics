@@ -36,14 +36,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetAngleY :TdDouble;
        procedure SetAngleY( const AngleY_:TdDouble );
        function GetSHs( const N_,M_:Integer ) :TdDoubleC; virtual; abstract;
+       function GetRSHs( const N_,M_:Integer ) :TdDouble; virtual; abstract;
      public
        constructor Create( const DegN_:Integer ); overload;
        ///// P R O P E R T Y
-       property dALFs                      :TdALFs    read GetALFs   write SetALFs  ;
-       property DegN                       :Integer   read GetDegN   write SetDegN  ;
-       property AngleX                     :TdDouble  read GetAngleX write SetAngleX;
-       property AngleY                     :TdDouble  read GetAngleY write SetAngleY;
-       property SHs[ const N_,M_:Integer ] :TdDoubleC read GetSHs                   ; default;
+       property dALFs                       :TdALFs    read GetALFs   write SetALFs  ;
+       property DegN                        :Integer   read GetDegN   write SetDegN  ;
+       property AngleX                      :TdDouble  read GetAngleX write SetAngleX;
+       property AngleY                      :TdDouble  read GetAngleY write SetAngleY;
+       property SHs[ const N_,M_:Integer ]  :TdDoubleC read GetSHs                   ; default;
+       property RSHs[ const N_,M_:Integer ] :TdDouble  read GetRSHs                  ;
        ///// E V E N T
        property OnChange :TDelegates read _OnChange;
      end;
@@ -55,6 +57,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        ///// A C C E S S O R
        function GetSHs( const N_,M_:Integer ) :TdDoubleC; override;
+       function GetRSHs( const N_,M_:Integer ) :TdDouble; override;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
@@ -155,14 +158,38 @@ end;
 
 function TdSPHarmonics<TdNALFs_>.GetSHs( const N_,M_:Integer ) :TdDoubleC;
 var
+   M :Integer;
    A, C, S :TdDouble;
 begin
-     A := _dALFs[ N_, M_ ] / Sqrt( Pi2 );
+     M := Abs( M_ );
 
-     SinCos( M_ * _AngleX, S, C );
+     A := _dALFs[ N_, M ] / Sqrt( Pi2 );
 
-     Result.R := A * C;
-     Result.I := A * S;
+     SinCos( M * _AngleX, S, C );
+
+     if M_ < 0 then
+     begin
+          Result.R := A * S;
+          Result.I := A * C;
+     end
+     else
+     begin
+          Result.R := A * C;
+          Result.I := A * S;
+     end;
+end;
+
+function TdSPHarmonics<TdNALFs_>.GetRSHs( const N_,M_:Integer ) :TdDouble;
+var
+   M :Integer;
+   A :TdDouble;
+begin
+     M := Abs( M_ );
+
+     A := _dALFs[ N_, M ] / Sqrt( Pi2 );
+
+     if M_ < 0 then Result := A * Sin( M * _AngleX )
+               else Result := A * Cos( M * _AngleX );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
