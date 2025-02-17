@@ -51,7 +51,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetRadius( const Radius_:Single );
        ///// M E T H O D
        procedure Render; override;
-       function MeshVertexs( const T_:TdDouble2D ) :TdDouble3D;
+       function AngToPos( const T_:TdDouble2D ) :TdDouble3D;
        procedure MakeGeometry; override;
        procedure MakeTopology; override;
      public
@@ -182,7 +182,7 @@ begin
      _Polygons.Render( Context, TMaterialSource.ValidMaterial( _Material ), AbsoluteOpacity );
 end;
 
-function TSPHarmonics3D.MeshVertexs( const T_:TdDouble2D ) :TdDouble3D;
+function TSPHarmonics3D.AngToPos( const T_:TdDouble2D ) :TdDouble3D;
 var
    H :TdDoubleC;
    L, R :TdDouble;
@@ -192,7 +192,7 @@ begin
 
      H := SPHarm[ N, M ];
 
-     L := Abso( H.R ) * Radius;
+     L := Abso( H.R ) * Sqrt(Pi4) * Radius;
 
      Result.Y :=  L * Cos( T_.Y );
             R :=  L * Sin( T_.Y );
@@ -222,7 +222,7 @@ begin
           begin
                T.X := Pi2 / _DivX * X;
 
-               P := MeshVertexs( T ).o;
+               P := AngToPos( T ).o;
 
                I := XYtoI( X, Y );
 
@@ -241,15 +241,15 @@ begin
 
                     T.d := 0;
 
-                    P := MeshVertexs( T ).o;
+                    P := AngToPos( T ).o;
 
                     T.d := TDouble2D.Create( Pi2 / _DivX, 0 );
 
-                    VX := MeshVertexs( T ).d;
+                    VX := AngToPos( T ).d;
 
                     T.d := TDouble2D.Create( 0, Pi / _DivY );
 
-                    VY := MeshVertexs( T ).d;
+                    VY := AngToPos( T ).d;
 
                     NV := CrossProduct( VY, VX ).Unitor;
 
@@ -266,7 +266,7 @@ begin
           begin
                T.X := Pi2 / _DivX * X;
 
-               P := MeshVertexs( T ).o;
+               P := AngToPos( T ).o;
 
                I := XYtoI( X, Y );
 
@@ -329,7 +329,7 @@ begin
      DivY   := 180;
      N      := 0;
      M      := 0;
-     Radius := 10;
+     Radius := 5;
 end;
 
 destructor TSPHarmonics3D.Destroy;
