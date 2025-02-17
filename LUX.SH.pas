@@ -6,7 +6,7 @@ uses LUX,
      LUX.Complex,
      LUX.ALFs,
      LUX.NALFs,
-     LUX.NALFs.Term4;
+     LUX.FNALFs;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
@@ -63,9 +63,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSPHarmonicsT4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TRSPHarmonics<TdFNALFs_>
 
-     TSPHarmonicsT4 = TSPHarmonics<TNALFsTerm4>;
+     TRSPHarmonics<TdFNALFs_:TFNALFs,constructor> = class( TSPHarmonics )
+     private
+     protected
+       ///// A C C E S S O R
+       function GetSHs( const N_,M_:Integer ) :TDoubleC; override;
+       function GetRSHs( const N_,M_:Integer ) :Double; override;
+     public
+       constructor Create; overload;
+       constructor Create( const DegN_:Integer ); overload;
+       destructor Destroy; override;
+     end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
@@ -206,12 +216,75 @@ constructor TSPHarmonics<TNALFs_>.Create( const DegN_:Integer );
 begin
      _ALFs := TNALFs_.Create;
 
-     inherited Create;
-
-     _ALFs.DegN := DegN_;
+     inherited;
 end;
 
 destructor TSPHarmonics<TNALFs_>.Destroy;
+begin
+     _ALFs.Free;
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TRSPHarmonics<TdFNALFs_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+function TRSPHarmonics<TdFNALFs_>.GetSHs( const N_,M_:Integer ) :TDoubleC;
+var
+   M :Integer;
+   A, C, S :Double;
+begin
+     M := Abs( M_ );
+
+     A := _ALFs[ N_, M ] / Sqrt( Pi4 );
+
+     SinCos( M * _AngleX, S, C );
+
+     if M_ < 0 then
+     begin
+          Result.R := A * S;
+          Result.I := A * C;
+     end
+     else
+     begin
+          Result.R := A * C;
+          Result.I := A * S;
+     end;
+end;
+
+function TRSPHarmonics<TdFNALFs_>.GetRSHs( const N_,M_:Integer ) :Double;
+var
+   M :Integer;
+   A :Double;
+begin
+     M := Abs( M_ );
+
+     A := _ALFs[ N_, M ] / Sqrt( Pi4 );
+
+     if M_ < 0 then Result := A * Sin( M * _AngleX )
+               else Result := A * Cos( M * _AngleX );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TRSPHarmonics<TdFNALFs_>.Create;
+begin
+     _ALFs := TdFNALFs_.Create;
+
+     inherited;
+end;
+
+constructor TRSPHarmonics<TdFNALFs_>.Create( const DegN_:Integer );
+begin
+     _ALFs := TdFNALFs_.Create;
+
+     inherited;
+end;
+
+destructor TRSPHarmonics<TdFNALFs_>.Destroy;
 begin
      _ALFs.Free;
 
