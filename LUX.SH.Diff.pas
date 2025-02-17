@@ -6,7 +6,8 @@ uses LUX,
      LUX.D1.Diff,
      LUX.Complex.Diff,
      LUX.ALFs.Diff,
-     LUX.NALFs.Diff;
+     LUX.NALFs.Diff,
+     LUX.NALFs.Term4.Diff;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
@@ -59,6 +60,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
      end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSPHarmonicsT4
+
+     TdSPHarmonicsT4 = TdSPHarmonics<TdNALFsTerm4>;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
