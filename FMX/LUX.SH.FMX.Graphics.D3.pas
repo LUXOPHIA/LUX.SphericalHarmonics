@@ -190,9 +190,12 @@ begin
      SPHarm.AngleY := T_.Y;
      SPHarm.AngleX := T_.X;
 
-     H := SPHarm[ N, M ];
+     H := SPHarm[ N, Abs( M ) ];
 
-     L := Abso( H.R ) * Sqrt(Pi4) * Radius;
+     if M < 0 then L := Abso( H.I )
+              else L := Abso( H.R );
+
+     L := L * Sqrt(Pi4) * Radius;
 
      Result.Y :=  L * Cos( T_.Y );
             R :=  L * Sin( T_.Y );
@@ -329,7 +332,7 @@ begin
      DivY   := 180;
      N      := 0;
      M      := 0;
-     Radius := 5;
+     Radius := 4;
 end;
 
 destructor TSPHarmonics3D.Destroy;
