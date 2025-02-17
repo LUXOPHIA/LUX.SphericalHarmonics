@@ -8,12 +8,9 @@ Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\lef
 \overline{Y}_n^m(\theta,\phi)
 &= \dfrac{1}{\sqrt{4\pi}}\,
 \begin{cases}
-\overline{P}_n^0\!\left(\cos\theta\right), 
-& m=0,\\[1.2em]
-\overline{P}_n^m\!\left(\cos\theta\right)\,\cos\left(m\,\phi\right), 
-& m>0,\\[1.2em]
-\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right),
-& m<0,
+\overline{P}_n^0\!\left(\cos\theta\right) & m = 0\\
+\overline{P}_n^m\!\left(\cos\theta\right)\,\cos\left(m\,\phi\right) & m > 0\\
+\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right) & m < 0
 \end{cases}
 \end{aligned}
 ```
@@ -205,7 +202,7 @@ end;
 //  2 [P20]--P21--[P22]
 //  N
 
-function TNALFsEnomoto.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
+function TNALFsTerm4.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
 var
    A00, A02, A20 :Double;
 begin
