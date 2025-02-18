@@ -51,19 +51,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCacheALFs
 
-     TdMapALFs = class( TdCoreALFs )
+     TdCacheALFs = class( TdCoreALFs )
      private
      protected
-       _Ps :TArray2<TdDouble>;  upALPs:Boolean;
+       _Ps :TArray2<TdDouble>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:TdDouble ); override;
-       function GetPs( const N_,M_:Integer ) :TdDouble; override;
-       ///// M E T H O D
-       procedure InitALPs;
-       procedure CalcALPs; virtual; abstract;
      public
      end;
 
@@ -155,7 +150,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCacheALFs
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -163,42 +158,12 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TdMapALFs.SetDegN( const DegN_:Integer );
-begin
-     inherited;
-
-     InitALPs;  upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TdMapALFs.SetX( const X_:TdDouble );
-begin
-     inherited;
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-function TdMapALFs.GetPs( const N_,M_:Integer ) :TdDouble;
-begin
-     if upALPs then
-     begin
-          upALPs := False;
-
-          CalcALPs;
-     end;
-
-     Result := _Ps[ N_, M_ ];
-end;
-
-//////////////////////////////////////////////////////////////////// M E T H O D
-
-procedure TdMapALFs.InitALPs;
+procedure TdCacheALFs.SetDegN( const DegN_:Integer );
 var
    N :Integer;
 begin
+     inherited;
+
      SetLength( _Ps, DegN+1 );
      for N := 0 to DegN do SetLength( _Ps[ N ], N+1 );
 

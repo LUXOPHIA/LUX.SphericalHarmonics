@@ -14,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdALFsTerm3
 
-     TdALFsTerm3 = class( TdMapALFs )
+     TdALFsTerm3 = class( TdCacheALFs )
      private
      protected
        _S     :TdDouble;

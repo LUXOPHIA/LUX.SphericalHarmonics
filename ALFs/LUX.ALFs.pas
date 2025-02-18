@@ -50,19 +50,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheALFs
 
-     TMapALFs = class( TCoreALFs )
+     TCacheALFs = class( TCoreALFs )
      private
      protected
-       _Ps :TArray2<Double>;  upALPs:Boolean;
+       _Ps :TArray2<Double>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:Double ); override;
-       function GetPs( const N_,M_:Integer ) :Double; override;
-       ///// M E T H O D
-       procedure InitALPs;
-       procedure CalcALPs; virtual; abstract;
      public
      end;
 
@@ -154,7 +149,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheALFs
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -162,42 +157,12 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TMapALFs.SetDegN( const DegN_:Integer );
-begin
-     inherited;
-
-     InitALPs;  upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TMapALFs.SetX( const X_:Double );
-begin
-     inherited;
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-function TMapALFs.GetPs( const N_,M_:Integer ) :Double;
-begin
-     if upALPs then
-     begin
-          upALPs := False;
-
-          CalcALPs;
-     end;
-
-     Result := _Ps[ N_, M_ ];
-end;
-
-//////////////////////////////////////////////////////////////////// M E T H O D
-
-procedure TMapALFs.InitALPs;
+procedure TCacheALFs.SetDegN( const DegN_:Integer );
 var
    N :Integer;
 begin
+     inherited;
+
      SetLength( _Ps, DegN+1 );
      for N := 0 to DegN do SetLength( _Ps[ N ], N+1 );
 
