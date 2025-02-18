@@ -16,8 +16,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFsTerm4 = class( TCacheNALFs )
      private
      protected
+       upALPs:Boolean;
+       ///// A C C E S S O R
+       procedure SetDegN( const DegN_:Integer ); override;
+       procedure SetX( const X_:Double ); override;
+       function GetPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
-       procedure CalcALPs; override;
+       procedure CalcALPs;
        function PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
        function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:Double ) :Double;
      public
@@ -36,6 +41,38 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+procedure TNALFsTerm4.SetDegN( const DegN_:Integer );
+begin
+     inherited;
+
+     upALPs := True;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TNALFsTerm4.SetX( const X_:Double );
+begin
+     inherited;
+
+     upALPs := True;
+end;
+
+//------------------------------------------------------------------------------
+
+function TNALFsTerm4.GetPs( const N_,M_:Integer ) :Double;
+begin
+     if upALPs then
+     begin
+          upALPs := False;
+
+          CalcALPs;
+     end;
+
+     Result := _NPs[ N_, M_ ];
+end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 

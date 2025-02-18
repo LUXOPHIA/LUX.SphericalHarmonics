@@ -39,13 +39,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TCacheNALFs = class( TCoreNALFs )
      private
      protected
-       _NPs :TArray2<Double>;  upALPs:Boolean;
+       _NPs :TArray2<Double>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:Double ); override;
-       function GetPs( const N_,M_:Integer ) :Double; override;
-       ///// M E T H O D
-       procedure CalcALPs; virtual; abstract;
      public
      end;
 
@@ -143,31 +139,6 @@ begin
      for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
 
      _NPs[ 0, 0 ] := 1/Sqrt(2);
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TCacheNALFs.SetX( const X_:Double );
-begin
-     inherited;
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-function TCacheNALFs.GetPs( const N_,M_:Integer ) :Double;
-begin
-     if upALPs then
-     begin
-          upALPs := False;
-
-          CalcALPs;
-     end;
-
-     Result := _NPs[ N_, M_ ];
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs<TALFs_>

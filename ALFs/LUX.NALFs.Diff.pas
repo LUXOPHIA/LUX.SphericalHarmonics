@@ -40,13 +40,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdCacheNALFs = class( TdCoreNALFs )
      private
      protected
-       _NPs :TArray2<TdDouble>;  upALPs:Boolean;
+       _NPs :TArray2<TdDouble>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:TdDouble ); override;
-       function GetPs( const N_,M_:Integer ) :TdDouble; override;
-       ///// M E T H O D
-       procedure CalcALPs; virtual; abstract;
      public
      end;
 
@@ -144,31 +140,6 @@ begin
      for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
 
      _NPs[ 0, 0 ] := 1/Sqrt(2);
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TdCacheNALFs.SetX( const X_:TdDouble );
-begin
-     inherited;
-
-     upALPs := True;
-end;
-
-//------------------------------------------------------------------------------
-
-function TdCacheNALFs.GetPs( const N_,M_:Integer ) :TdDouble;
-begin
-     if upALPs then
-     begin
-          upALPs := False;
-
-          CalcALPs;
-     end;
-
-     Result := _NPs[ N_, M_ ];
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdALFsToNALFs<TdALFs_>
