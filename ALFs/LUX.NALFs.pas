@@ -16,11 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFs = class( TALFs )
      private
      protected
-       ///// A C C E S S O R
-       function GetNFs( const N_,M_:Integer ) :Double; virtual;
      public
-       ///// P R O P E R T Y
-       property NFs[ const N_,M_:Integer ] :Double read GetNFs;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
@@ -43,7 +39,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs<TALFs_>
 
      TALFsToNALFs<TALFs_:TALFs,constructor> = class( TNALFs )
      private
@@ -55,16 +51,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure SetX( const X_:Double ); override;
-       function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
+       function GetNFs( const N_,M_:Integer ) :Double; virtual;
        ///// M E T H O D
+       function NormFactor( const N_,M_:Integer ) :Double;
        procedure InitNFs;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
        ///// P R O P E R T Y
-       property ALFs :TALFs_ read _ALFs;
+       property ALFs                       :TALFs_ read   _ALFs;
+       property NFs[ const N_,M_:Integer ] :Double read GetNFs ;
      end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
@@ -80,17 +78,6 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-//////////////////////////////////////////////////////////////// A C C E S S O R
-
-function TNALFs.GetNFs( const N_,M_:Integer ) :Double;
-var
-   I :Integer;
-begin
-     Result := Sqrt( ( 2 * N_ + 1 ) / 2 );
-
-     for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
-end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -152,7 +139,7 @@ begin
      for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs<TALFs_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -188,6 +175,13 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TALFsToNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
+begin
+     Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
+end;
+
+//------------------------------------------------------------------------------
+
 function TALFsToNALFs<TALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
      if upNFs then
@@ -200,14 +194,16 @@ begin
      Result := _NFs[ N_, M_ ];
 end;
 
-//------------------------------------------------------------------------------
-
-function TALFsToNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
-end;
-
 //////////////////////////////////////////////////////////////////// M E T H O D
+
+function TALFsToNALFs<TALFs_>.NormFactor( const N_,M_:Integer ) :Double;
+var
+   I :Integer;
+begin
+     Result := Sqrt( ( 2 * N_ + 1 ) / 2 );
+
+     for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
+end;
 
 procedure TALFsToNALFs<TALFs_>.InitNFs;
 var
@@ -218,7 +214,7 @@ begin
      begin
           SetLength( _NFs[ N ], N+1 );
 
-          for M := 0 to N do _NFs[ N, M ] := inherited GetNFs( N, M );
+          for M := 0 to N do _NFs[ N, M ] := NormFactor( N, M );
      end;
 end;
 
