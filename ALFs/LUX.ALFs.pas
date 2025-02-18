@@ -200,6 +200,8 @@ var
 begin
      SetLength( _Ps, DegN+1 );
      for N := 0 to DegN do SetLength( _Ps[ N ], N+1 );
+
+     _Ps[ 0, 0 ] := 1;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
