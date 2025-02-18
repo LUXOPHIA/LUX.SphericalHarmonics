@@ -13,13 +13,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsN8
 
-     TALFsN8 = class( TMapALFs )
+     TALFsN8 = class( TCoreALFs )
      private
      protected
        X2 :Double;
        S  :Double;
        ///// M E T H O D
-       procedure CalcALPs; override;
+       function GetPs( const N_,M_:Integer ) :Double; override;
      public
        ///// M E T H O D
        // n = 0
@@ -96,79 +96,85 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
-procedure TALFsN8.CalcALPs;
+function TALFsN8.GetPs( const N_,M_:Integer ) :Double;
 begin
      X2 := Pow2( X );  S := Sqrt( 1 - X2 );
 
-     _Ps[ 0, 0 ] := P00;
-
-     if DegN < 1 then Exit;
-
-     _Ps[ 1, 0 ] := P10;
-     _Ps[ 1, 1 ] := P11;
-
-     if DegN < 2 then Exit;
-
-     _Ps[ 2, 0 ] := P20;
-     _Ps[ 2, 1 ] := P21;
-     _Ps[ 2, 2 ] := P22;
-
-     if DegN < 3 then Exit;
-
-     _Ps[ 3, 0 ] := P30;
-     _Ps[ 3, 1 ] := P31;
-     _Ps[ 3, 2 ] := P32;
-     _Ps[ 3, 3 ] := P33;
-
-     if DegN < 4 then Exit;
-
-     _Ps[ 4, 0 ] := P40;
-     _Ps[ 4, 1 ] := P41;
-     _Ps[ 4, 2 ] := P42;
-     _Ps[ 4, 3 ] := P43;
-     _Ps[ 4, 4 ] := P44;
-
-     if DegN < 5 then Exit;
-
-     _Ps[ 5, 0 ] := P50;
-     _Ps[ 5, 1 ] := P51;
-     _Ps[ 5, 2 ] := P52;
-     _Ps[ 5, 3 ] := P53;
-     _Ps[ 5, 4 ] := P54;
-     _Ps[ 5, 5 ] := P55;
-
-     if DegN < 6 then Exit;
-
-     _Ps[ 6, 0 ] := P60;
-     _Ps[ 6, 1 ] := P61;
-     _Ps[ 6, 2 ] := P62;
-     _Ps[ 6, 3 ] := P63;
-     _Ps[ 6, 4 ] := P64;
-     _Ps[ 6, 5 ] := P65;
-     _Ps[ 6, 6 ] := P66;
-
-     if DegN < 7 then Exit;
-
-     _Ps[ 7, 0 ] := P70;
-     _Ps[ 7, 1 ] := P71;
-     _Ps[ 7, 2 ] := P72;
-     _Ps[ 7, 3 ] := P73;
-     _Ps[ 7, 4 ] := P74;
-     _Ps[ 7, 5 ] := P75;
-     _Ps[ 7, 6 ] := P76;
-     _Ps[ 7, 7 ] := P77;
-
-     if DegN < 8 then Exit;
-
-     _Ps[ 8, 0 ] := P80;
-     _Ps[ 8, 1 ] := P81;
-     _Ps[ 8, 2 ] := P82;
-     _Ps[ 8, 3 ] := P83;
-     _Ps[ 8, 4 ] := P84;
-     _Ps[ 8, 5 ] := P85;
-     _Ps[ 8, 6 ] := P86;
-     _Ps[ 8, 7 ] := P87;
-     _Ps[ 8, 8 ] := P88;
+     case N_ of
+       0: case M_ of
+            0: Result := P00;
+          else Result := 0;
+          end;
+       1: case M_ of
+            0: Result := P10;
+            1: Result := P11;
+          else Result := 0;
+          end;
+       2: case M_ of
+            0: Result := P20;
+            1: Result := P21;
+            2: Result := P22;
+          else Result := 0;
+          end;
+       3: case M_ of
+            0: Result := P30;
+            1: Result := P31;
+            2: Result := P32;
+            3: Result := P33;
+          else Result := 0;
+          end;
+       4: case M_ of
+            0: Result := P40;
+            1: Result := P41;
+            2: Result := P42;
+            3: Result := P43;
+            4: Result := P44;
+          else Result := 0;
+          end;
+       5: case M_ of
+            0: Result := P50;
+            1: Result := P51;
+            2: Result := P52;
+            3: Result := P53;
+            4: Result := P54;
+            5: Result := P55;
+          else Result := 0;
+          end;
+       6: case M_ of
+            0: Result := P60;
+            1: Result := P61;
+            2: Result := P62;
+            3: Result := P63;
+            4: Result := P64;
+            5: Result := P65;
+            6: Result := P66;
+          else Result := 0;
+          end;
+       7: case M_ of
+            0: Result := P70;
+            1: Result := P71;
+            2: Result := P72;
+            3: Result := P73;
+            4: Result := P74;
+            5: Result := P75;
+            6: Result := P76;
+            7: Result := P77;
+          else Result := 0;
+          end;
+       8: case M_ of
+            0: Result := P80;
+            1: Result := P81;
+            2: Result := P82;
+            3: Result := P83;
+            4: Result := P84;
+            5: Result := P85;
+            6: Result := P86;
+            7: Result := P87;
+            8: Result := P88;
+          else Result := 0;
+          end;
+     else Result := 0;
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
