@@ -138,6 +138,8 @@ var
 begin
      SetLength( _NPs, DegN+1 );
      for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
+
+     _NPs[ 0, 0 ] := 1/Sqrt(2);
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdALFsToNALFs<TdALFs_>
