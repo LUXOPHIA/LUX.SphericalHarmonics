@@ -6,15 +6,11 @@ uses System.SysUtils, System.RTLConsts, System.Classes,
      System.Types, System.UITypes, System.Math.Vectors,
      FMX.Types3D, FMX.Controls3D, FMX.MaterialSources,
      LUX,
-     LUX.D2,
-     LUX.D3,
-     LUX.D4x4,
      LUX.D1.Diff,
-     LUX.D2.Diff,
-     LUX.D3.Diff,
-     LUX.Complex.Diff,
-     LUX.FMX.Graphics.D3,
-     LUX.FMX.Graphics.D3.Shaper,
+     LUX.D2, LUX.D2.Diff,
+     LUX.D3, LUX.D3.Diff,
+     LUX.D4x4, LUX.D4x4.Diff,
+     LUX.FMX.Graphics.D3, LUX.FMX.Graphics.D3.Shaper,
      LUX.SH.Diff;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
@@ -186,19 +182,19 @@ begin
      SPHarm.AngleY := T_.Y;
      SPHarm.AngleX := T_.X;
 
-     L := Abso( SPHarm.RSHs[ N, M ] ) * Sqrt(Pi4) * Radius;
+     L := Abso( SPHarm.RSHs[ N, M ] * Sqrt(Pi4) ) * Radius;
 
-     Result.Y :=  L * Cos( T_.Y );
-            R :=  L * Sin( T_.Y );
-     Result.X := +R * Cos( T_.X );
-     Result.Z := -R * Sin( T_.X );
+     Result.Y := L * Cos( T_.Y );
+            R := L * Sin( T_.Y );
+     Result.X := R * Cos( T_.X );
+     Result.Z := R * Sin( T_.X );
 end;
 
 procedure TSPHarmonics3D.MakeGeometry;
 var
    X, Y, I :Integer;
-   T :TdDouble2D;
-   P, VX, VY, NV :TDouble3D;
+   T :TDouble2D;
+   M :TDoubleM4;
 begin
      SPHarm.DegN := N;
 
@@ -211,62 +207,22 @@ begin
 
           Length := ( _DivX + 1 ) * ( _DivY + 1 );
 
-          Y := 0;  T.Y := 0;
-          for X := 0 to _DivX do
+          for Y := 0 to _DivY do
           begin
-               T.X := Pi2 / _DivX * X;
-
-               P := AngToPos( T ).o;
-
-               I := XYtoI( X, Y );
-
-               Vertices [ I ] := P;
-               Normals  [ I ] := TDouble3D.Create( 0, +1, 0 );
-               TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
-          end;
-
-          for Y := 1 to _DivY-1 do
-          begin
-               T.Y.o := Pi / _DivY * Y;
+               T.Y := ( Pi-DOUBLE_EPS3 - DOUBLE_EPS3 ) * Y / _DivY + DOUBLE_EPS3;
 
                for X := 0 to _DivX do
                begin
-                    T.X.o := Pi2 / _DivX * X;
+                    T.X := Pi2 * X / _DivX;
 
-                    T.d := 0;
-
-                    P := AngToPos( T ).o;
-
-                    T.d := TDouble2D.Create( Pi2 / _DivX, 0 );
-
-                    VX := AngToPos( T ).d;
-
-                    T.d := TDouble2D.Create( 0, Pi / _DivY );
-
-                    VY := AngToPos( T ).d;
-
-                    NV := CrossProduct( VY, VX ).Unitor;
+                    M := TexToMatrix( T, AngToPos );
 
                     I := XYtoI( X, Y );
 
-                    Vertices [ I ] := P;
-                    Normals  [ I ] := NV;
+                    Vertices [ I ] := M.AxisP;
+                    Normals  [ I ] := M.AxisZ;
                     TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
                end;
-          end;
-
-          Y := _DivY;  T.Y := Pi;
-          for X := 0 to _DivX do
-          begin
-               T.X := Pi2 / _DivX * X;
-
-               P := AngToPos( T ).o;
-
-               I := XYtoI( X, Y );
-
-               Vertices [ I ] := P;
-               Normals  [ I ] := TDouble3D.Create( 0, -1, 0 );
-               TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
           end;
      end;
 end;
@@ -297,11 +253,11 @@ begin
                     //  Y1 +------+
 
                     Indices[ I ] := XYtoI( X  , Y   );  Inc( I );
-                    Indices[ I ] := XYtoI( X+1, Y   );  Inc( I );
+                    Indices[ I ] := XYtoI( X  , Y+1 );  Inc( I );
                     Indices[ I ] := XYtoI( X+1, Y+1 );  Inc( I );
 
                     Indices[ I ] := XYtoI( X+1, Y+1 );  Inc( I );
-                    Indices[ I ] := XYtoI( X  , Y+1 );  Inc( I );
+                    Indices[ I ] := XYtoI( X+1, Y   );  Inc( I );
                     Indices[ I ] := XYtoI( X  , Y   );  Inc( I );
                end;
           end;
