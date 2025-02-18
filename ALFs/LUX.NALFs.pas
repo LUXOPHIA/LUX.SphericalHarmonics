@@ -19,22 +19,32 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCoreNALFs
 
-     TMapNALFs = class( TNALFs )
+     TCoreNALFs = class( TNALFs )
      private
      protected
        _DegN :Integer;
        _X    :Double;
-       _NPs  :TArray2<Double>;  upALPs:Boolean;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure SetX( const X_:Double ); override;
+     public
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheNALFs
+
+     TCacheNALFs = class( TCoreNALFs )
+     private
+     protected
+       _NPs :TArray2<Double>;  upALPs:Boolean;
+       ///// A C C E S S O R
+       procedure SetDegN( const DegN_:Integer ); override;
+       procedure SetX( const X_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
-       procedure InitALPs;
        procedure CalcALPs; virtual; abstract;
      public
      end;
@@ -81,7 +91,7 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCoreNALFs
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -89,35 +99,66 @@ implementation //###############################################################
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-function TMapNALFs.GetDegN :Integer;
+function TCoreNALFs.GetDegN :Integer;
 begin
      Result := _DegN;
 end;
 
-procedure TMapNALFs.SetDegN( const DegN_:Integer );
+procedure TCoreNALFs.SetDegN( const DegN_:Integer );
 begin
      inherited;
 
-     _DegN := DegN_;  InitALPs;  upALPs := True;
+     _DegN := DegN_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TMapNALFs.GetX :Double;
+function TCoreNALFs.GetX :Double;
 begin
      Result := _X;
 end;
 
-procedure TMapNALFs.SetX( const X_:Double );
+procedure TCoreNALFs.SetX( const X_:Double );
 begin
      inherited;
 
-     _X := X_;  upALPs := True;
+     _X := X_;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheNALFs
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+procedure TCacheNALFs.SetDegN( const DegN_:Integer );
+var
+   N :Integer;
+begin
+     inherited;
+
+     SetLength( _NPs, DegN+1 );
+     for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
+
+     _NPs[ 0, 0 ] := 1/Sqrt(2);
+
+     upALPs := True;
 end;
 
 //------------------------------------------------------------------------------
 
-function TMapNALFs.GetPs( const N_,M_:Integer ) :Double;
+procedure TCacheNALFs.SetX( const X_:Double );
+begin
+     inherited;
+
+     upALPs := True;
+end;
+
+//------------------------------------------------------------------------------
+
+function TCacheNALFs.GetPs( const N_,M_:Integer ) :Double;
 begin
      if upALPs then
      begin
@@ -127,18 +168,6 @@ begin
      end;
 
      Result := _NPs[ N_, M_ ];
-end;
-
-//////////////////////////////////////////////////////////////////// M E T H O D
-
-procedure TMapNALFs.InitALPs;
-var
-   N :Integer;
-begin
-     SetLength( _NPs, DegN+1 );
-     for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
-
-     _NPs[ 0, 0 ] := 1/Sqrt(2);
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsToNALFs<TALFs_>

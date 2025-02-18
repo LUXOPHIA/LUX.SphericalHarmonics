@@ -20,22 +20,32 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapNALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCoreNALFs
 
-     TdMapNALFs = class( TdNALFs )
+     TdCoreNALFs = class( TdNALFs )
      private
      protected
        _DegN :Integer;
        _X    :TdDouble;
-       _NPs  :TArray2<TdDouble>;  upALPs:Boolean;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
        procedure SetX( const X_:TdDouble ); override;
+     public
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCacheNALFs
+
+     TdCacheNALFs = class( TdCoreNALFs )
+     private
+     protected
+       _NPs :TArray2<TdDouble>;  upALPs:Boolean;
+       ///// A C C E S S O R
+       procedure SetDegN( const DegN_:Integer ); override;
+       procedure SetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
-       procedure InitALPs;
        procedure CalcALPs; virtual; abstract;
      public
      end;
@@ -82,7 +92,7 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapNALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCoreNALFs
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -90,35 +100,66 @@ implementation //###############################################################
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-function TdMapNALFs.GetDegN :Integer;
+function TdCoreNALFs.GetDegN :Integer;
 begin
      Result := _DegN;
 end;
 
-procedure TdMapNALFs.SetDegN( const DegN_:Integer );
+procedure TdCoreNALFs.SetDegN( const DegN_:Integer );
 begin
      inherited;
 
-     _DegN := DegN_;  InitALPs;  upALPs := True;
+     _DegN := DegN_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TdMapNALFs.GetX :TdDouble;
+function TdCoreNALFs.GetX :TdDouble;
 begin
      Result := _X;
 end;
 
-procedure TdMapNALFs.SetX( const X_:TdDouble );
+procedure TdCoreNALFs.SetX( const X_:TdDouble );
 begin
      inherited;
 
-     _X := X_;  upALPs := True;
+     _X := X_;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdCacheNALFs
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+procedure TdCacheNALFs.SetDegN( const DegN_:Integer );
+var
+   N :Integer;
+begin
+     inherited;
+
+     SetLength( _NPs, DegN+1 );
+     for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
+
+     _NPs[ 0, 0 ] := 1/Sqrt(2);
+
+     upALPs := True;
 end;
 
 //------------------------------------------------------------------------------
 
-function TdMapNALFs.GetPs( const N_,M_:Integer ) :TdDouble;
+procedure TdCacheNALFs.SetX( const X_:TdDouble );
+begin
+     inherited;
+
+     upALPs := True;
+end;
+
+//------------------------------------------------------------------------------
+
+function TdCacheNALFs.GetPs( const N_,M_:Integer ) :TdDouble;
 begin
      if upALPs then
      begin
@@ -128,18 +169,6 @@ begin
      end;
 
      Result := _NPs[ N_, M_ ];
-end;
-
-//////////////////////////////////////////////////////////////////// M E T H O D
-
-procedure TdMapNALFs.InitALPs;
-var
-   N :Integer;
-begin
-     SetLength( _NPs, DegN+1 );
-     for N := 0 to DegN do SetLength( _NPs[ N ], N+1 );
-
-     _NPs[ 0, 0 ] := 1/Sqrt(2);
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdALFsToNALFs<TdALFs_>
