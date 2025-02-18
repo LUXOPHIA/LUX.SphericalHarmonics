@@ -13,7 +13,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsTerm3
 
-     TALFsTerm3 = class( TMapALFs )
+     TALFsTerm3 = class( TCacheALFs )
      private
      protected
        _S     :Double;
