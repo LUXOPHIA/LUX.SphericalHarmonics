@@ -17,8 +17,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TFNALFs = class( TNALFs )
      private
      protected
-       ///// A C C E S S O R
-       function GetNFs( const N_,M_:Integer ) :Double; override;
      public
      end;
 
@@ -34,16 +32,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure SetX( const X_:Double ); override;
-       function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
+       function GetNFs( const N_,M_:Integer ) :Double; virtual;
        ///// M E T H O D
+       function NormFactor( const N_,M_:Integer ) :Double;
        procedure InitNFs;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
        ///// P R O P E R T Y
-       property ALFs :TALFs_ read _ALFs;
+       property ALFs                       :TALFs_ read   _ALFs;
+       property NFs[ const N_,M_:Integer ] :Double read GetNFs ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TNALFsToFNALFs<TNALFs_>
@@ -57,14 +57,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure SetX( const X_:Double ); override;
-       function GetNFs( const N_,M_:Integer ) :Double; override;
        function GetPs( const N_,M_:Integer ) :Double; override;
+       function GetNFs( const N_,M_:Integer ) :Double; virtual;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
        ///// P R O P E R T Y
-       property NALFs :TNALFs_ read _NALFs;
+       property NALFs                      :TNALFs_ read   _NALFs;
+       property NFs[ const N_,M_:Integer ] :Double  read GetNFs  ;
      end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
@@ -80,21 +81,6 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-//////////////////////////////////////////////////////////////// A C C E S S O R
-
-function TFNALFs.GetNFs( const N_,M_:Integer ) :Double;
-var
-   K :Double;
-   I :Integer;
-begin
-     if M_ = 0 then K := 1
-               else K := 2;
-
-     Result := Sqrt( K * ( 2 * N_ + 1 ) );
-
-     for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
-end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -134,6 +120,13 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TALFsToFNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
+begin
+     Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
+end;
+
+//------------------------------------------------------------------------------
+
 function TALFsToFNALFs<TALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
      if upNFs then
@@ -146,14 +139,20 @@ begin
      Result := _NFs[ N_, M_ ];
 end;
 
-//------------------------------------------------------------------------------
-
-function TALFsToFNALFs<TALFs_>.GetPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _ALFs.Ps[ N_, M_ ];
-end;
-
 //////////////////////////////////////////////////////////////////// M E T H O D
+
+function TALFsToFNALFs<TALFs_>.NormFactor( const N_,M_:Integer ) :Double;
+var
+   K :Double;
+   I :Integer;
+begin
+     if M_ = 0 then K := 1
+               else K := 2;
+
+     Result := Sqrt( K * ( 2 * N_ + 1 ) );
+
+     for I := N_ - M_ + 1 to N_ + M_ do Result := Result / Sqrt( I );
+end;
 
 procedure TALFsToFNALFs<TALFs_>.InitNFs;
 var
@@ -164,7 +163,7 @@ begin
      begin
           SetLength( _NFs[ N ], N+1 );
 
-          for M := 0 to N do _NFs[ N, M ] := inherited GetNFs( N, M );
+          for M := 0 to N do _NFs[ N, M ] := NormFactor( N, M );
      end;
 end;
 
@@ -227,16 +226,17 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TNALFsToFNALFs<TNALFs_>.GetPs( const N_,M_:Integer ) :Double;
+begin
+     Result := NFs[ N_, M_ ] * _NALFs.Ps[ N_, M_ ];
+end;
+
+//------------------------------------------------------------------------------
+
 function TNALFsToFNALFs<TNALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
      if M_ = 0 then Result := Sqrt(2)
                else Result :=      2;
-end;
-//------------------------------------------------------------------------------
-
-function TNALFsToFNALFs<TNALFs_>.GetPs( const N_,M_:Integer ) :Double;
-begin
-     Result := NFs[ N_, M_ ] * _NALFs.Ps[ N_, M_ ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
