@@ -66,7 +66,7 @@ begin
      begin
           if DegN < _MaxNs[ M ] then _MaxNs[ M ] := DegN;
      end;
-     for M := _MaxM to DegN do _MaxNs[ M ] := M;
+     for M := _MaxM+1 to DegN do _MaxNs[ M ] := M;
 end;
 
 //------------------------------------------------------------------------------
