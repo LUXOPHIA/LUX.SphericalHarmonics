@@ -4,6 +4,7 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1.Diff,
+     LUX.D1.Legendre.Diff,
      LUX.NALFs.Diff;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
@@ -24,7 +25,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
        procedure CalcALPs;
-       function PN012( const N_,M_:Integer; const PN0_,PN1_:TdDouble ) :TdDouble;
+       function PN0( const N_:Integer ) :TdDouble;
+       function PN1( const N_:Integer ) :TdDouble;
        function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:TdDouble ) :TdDouble;
      public
      end;
@@ -65,6 +67,8 @@ end;
 
 function TdNALFsTerm4.GetPs( const N_,M_:Integer ) :TdDouble;
 begin
+     if N_ < M_ then Exit( 0 );
+
      if upALPs then
      begin
           upALPs := False;
@@ -79,100 +83,38 @@ end;
 
 procedure TdNALFsTerm4.CalcALPs;
 var
-   S :TdDouble;
    N, M :Integer;
-   P0, P1, P2, P00, P02, P20, P22 :TdDouble;
+   P00, P02, P20, P22 :TdDouble;
 begin
-     S := Roo2( 1 - Pow2( X ) );
+     ///// M = 0
+     for N := 0 to DegN do _NPs[ N, 0 ] := PN0( N );
 
-     _NPs[ 0, 0 ] :=  Roo2(1/2);
+     ///// M = 1
+     for N := 1 to DegN do _NPs[ N, 1 ] := PN1( N );
 
-     if DegN = 0 then Exit;
-
-     _NPs[ 1, 0 ] :=  Roo2(3/2) * X;
-     _NPs[ 1, 1 ] := -Roo2(3)/2 * S;
-
-     if DegN = 1 then Exit;
-
-     _NPs[ 2, 0 ] :=  Roo2(5/2)/2 * ( 3 * Pow2( X ) - 1 );
-     _NPs[ 2, 1 ] := -Roo2(5/12)*3 * X * S;
-
-     for M := 0 to 1 do
-     begin
-          P0 := _NPs[ M+0, M ];
-          P1 := _NPs[ M+1, M ];
-
-          for N := M+2 to DegN do
-          begin
-               P2 := PN012( N, M, P0, P1 );
-
-               _NPs[ N, M ] := P2;
-
-               P0 := P1; P1 := P2;
-          end;
-     end;
-
+     ///// 2 <= M
      for M := 2 to DegN do
+     for N := M to DegN do
      begin
-          //                    M
-          //        0     1     2
-          //    0 (P00)       (P02) = 0
-          //        |
-          //    1  P10---P11
-          //        |     |
-          //  N 2 (P20)--P21--[P22]
-
-          N := M;
-
-          P00:= _NPs[ N-2, M-2 ];  P02 := 0;
-          P20:= _NPs[ N  , M-2 ];  P22 := PNM22( N, M, P00, P02, P20 );
+          P00:= Ps[ N-2, M-2 ];  P02 := Ps[ N-2, M   ];
+          P20:= Ps[ N  , M-2 ];  P22 := PNM22( N, M, P00, P02, P20 );
 
           _NPs[ N, M ] := P22;
-
-          if DegN = N then Break;
-
-          //                    M
-          //        0     1     2
-          //    0  P00
-          //        |
-          //    1 (P10)--P11  (P12) = 0
-          //        |     |
-          //    2  P20---P21---P22
-          //        |     |     |
-          //  N 3 (P30)--P31--[P32]
-
-          N := M+1;
-
-          P00:= _NPs[ N-2, M-2 ];  P02 := 0;
-          P20:= _NPs[ N  , M-2 ];  P22 := PNM22( N, M, P00, P02, P20 );
-
-          _NPs[ N, M ] := P22;
-
-          for N := M+2 to DegN do
-          begin
-               P00:= _NPs[ N-2, M-2 ];  P02 := _NPs[ N-2, M   ];
-               P20:= _NPs[ N  , M-2 ];  P22 := PNM22( N, M, P00, P02, P20 );
-
-               _NPs[ N, M ] := P22;
-          end;
      end;
 end;
 
 //------------------------------------------------------------------------------
 
-function TdNALFsTerm4.PN012( const N_,M_:Integer; const PN0_,PN1_:TdDouble ) :TdDouble;
-var
-   N2, NuM, NnM, NM2, A, B :Double;
+function TdNALFsTerm4.PN0( const N_:Integer ) :TdDouble;
 begin
-     N2  := N_ * 2 ;
-     NuM := N_ + M_;
-     NnM := N_ - M_;
-     NM2 := NuM * NnM;
+     Result := NLegendre( X, N_ );
+end;
 
-     A := Roo2( ( N2 + 1 ) * ( N2 - 1 )                /                NM2   );
-     B := Roo2( ( N2 + 1 ) * ( NuM - 1 ) * ( NnM - 1 ) / ( ( N2 - 3 ) * NM2 ) );
+//------------------------------------------------------------------------------
 
-     Result := A * X * PN1_ - B * PN0_;
+function TdNALFsTerm4.PN1( const N_:Integer ) :TdDouble;
+begin
+     Result := dNLegendreCos( ArcCos( X ), N_ ) / Sqrt( N_ * ( N_ + 1 ) );
 end;
 
 //------------------------------------------------------------------------------
