@@ -1,24 +1,28 @@
 ﻿# LUX.SphericalHarmonics
 Spherical Harmonics Library for Delphi.
 
+## 🟥 球面調和関数：Spherical Harmonics
+
+### 🟩（複素数）球面調和関数：(Complex) Spherical Harmonics
 ```math
 \begin{aligned}
 Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
 &= \frac{1}{\sqrt{2\pi}}\;\tilde{P}_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
-\overline{Y}_n^m(\theta,\phi)
-&= \dfrac{1}{\sqrt{4\pi}}\,
-\begin{cases}
-\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right) & m < 0\\
-\overline{P}_n^0\!\left(\cos\theta\right) & m = 0\\
-\overline{P}_n^m\!\left(\cos\theta\right)\,\cos\left(m\,\phi\right) & m > 0\\
-\end{cases}
 \end{aligned}
 ```
-
-- $`Y_n^m(\theta,\phi)`$：(Complex) Spherical Harmonics
-- $`\overline{Y}_n^m(\theta,\phi)`$：Real Spherical Harmonics
 - $`P_n^m(x)`$：Associated Legendre functions (ALFs)
 - $`\tilde{P}_n^m(x)`$：Normalized Associated Legendre functions (nALFs)
+
+### 🟩 実球面調和関数：Real Spherical Harmonics
+```math
+\overline{Y}_n^m(\theta,\phi)
+= \dfrac{1}{\sqrt{4\pi}}\,
+\begin{cases}
+\overline{P}_n^{|m|}\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right) & m < 0\\
+\overline{P}_n^0\left(\cos\theta\right) & m = 0\\
+\overline{P}_n^m\left(\cos\theta\right)\,\cos\left(m\,\phi\right) & m > 0\\
+\end{cases}
+```
 - $`\overline{P}_n^m(x)`$：Fully Normalized Associated Legendre functions (fnALFs)
 
 ## 🟥 ルジャンドル陪関数：Associated Legendre functions
@@ -248,7 +252,7 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 > N
 > ```
 > ```Delphi
-> function TNALFsTerm4.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
+> function NALFsPNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
 > var
 >    A00, A02, A20 :Double;
 > begin
