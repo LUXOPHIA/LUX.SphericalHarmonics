@@ -8,9 +8,9 @@ Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\lef
 \overline{Y}_n^m(\theta,\phi)
 &= \dfrac{1}{\sqrt{4\pi}}\,
 \begin{cases}
+\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right) & m < 0\\
 \overline{P}_n^0\!\left(\cos\theta\right) & m = 0\\
 \overline{P}_n^m\!\left(\cos\theta\right)\,\cos\left(m\,\phi\right) & m > 0\\
-\overline{P}_n^{|m|}\!\left(\cos\theta\right)\,\sin\left(|m|\,\phi\right) & m < 0
 \end{cases}
 \end{aligned}
 ```
@@ -114,21 +114,22 @@ x = \cos\theta, \quad s = \sqrt{1-x^2} = \sin \theta
 | 8 | 8 | $`P_8^8(x) = 2027025\,s^8`$ |
 
 ### 🟩 初項
+#### 🟦 $P_n^n(x)$
 ```math
-P_n^m(x) = (-1)^m\,(2m-1)!!\,(1-x^2)^{\frac{m}{2}}, \quad n = m
+P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 ```
-#### 🟦 Implementation for Delphi
-```Delphi
-function ALFsPNM( const M:Integer; const X:Double ) :Double;
-var
-   S :Double;
-   I :Integer;
-begin
-     S := Sqrt( 1 - Sqr( X ) );
-     Result := 1;  // M = 0
-     for I := 1 to M do Result := -Result * ( 2 * I - 1 ) * S;
-end;
-```
+> Delphi (Object Pascal) 
+> ```Delphi
+> function ALFsPNN( const N:Integer; const X:Double ) :Double;
+> var
+>    S :Double;
+>    I :Integer;
+> begin
+>      S := Sqrt( 1 - Sqr( X ) );
+>      Result := 1;  // N = 0
+>      for I := 1 to N do Result := -Result * ( 2 * I - 1 ) * S;
+> end;
+> ```
 
 ### 🟩 漸化式
 
@@ -152,23 +153,66 @@ end;
 ```
 
 ### 🟩 初項
+
+#### 🟦 $\tilde{P}_n^n(x)$
 ```math
-\tilde{P}_n^m(x) = (-1)^m\,\sqrt{\frac{(2m+1)!!}{2^{\,m+1}\,m!}}\,(1-x^2)^{m/2}, \quad n = m
+\tilde{P}_n^n(x) = (-1)^n\,\sqrt{\frac{(2n+1)!!}{2^{\,n+1}\,n!}}\,(1-x^2)^{n/2}
 ```
-#### 🟦 Implementation for Delphi
-```Delphi
-function NALFsPNM( const M:Integer; const X:Double ) :Double;
-var
-   S :Double;
-   I :Integer;
-begin
-     S := Sqrt( 1 - Sqr( X ) );
-     Result := 1/Sqrt(2);  // M = 0
-     for I := 1 to M do Result := -Result * Sqrt( ( 2 * M + 1 ) / ( 2 * M ) ) * S;
-end;
+> Delphi (Object Pascal)
+> ```Delphi
+> function NALFsPNN( const N:Integer; const X:Double ) :Double;
+> var
+>    S :Double;
+>    I :Integer;
+> begin
+>      S := Sqrt( 1 - Sqr( X ) );
+>      Result := 1/Sqrt(2);  // N = 0
+>      for I := 1 to N do Result := -Result * Sqrt( ( 2 * N + 1 ) / ( 2 * N ) ) * S;
+> end;
+> ```
+
+#### 🟦 $\tilde{P}_n^0(\cos\theta) = \tilde{P}_n(\cos\theta)$
+```math
+\tilde{P}_n(\cos \theta) =
+\begin{cases}
+\dfrac{A_n^0}{2} +
+\displaystyle\sum_{k=1}^{\tfrac{n}{2}} A_n^{\,2k}\,\cos\left(2k\,\theta\right), & \text{$n$ :even}, \\[1.0em]
+\displaystyle\sum_{k=0}^{\tfrac{n-1}{2}} A_n^{\,2k+1}\,\cos\left(\left(2k+1\right)\,\theta\right), & \text{$n$ :odd}.
+\end{cases}
+```
+```math
+\begin{aligned}
+A_0^0 &= \sqrt{2}\\
+A_n^n &= \frac{\sqrt{(2n-1)(2n+1)}}{2n}\,A_{n-1}^{n-1}\\
+A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
+\end{aligned}
+```
+
+#### 🟦 $`\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\theta) = \frac{d}{d\theta}\,\tilde{P}_n(\cos\theta)`$
+```math
+\frac{d}{d\theta}\tilde{P}_n(\cos \theta) =
+\begin{cases}
+\displaystyle \sum_{k=1}^{\tfrac{n}{2}} -2k\,A_n^{\,2k}\,\sin\left(2k\,\theta\right), & \text{$n$ :even}, \\
+\displaystyle \sum_{k=0}^{\tfrac{n-1}{2}} -\left(2k+1\right)\,A_n^{\,2k+1}\,\sin\left(\left(2k+1\right)\,\theta\right), & \text{$n$ :odd}.
+\end{cases}
+```
+
+#### 🟦 $\tilde{P}_n^1(x)$
+```math
+\begin{gathered}
+\begin{aligned}
+\tilde{P}_n^1(x)
+&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{d}{dx}\,\tilde{P}_n^0(x)\\
+&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{d\theta}{dx}\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
+&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{-1}{\sqrt{1-x^2}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
+&= \frac{1}{\sqrt{n(n+1)}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
+\end{aligned}\\
+\theta = \cos^{-1}\,x
+\end{gathered}
 ```
 
 ### 🟩 漸化式：Recurrence relation
+
 #### 🟦 ２点漸化式：2 term recurrence relation
 ```math
 \tilde{P}_n^m(x) = x\,\sqrt{2m+3}\,\tilde{P}_{n-1}^m(x), \quad n = m + 1
