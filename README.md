@@ -144,7 +144,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UD.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UD_ON.png) | $`P_n^m(x) = \dfrac{1}{(2n+1)\,x}\Bigl\lbrace (n+m)\,P_{n-1}^m(x)+(n-m+1)\,P_{n+1}^m(x)\Bigr\rbrace`$ |
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UU.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UU_ON.png) | $`P_n^m(x) = \dfrac{1}{n+m+1}\Bigl\lbrace (2n+3)\,x\,P_{n+1}^m(x)-(n-m+2)\,P_{n+2}^m(x)\Bigr\rbrace`$ |
 
-## 🟥 正規化ルジャンドル関数：Normalized Associated Legendre functions
+## 🟥 正規化ルジャンドル陪関数：Normalized Associated Legendre functions
 ```math
 \begin{gathered}
 \tilde{P}_n^m(x) = \sqrt{\dfrac{2n+1}{2}\,\dfrac{(n-m)!}{(n+m)!}}\,P_n^m(x)\\
@@ -177,7 +177,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 \begin{cases}
 \dfrac{A_n^0}{2} +
 \displaystyle\sum_{k=1}^{\tfrac{n}{2}} A_n^{\,2k}\,\cos\left(2k\,\theta\right), & \text{$n$ :even}, \\[1.0em]
-\displaystyle\sum_{k=0}^{\tfrac{n-1}{2}} A_n^{\,2k+1}\,\cos\left(\left(2k+1\right)\,\theta\right), & \text{$n$ :odd}.
+\displaystyle\sum_{k=0}^{\tfrac{n-1}{2}} A_n^{\,2k+1}\,\cos\Bigl\{\left(2k+1\right)\theta\Bigr\}, & \text{$n$ :odd}.
 \end{cases}
 ```
 ```math
@@ -188,12 +188,12 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \end{aligned}
 ```
 
-#### 🟦 $`\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\theta) = \frac{d}{d\theta}\,\tilde{P}_n(\cos\theta)`$
+##### 🟪 $`\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\theta) = \frac{d}{d\theta}\,\tilde{P}_n(\cos\theta)`$
 ```math
 \frac{d}{d\theta}\tilde{P}_n(\cos \theta) =
 \begin{cases}
 \displaystyle \sum_{k=1}^{\tfrac{n}{2}} -2k\,A_n^{\,2k}\,\sin\left(2k\,\theta\right), & \text{$n$ :even}, \\
-\displaystyle \sum_{k=0}^{\tfrac{n-1}{2}} -\left(2k+1\right)\,A_n^{\,2k+1}\,\sin\left(\left(2k+1\right)\,\theta\right), & \text{$n$ :odd}.
+\displaystyle \sum_{k=0}^{\tfrac{n-1}{2}} -\left(2k+1\right)\,A_n^{\,2k+1}\,\sin\Bigl\{\left(2k+1\right)\theta\Bigr\}, & \text{$n$ :odd}.
 \end{cases}
 ```
 
@@ -213,12 +213,12 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 
 ### 🟩 漸化式：Recurrence relation
 
-#### 🟦 ２点漸化式：2 term recurrence relation
+#### 🟦 ２項間漸化式：2 term recurrence relation
 ```math
 \tilde{P}_n^m(x) = x\,\sqrt{2m+3}\,\tilde{P}_{n-1}^m(x), \quad n = m + 1
 ```
 
-#### 🟦 ３点漸化式：3 term recurrence relation
+#### 🟦 ３項間漸化式：3 term recurrence relation
 ```math
 \begin{aligned}
 \tilde{P}_n^m(x) &= \sqrt{\dfrac{(2n+1)(2n-1)}{(n+m)(n-m)}}\,x\,\tilde{P}_{n-1}^m(x)\\
@@ -226,7 +226,7 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \end{aligned}
 ```
 
-#### 🟦 ４点漸化式：4 term recurrence relation
+#### 🟦 ４項間漸化式：4 term recurrence relation
 
 ```math
 \begin{aligned}
@@ -236,31 +236,33 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \tilde{P}_n^m(x) &= 0, \quad n < m
 \end{aligned}
 ```
-##### 🟪 Implementation for Delphi
-```Delphi
-//      0     1     2   M
-//  0 [P00]--P01--[P02]
-//      |     |     |
-//  1  P10---P11---P12
-//      |     |     |
-//  2 [P20]--P21--[P22]
-//  N
 
-function TNALFsTerm4.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
-var
-   A00, A02, A20 :Double;
-begin
-     A00 := Sqrt( ( ( 2 * N + 1 ) * ( N + M - 3 ) * ( N + M - 2 ) )
-                / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
-     A02 := Sqrt( ( ( 2 * N + 1 ) * ( N - M - 1 ) * ( N - M     ) )
-                / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
-     A20 := Sqrt( (                 ( N - M + 1 ) * ( N - M + 2 ) )
-                / (                 ( N + M - 1 ) * ( N + M     ) ) );
-     Result := A00 * P00 + A02 * P02 - A20 * P20;
-end;
-```
+> Delphi (Object Pascal)
+> ```
+>     0     1     2   M
+> 0 (P00)--P01--(P02)
+>     |     |     |
+> 1  P10---P11---P12
+>     |     |     |
+> 2 (P20)--P21--[P22]
+> N
+> ```
+> ```Delphi
+> function TNALFsTerm4.PNM22( const N,M:Integer; const P00,P02,P20:Double ) :Double;
+> var
+>    A00, A02, A20 :Double;
+> begin
+>      A00 := Sqrt( ( ( 2 * N + 1 ) * ( N + M - 3 ) * ( N + M - 2 ) )
+>                 / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
+>      A02 := Sqrt( ( ( 2 * N + 1 ) * ( N - M - 1 ) * ( N - M     ) )
+>                 / ( ( 2 * N - 3 ) * ( N + M - 1 ) * ( N + M     ) ) );
+>      A20 := Sqrt( (                 ( N - M + 1 ) * ( N - M + 2 ) )
+>                 / (                 ( N + M - 1 ) * ( N + M     ) ) );
+>      Result := A00 * P00 + A02 * P02 - A20 * P20;
+> end;
+> ```
 
-## 🟥 完全正規化ルジャンドル関数：Fully Normalized Associated Legendre functions
+## 🟥 完全正規化ルジャンドル陪関数：Fully Normalized Associated Legendre functions
 
 ```math
 \begin{gathered}
