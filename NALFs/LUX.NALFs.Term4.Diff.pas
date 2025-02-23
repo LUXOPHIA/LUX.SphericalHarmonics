@@ -18,13 +18,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdNALFsTerm4 = class( TdCacheNALFs )
      private
      protected
-       upALPs:Boolean;
+       _MaxNM :TArray2<Integer>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
        procedure SetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
-       procedure CalcALPs;
        function PN0( const N_:Integer ) :TdDouble;
        function PN1( const N_:Integer ) :TdDouble;
        function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:TdDouble ) :TdDouble;
@@ -51,16 +50,21 @@ procedure TdNALFsTerm4.SetDegN( const DegN_:Integer );
 begin
      inherited;
 
-     upALPs := True;
+     SetLength( _MaxNM, DegN+1, 2 );
+
+     X := 0;
 end;
 
 //------------------------------------------------------------------------------
 
 procedure TdNALFsTerm4.SetX( const X_:TdDouble );
+var
+   N :Integer;
 begin
      inherited;
 
-     upALPs := True;
+     for N := 0 to DegN do _MaxNM[ N, 0 ] := -1;
+     for N := 1 to DegN do _MaxNM[ N, 1 ] :=  0;
 end;
 
 //------------------------------------------------------------------------------
@@ -69,41 +73,21 @@ function TdNALFsTerm4.GetPs( const N_,M_:Integer ) :TdDouble;
 begin
      if N_ < M_ then Exit( 0 );
 
-     if upALPs then
+     if _MaxNM[ N_, M_ mod 2 ] < M_ then
      begin
-          upALPs := False;
+          case M_ of
+            0: _NPs[ N_, M_ ] := PN0( N_ );
+            1: _NPs[ N_, M_ ] := PN1( N_ );
+          else _NPs[ N_, M_ ] := PNM22( N_, M_, Ps[ N_-2, M_-2 ], Ps[ N_-2, M_ ], Ps[ N_, M_-2 ] );
+          end;
 
-          CalcALPs;
+          _MaxNM[ N_, M_ mod 2 ] := M_;
      end;
 
      Result := _NPs[ N_, M_ ];
 end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
-
-procedure TdNALFsTerm4.CalcALPs;
-var
-   N, M :Integer;
-   P00, P02, P20, P22 :TdDouble;
-begin
-     ///// M = 0
-     for N := 0 to DegN do _NPs[ N, 0 ] := PN0( N );
-
-     ///// M = 1
-     for N := 1 to DegN do _NPs[ N, 1 ] := PN1( N );
-
-     ///// 2 <= M
-     for M := 2 to DegN do
-     for N := M to DegN do
-     begin
-          P00:= Ps[ N-2, M-2 ];  P02 := Ps[ N-2, M   ];
-          P20:= Ps[ N  , M-2 ];  P22 := PNM22( N, M, P00, P02, P20 );
-
-          _NPs[ N, M ] := P22;
-     end;
-end;
-
-//------------------------------------------------------------------------------
 
 function TdNALFsTerm4.PN0( const N_:Integer ) :TdDouble;
 begin
