@@ -177,20 +177,26 @@ end;
 
 function TSPHarmonics3D.AngToPos( const T_:TdDouble2D ) :TdDouble3D;
 var
+   A :TdDouble2D;
    L, R :TdDouble;
 begin
-     SPHarm.AngleY := T_.Y;
-     SPHarm.AngleX := T_.X;
+     A.X := Pi2 * T_.X;
+     A.Y := Pi  * T_.Y;
+
+     SPHarm.AngleY := A.Y;
+     SPHarm.AngleX := A.X;
 
      L := Abso( SPHarm.RSHs[ N, M ] * Sqrt(Pi4) ) * Radius;
 
-     Result.Y := L * Cos( T_.Y );
-            R := L * Sin( T_.Y );
-     Result.X := R * Cos( T_.X );
-     Result.Z := R * Sin( T_.X );
+     Result.Y := L * Cos( A.Y );
+            R := L * Sin( A.Y );
+     Result.X := R * Cos( A.X );
+     Result.Z := R * Sin( A.X );
 end;
 
 procedure TSPHarmonics3D.MakeGeometry;
+const
+     DOUBLE_EPS8 = DOUBLE_EPS * 1E8;
 var
    X, Y, I :Integer;
    T :TDouble2D;
@@ -209,11 +215,11 @@ begin
 
           for Y := 0 to _DivY do
           begin
-               T.Y := ( Pi-DOUBLE_EPS3 - DOUBLE_EPS3 ) * Y / _DivY + DOUBLE_EPS3;
+               T.Y := ( 1-DOUBLE_EPS8 - DOUBLE_EPS8 ) * Y / _DivY + DOUBLE_EPS8;
 
                for X := 0 to _DivX do
                begin
-                    T.X := Pi2 * X / _DivX;
+                    T.X := X / _DivX;
 
                     M := TexToMatrix( T, AngToPos );
 
@@ -221,7 +227,7 @@ begin
 
                     Vertices [ I ] := M.AxisP;
                     Normals  [ I ] := M.AxisZ;
-                    TexCoord0[ I ] := TPointF.Create( X / _DivX, Y / _DivY );
+                    TexCoord0[ I ] := TPointF( T );
                end;
           end;
      end;
