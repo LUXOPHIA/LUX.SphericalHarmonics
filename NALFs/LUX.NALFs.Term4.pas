@@ -17,10 +17,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFsTerm4 = class( TCacheNALFs )
      private
      protected
-       _MaxNM :TArray2<Integer>;
+       _CalcXs :TArray2<Double>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
        function PN0( const N_:Integer ) :Double;
@@ -48,24 +47,17 @@ uses System.Math;
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
 procedure TNALFsTerm4.SetDegN( const DegN_:Integer );
-begin
-     inherited;
-
-     SetLength( _MaxNM, DegN+1, 2 );
-
-     X := 0;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TNALFsTerm4.SetX( const X_:Double );
 var
-   N :Integer;
+   N, M :Integer;
 begin
      inherited;
 
-     for N := 0 to DegN do _MaxNM[ N, 0 ] := -1;
-     for N := 1 to DegN do _MaxNM[ N, 1 ] :=  0;
+     SetLength( _CalcXs, DegN+1 );
+     for N := 0 to DegN do
+     begin
+          SetLength( _CalcXs[ N ], N+1 );
+          for M := 0 to N do _CalcXs[ N, M ] := System.Math.NaN;
+     end;
 end;
 
 //------------------------------------------------------------------------------
@@ -74,7 +66,7 @@ function TNALFsTerm4.GetPs( const N_,M_:Integer ) :Double;
 begin
      if N_ < M_ then Exit( 0 );
 
-     if _MaxNM[ N_, M_ mod 2 ] < M_ then
+     if _CalcXs[ N_, M_ ] <> X then
      begin
           case M_ of
             0: _NPs[ N_, M_ ] := PN0( N_ );
@@ -82,7 +74,7 @@ begin
           else _NPs[ N_, M_ ] := PNM22( N_, M_, Ps[ N_-2, M_-2 ], Ps[ N_-2, M_ ], Ps[ N_, M_-2 ] );
           end;
 
-          _MaxNM[ N_, M_ mod 2 ] := M_;
+          _CalcXs[ N_, M_ ] := X;
      end;
 
      Result := _NPs[ N_, M_ ];
