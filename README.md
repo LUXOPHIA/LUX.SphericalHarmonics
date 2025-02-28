@@ -207,9 +207,9 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \begin{aligned}
 \tilde{P}_n^1(x)
 &= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{d}{dx}\,\tilde{P}_n^0(x)\\
-&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{d\theta}{dx}\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
-&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{-1}{\sqrt{1-x^2}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
-&= \frac{1}{\sqrt{n(n+1)}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\theta)\\
+&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{d\theta}{dx}\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\,\theta)\\
+&= -\frac{\sqrt{1-x^2}}{\sqrt{n(n+1)}}\,\frac{-1}{\sqrt{1-x^2}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\,\theta)\\
+&= \frac{1}{\sqrt{n(n+1)}}\,\frac{d}{d\theta}\,\tilde{P}_n^0(\cos\,\theta)\\
 \end{aligned}\\
 \theta = \cos^{-1}\,x
 \end{gathered}
