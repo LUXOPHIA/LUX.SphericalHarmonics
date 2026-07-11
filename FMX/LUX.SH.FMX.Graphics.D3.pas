@@ -202,7 +202,7 @@ var
    T :TDouble2D;
    M :TDoubleM4;
 begin
-     SPHarm.DegN := N;
+     if SPHarm.DegN <> N then SPHarm.DegN := N;
 
      with _Polygons.VertexBuffer do
      begin
