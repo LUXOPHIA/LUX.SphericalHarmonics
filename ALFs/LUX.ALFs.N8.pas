@@ -82,7 +82,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Math;
+uses System.SysUtils, System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
@@ -173,7 +173,7 @@ begin
             8: Result := P88;
           else Result := 0;
           end;
-     else Result := 0;
+     else raise ERangeError.Create( 'TALFsN8 supports only degrees 0 <= N <= 8' );
      end;
 end;
 
