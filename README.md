@@ -1,19 +1,39 @@
 ﻿# LUX.SphericalHarmonics
-Spherical Harmonics Library for Delphi.
 
-## 🟥 球面調和関数：Spherical Harmonics
+Spherical Harmonics Library for Delphi (Object Pascal).
 
-### 🟩（複素数）球面調和関数：(Complex) Spherical Harmonics
+**English** | [日本語](ja/README.md)
+
+## Overview
+
+This library computes Spherical Harmonics and the Associated Legendre Functions (ALFs) they are built on, in three normalization flavors, each with multiple evaluation strategies (explicit polynomials up to degree 8, and 2/3/4-term recurrence relations). Every class also has a `*.Diff` twin operating on dual numbers (`TdDouble`) for automatic differentiation, which the FireMonkey component uses to obtain analytic surface normals when rendering.
+
+| Unit | Class | Description |
+|:---|:---|:---|
+| `LUX.ALFs` | `TALFs` / `TCoreALFs` / `TCacheALFs` | Base classes for ALFs $P_n^m(x)$ |
+| `LUX.ALFs.N8` | `TALFsN8` | Explicit polynomials, degree $n \le 8$ |
+| `LUX.ALFs.Term3` | `TALFsTerm3` | 3-term recurrence with caching |
+| `LUX.NALFs` | `TNALFs`, `TALFsToNALFs<T>` | Normalized ALFs $\tilde{P}_n^m(x)$ |
+| `LUX.NALFs.Term3` | `TNALFsTerm3` | 3-term recurrence (normalized) |
+| `LUX.NALFs.Term4` | `TNALFsTerm4` | 4-term recurrence (normalized) |
+| `LUX.FNALFs` | `TFNALFs`, `TALFsToFNALFs<T>`, `TNALFsToFNALFs<T>` | Fully Normalized ALFs $\overline{P}_n^m(x)$ |
+| `LUX.SH` | `TSPHarmonics<T>`, `TRSPHarmonics<T>` | Complex / real Spherical Harmonics |
+| `LUX.SH.FMX.Graphics.D3` | `TSPHarmonics3D` | FireMonkey 3D visualization component |
+| `*.Diff` units | `Td...` classes | Dual-number (automatic differentiation) variants |
+
+## 🟥 Spherical Harmonics
+
+### 🟩 (Complex) Spherical Harmonics
 ```math
 \begin{aligned}
 Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
 &= \frac{1}{\sqrt{2\pi}}\;\tilde{P}_n^m\left(\cos\theta\right)\;e^{\,i\,m\,\phi}\\
 \end{aligned}
 ```
-- $`P_n^m(x)`$：Associated Legendre functions (ALFs)
-- $`\tilde{P}_n^m(x)`$：Normalized Associated Legendre functions (nALFs)
+- $`P_n^m(x)`$ : Associated Legendre functions (ALFs)
+- $`\tilde{P}_n^m(x)`$ : Normalized Associated Legendre functions (nALFs)
 
-### 🟩 実球面調和関数：Real Spherical Harmonics
+### 🟩 Real Spherical Harmonics
 ```math
 \overline{Y}_n^m(\theta,\phi)
 = \dfrac{1}{\sqrt{4\pi}}\,
@@ -23,15 +43,16 @@ Y_n^m(\theta,\phi) &= \sqrt{\frac{2n+1}{4\pi}\,\frac{(n-m)!}{(n+m)!}}\;P_n^m\lef
 \overline{P}_n^m\left(\cos\theta\right)\,\cos\left(m\,\phi\right) & m > 0\\
 \end{cases}
 ```
-- $`\overline{P}_n^m(x)`$：Fully Normalized Associated Legendre functions (fnALFs)
+- $`\overline{P}_n^m(x)`$ : Fully Normalized Associated Legendre functions (fnALFs)
 
-## 🟥 ルジャンドル陪関数：Associated Legendre functions
-[ルジャンドル陪関数](https://ja.wikipedia.org/wiki/%E3%83%AB%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%89%E3%83%AB%E5%A4%9A%E9%A0%85%E5%BC%8F#%E3%83%AB%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%89%E3%83%AB%E9%99%AA%E5%A4%9A%E9%A0%85%E5%BC%8F)([Associated Legendre polynomials](https://en.wikipedia.org/wiki/Associated_Legendre_polynomials))は、ルジャンドル陪微分方程式([Associated Legendre Differential Equation](https://mathworld.wolfram.com/AssociatedLegendreDifferentialEquation.html)):
+## 🟥 Associated Legendre Functions
+
+The [Associated Legendre polynomials](https://en.wikipedia.org/wiki/Associated_Legendre_polynomials) are the solutions on $[-1,+1.]$ of the [Associated Legendre Differential Equation](https://mathworld.wolfram.com/AssociatedLegendreDifferentialEquation.html):
 ```math
 \left(1-x^2\right)\,\frac{d^2}{dx^2}\,P_n^m(x)-2x\,\frac{d}{dx}\,P_n^m(x)+\biggl[n
 \left(n+1\right)-\frac{m^2}{1-x^2}\biggr]P_n^m(x)=0
 ```
-の $\[-1,+1\]$ における解であり、次式のように定義される。
+and are defined by
 ```math
 \begin{aligned}
 P_{n}^{m}(x)
@@ -40,7 +61,7 @@ P_{n}^{m}(x)
 \end{aligned}
 ```
 
-### 🟩 低次の多項式
+### 🟩 Low-Degree Polynomials
 ```math
 x = \cos\theta, \quad s = \sqrt{1-x^2} = \sin \theta
 ```
@@ -117,12 +138,12 @@ x = \cos\theta, \quad s = \sqrt{1-x^2} = \sin \theta
 | 8 | 7 | $`P_8^7(x) = -2027025\,x\,s^7`$ |
 | 8 | 8 | $`P_8^8(x) = 2027025\,s^8`$ |
 
-### 🟩 初項
+### 🟩 Seed Values
 #### 🟦 $P_n^n(x)$
 ```math
 P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 ```
-> Delphi (Object Pascal) 
+> Delphi (Object Pascal)
 > ```Delphi
 > function ALFsPNN( const N:Integer; const X:Double ) :Double;
 > var
@@ -135,7 +156,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 > end;
 > ```
 
-### 🟩 漸化式
+### 🟩 Recurrence Relations
 
 |  |  | Recurrence Relation |
 |:----:|:----:|:----|
@@ -148,7 +169,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UD.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UD_ON.png) | $`P_n^m(x) = \dfrac{1}{(2n+1)\,x}\Bigl\lbrace (n+m)\,P_{n-1}^m(x)+(n-m+1)\,P_{n+1}^m(x)\Bigr\rbrace`$ |
 | ![](--------/Associated%20Legendre%20polynomials/Symbol_UU.png) | ![](--------/Associated%20Legendre%20polynomials/Icon_UU_ON.png) | $`P_n^m(x) = \dfrac{1}{n+m+1}\Bigl\lbrace (2n+3)\,x\,P_{n+1}^m(x)-(n-m+2)\,P_{n+2}^m(x)\Bigr\rbrace`$ |
 
-## 🟥 正規化ルジャンドル陪関数：Normalized Associated Legendre functions
+## 🟥 Normalized Associated Legendre Functions
 ```math
 \begin{gathered}
 \tilde{P}_n^m(x) = \sqrt{\dfrac{2n+1}{2}\,\dfrac{(n-m)!}{(n+m)!}}\,P_n^m(x)\\
@@ -156,7 +177,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 \end{gathered}
 ```
 
-### 🟩 初項
+### 🟩 Seed Values
 
 #### 🟦 $\tilde{P}_n^n(x)$
 ```math
@@ -171,7 +192,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 > begin
 >      S := Sqrt( 1 - Sqr( X ) );
 >      Result := 1/Sqrt(2);  // N = 0
->      for I := 1 to N do Result := -Result * Sqrt( ( 2 * N + 1 ) / ( 2 * N ) ) * S;
+>      for I := 1 to N do Result := -Result * Sqrt( ( 2 * I + 1 ) / ( 2 * I ) ) * S;
 > end;
 > ```
 
@@ -188,7 +209,7 @@ P_n^n(x) = (-1)^n\,(2n-1)!!\,(1-x^2)^{\frac{n}{2}}
 \begin{aligned}
 A_0^0 &= \sqrt{2}\\
 A_n^n &= \frac{\sqrt{(2n-1)(2n+1)}}{2n}\,A_{n-1}^{n-1}\\
-A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
+A_n^k &= \frac{(n-k-1)\,(n+k+2)}{(n-k)\,(n+k+1)}\,A_n^{k+2}\\
 \end{aligned}
 ```
 
@@ -215,14 +236,14 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \end{gathered}
 ```
 
-### 🟩 漸化式：Recurrence relation
+### 🟩 Recurrence Relations
 
-#### 🟦 ２項間漸化式：2 term recurrence relation
+#### 🟦 2-Term Recurrence Relation
 ```math
 \tilde{P}_n^m(x) = x\,\sqrt{2m+3}\,\tilde{P}_{n-1}^m(x), \quad n = m + 1
 ```
 
-#### 🟦 ３項間漸化式：3 term recurrence relation
+#### 🟦 3-Term Recurrence Relation
 ```math
 \begin{aligned}
 \tilde{P}_n^m(x) &= \sqrt{\dfrac{(2n+1)(2n-1)}{(n+m)(n-m)}}\,x\,\tilde{P}_{n-1}^m(x)\\
@@ -230,7 +251,7 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 \end{aligned}
 ```
 
-#### 🟦 ４項間漸化式：4 term recurrence relation
+#### 🟦 4-Term Recurrence Relation
 
 ```math
 \begin{aligned}
@@ -266,7 +287,7 @@ A_n^k &= \frac{(N-k-1)\,(N+k+2)}{(N-k)\,(N+k+1)}\,A_n^{k+2}\\
 > end;
 > ```
 
-## 🟥 完全正規化ルジャンドル陪関数：Fully Normalized Associated Legendre functions
+## 🟥 Fully Normalized Associated Legendre Functions
 
 ```math
 \begin{gathered}
@@ -286,9 +307,9 @@ k =
 \end{gathered}
 ```
 
-## 🟥 Reference
+## 🟥 References
 
-### 1962 🟩 TABLES OF NORMALIZED ASSOCIATED LEGENDRE POLYNOMIALS
+### 1962 🟩 Tables of Normalized Associated Legendre Polynomials
 - [University of Waterloo](https://uwaterloo.ca/)
   - [S._L._Belousov_Auth._Tables_of_Normalized_Associated_Legendre_Polynomials.pdf](https://csclub.uwaterloo.ca/~pbarfuss/S._L._Belousov_Auth._Tables_of_Normalized_Associated_Legendre_Polynomials.pdf)
 
@@ -302,12 +323,12 @@ k =
   - [Electronic page index using frames](https://personal.math.ubc.ca/~cbm/aands/frameindex.htm)
   - [abramowitz_and_stegun.pdf](https://personal.math.ubc.ca/~cbm/aands/abramowitz_and_stegun.pdf)
 
-### 1990 🟩 On the computation of Legendre functions in spectral models
+### 1990 🟩 On the Computation of Legendre Functions in Spectral Models
 - [American Meteorological Society](https://journals.ametsoc.org/)
   - [On the Computation of Legendre Functions in Spectral Models](https://journals.ametsoc.org/view/journals/mwre/118/10/1520-0493_1990_118_2248_otcolf_2_0_co_2.xml)
     - [1520-0493_1990_118_2248_otcolf_2_0_co_2.pdf](https://journals.ametsoc.org/downloadpdf/view/journals/mwre/118/10/1520-0493_1990_118_2248_otcolf_2_0_co_2.pdf)
 
-### 2002 🟩 A unified approach to the Clenshaw summation and the recursive computation of very high degree and order fully normalised associated Legendre functions
+### 2002 🟩 A Unified Approach to the Clenshaw Summation and the Recursive Computation of Very High Degree and Order Fully Normalised Associated Legendre Functions
 - [Curtin University](https://www.curtin.edu.au/)
   - [18932_119976.pdf](https://espace.curtin.edu.au/bitstream/handle/20.500.11937/22940/18932_119976.pdf)
 
@@ -315,17 +336,21 @@ k =
 - [Comparison of Computational Methods of Associated Legendre Functions](https://www.jstage.jst.go.jp/article/sola/11/0/11_2015-033/_article)
   - [11_2015-033.pdf](https://www.jstage.jst.go.jp/article/sola/11/0/11_2015-033/_pdf/-char/en)
 
-### 2016 🟩 高次高階のルジャンドル陪函数の計算
-- [地球流体電脳倶楽部](https://www.gfd-dennou.org/)：[GFD-DENNOU Club](https://www.gfd-dennou.org/index.html.en)
-  - [高次高階のルジャンドル陪函数の計算(enomoto.pdf)](https://www.gfd-dennou.org/library/davis-workshop/2016-02-11/0211_09_enomoto/pub/)
-- [惑星科学研究センター](https://www.cps-jp.org/)：[Center for Planetary Science](https://www.cps-jp.org/about/?ml_lang=en)
-  - 03.15・ルジャンドル陪函数の計算手法の比較
+### 2016 🟩 Computation of High-Degree, High-Order Associated Legendre Functions (in Japanese)
+- [GFD-DENNOU Club](https://www.gfd-dennou.org/index.html.en)
+  - [enomoto.pdf](https://www.gfd-dennou.org/library/davis-workshop/2016-02-11/0211_09_enomoto/pub/)
+- [Center for Planetary Science](https://www.cps-jp.org/about/?ml_lang=en)
+  - 03.15 - Comparison of computational methods for associated Legendre functions
     - [07_Enomoto.pdf](https://www.cps-jp.org/~mosir/pub/2016/2016-03-15/07_Enomoto/pub-web/07_Enomoto.pdf)
-  - 11.02・[地球流体データ解析・数値計算ワークショップ](https://dennou-k.gfd-dennou.org/library/dcmodel/workshop/2016-02-11/index.htm.ja)
-    - [高次高階のルジャンドル陪函数の計算](https://www.cps-jp.org/modules/mosir/player.php?v=20160211_09_enomoto)
+  - 11.02 - [Workshop on Geophysical Fluid Data Analysis and Numerical Computation](https://dennou-k.gfd-dennou.org/library/dcmodel/workshop/2016-02-11/index.htm.ja)
+    - [Computation of high-degree, high-order associated Legendre functions](https://www.cps-jp.org/modules/mosir/player.php?v=20160211_09_enomoto)
       - [enomoto.pdf](https://www.cps-jp.org/~mosir/pub/2016/2016-02-11/09_enomoto/pub-web/enomoto.pdf)
       - [20160211_09_enomoto.mp4](https://www.cps-jp.org/modules/mosir/player.php?v=20160211_09_enomoto)
 
 ### 2024 🟩 Realizing the Calculation of a Fully Normalized Associated Legendre Function Based on an FPGA
 - [Realizing the Calculation of a Fully Normalized Associated Legendre Function Based on an FPGA](https://www.mdpi.com/1424-8220/24/22/7262)
   - [sensors-24-07262-v2.pdf](https://www.mdpi.com/1424-8220/24/22/7262/pdf?version=1731573485)
+
+## 🟥 License
+
+This library is released under the [MIT License](LICENSE).
