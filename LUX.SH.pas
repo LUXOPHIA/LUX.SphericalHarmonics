@@ -138,6 +138,8 @@ end;
 procedure TSPHarmonics.SetAngleX( const AngleX_:Double );
 begin
      _AngleX := AngleX_;
+
+     OnUpALFs( Self );
 end;
 
 function TSPHarmonics.GetAngleY :Double;
@@ -219,12 +221,16 @@ constructor TSPHarmonics<TNALFs_>.Create;
 begin
      _ALFs := TNALFs_.Create;
 
+     _ALFs.OnChange.Add( OnUpALFs );
+
      inherited;
 end;
 
 constructor TSPHarmonics<TNALFs_>.Create( const DegN_:Integer );
 begin
      _ALFs := TNALFs_.Create;
+
+     _ALFs.OnChange.Add( OnUpALFs );
 
      inherited;
 end;
@@ -284,12 +290,16 @@ constructor TRSPHarmonics<TdFNALFs_>.Create;
 begin
      _ALFs := TdFNALFs_.Create;
 
+     _ALFs.OnChange.Add( OnUpALFs );
+
      inherited;
 end;
 
 constructor TRSPHarmonics<TdFNALFs_>.Create( const DegN_:Integer );
 begin
      _ALFs := TdFNALFs_.Create;
+
+     _ALFs.OnChange.Add( OnUpALFs );
 
      inherited;
 end;
