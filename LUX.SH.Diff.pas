@@ -179,8 +179,16 @@ begin
 
      if M_ < 0 then
      begin
-          Result.R := A * S;
-          Result.I := A * C;
+          if Odd( M ) then  // Yn^-m = (-1)^m × conj( Yn^+m )
+          begin
+               Result.R := -A * C;
+               Result.I := +A * S;
+          end
+          else
+          begin
+               Result.R := +A * C;
+               Result.I := -A * S;
+          end;
      end
      else
      begin
