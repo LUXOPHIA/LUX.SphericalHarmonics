@@ -198,8 +198,10 @@ begin
 
      A := _dALFs[ N_, M ] / Sqrt( Pi2 );
 
-     if M_ < 0 then Result := A * Sin( M * _AngleX )
-               else Result := A * Cos( M * _AngleX );
+     if M_ < 0 then Result := Sqrt( 2 ) * A * Sin( M * _AngleX )
+               else
+     if M_ > 0 then Result := Sqrt( 2 ) * A * Cos( M * _AngleX )
+               else Result := A;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
