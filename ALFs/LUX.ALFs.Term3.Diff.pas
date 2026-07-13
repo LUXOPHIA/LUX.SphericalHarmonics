@@ -131,7 +131,7 @@ begin
      Result := ( 2 * M_ + 1 ) * X * PN0_;
 end;
 
-function TdALFsTerm3.PN10( const M_:Integer; const PN1_:TdDouble ) :TdDouble;
+function TdALFsTerm3.PN10( const M_:Integer; const PN1_:TdDouble ) :TdDouble;  // X <> 0
 begin
      Result := PN1_ / ( ( 2 * M_ + 1 ) * X );
 end;
@@ -143,7 +143,7 @@ begin
      Result := ( ( 2 * M_ - 1 ) * X / M_ ) * PM1_ - ( ( N_ + M_ - 1 ) / M_ ) * PM0_;
 end;
 
-function TdALFsTerm3.PM201( const N_,M_:Integer; const PM2_,PM0_:TdDouble ) :TdDouble;
+function TdALFsTerm3.PM201( const N_,M_:Integer; const PM2_,PM0_:TdDouble ) :TdDouble;  // X <> 0
 begin
      Result := ( ( M_ + 1 ) * PM2_ + ( N_ + M_ ) * PM0_ ) / ( ( 2 * M_ + 1 ) * X );
 end;
@@ -160,7 +160,7 @@ begin
      Result := ( ( 2 * N_ - 1 ) * X * PN1_ - ( N_ + M_ - 1 ) * PN0_ ) / ( N_ - M_ );
 end;
 
-function TdALFsTerm3.PN201( const N_,M_:Integer; const PN2_,PN0_:TdDouble ) :TdDouble;
+function TdALFsTerm3.PN201( const N_,M_:Integer; const PN2_,PN0_:TdDouble ) :TdDouble;  // X <> 0
 begin
      Result := ( ( N_ + M_ ) * PN0_ + ( N_ - M_ + 1 ) * PN2_ ) / ( ( 2 * N_ + 1 ) * X );
 end;
