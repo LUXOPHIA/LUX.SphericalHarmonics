@@ -136,6 +136,8 @@ end;
 
 procedure TSPHarmonics.SetAngleX( const AngleX_:Double );
 begin
+     if _AngleX = AngleX_ then Exit;
+
      _AngleX := AngleX_;
 
      OnUpALFs( Self );
@@ -148,6 +150,8 @@ end;
 
 procedure TSPHarmonics.SetAngleY( const AngleY_:Double );
 begin
+     if _AngleY = AngleY_ then Exit;
+
      _AngleY := AngleY_;
 
      _ALFs.X := Cos( _AngleY );
