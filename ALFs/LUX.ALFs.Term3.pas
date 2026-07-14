@@ -13,16 +13,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TALFsTerm3
 
-     TALFsTerm3 = class( TCacheALFs )
+     TALFsTerm3 = class( TMapALFs )
      private
      protected
-       _S     :Double;
-       _MaxM  :Integer;
-       _MaxNs :TArray<Integer>;
-       ///// A C C E S S O R
-       procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:Double ); override;
-       function GetPs( const N_,M_:Integer ) :Double; override;
+       _S :Double;
        ///// M E T H O D
        function P01( const M_:Integer; const P0_:Double ) :Double;
        function PN01( const M_:Integer; const PN0_:Double ) :Double;
@@ -33,6 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function PN012( const N_,M_:Integer; const PN0_,PN1_:Double ) :Double;
        function PN201( const N_,M_:Integer; const PN2_,PN0_:Double ) :Double;
        function PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
+       procedure CalcPs; override;
      public
      end;
 
@@ -49,72 +44,6 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-//////////////////////////////////////////////////////////////// A C C E S S O R
-
-procedure TALFsTerm3.SetDegN( const DegN_:Integer );
-var
-   M :Integer;
-begin
-     inherited;
-
-     if DegN < _MaxM then _MaxM := DegN;
-
-     SetLength( _MaxNs, DegN+1 );
-     for M := 0 to _MaxM do
-     begin
-          if DegN < _MaxNs[ M ] then _MaxNs[ M ] := DegN;
-     end;
-     for M := _MaxM+1 to DegN do _MaxNs[ M ] := M;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TALFsTerm3.SetX( const X_:Double );
-var
-   M :Integer;
-begin
-     inherited;
-
-     _MaxM := 0;
-
-     for M := 0 to _DegN do _MaxNs[ M ] := M;
-
-     _S := Sqrt( 1 - Pow2( X ) );
-end;
-
-//------------------------------------------------------------------------------
-
-function TALFsTerm3.GetPs( const N_,M_:Integer ) :Double;
-var
-   M, N :Integer;
-begin
-     if _MaxM < M_ then
-     begin
-          ///// N = M
-          for M := _MaxM+1 to M_ do _Ps[ M, M ] := P01( M, _Ps[ M-1, M-1 ] );
-
-          _MaxM := M_;
-     end;
-
-     if _MaxNs[ M_ ] < N_ then
-     begin
-          ///// N = M+1
-          if _MaxNs[ M_ ] = M_ then
-          begin
-               _Ps[ M_+1, M_ ] := PN01( M_, _Ps[ M_, M_ ] );
-
-               _MaxNs[ M_ ] := M_+1;
-          end;
-
-          ///// M+2 <= N
-          for N := _MaxNs[ M_ ]+1 to N_ do _Ps[ N, M_ ] := PN012( N, M_, _Ps[ N-2, M_ ], _Ps[ N-1, M_ ] );
-
-          _MaxNs[ M_ ] := N_;
-     end;
-
-     Result := _Ps[ N_, M_ ];
-end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
@@ -167,6 +96,29 @@ end;
 function TALFsTerm3.PN120( const N_,M_:Integer; const PN1_,PN2_:Double ) :Double;
 begin
      Result := ( ( 2 * N_ + 3 ) * X * PN1_ - ( N_ - M_ + 2 ) * PN2_ ) / ( N_ + M_ + 1 );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TALFsTerm3.CalcPs;
+var
+   N, M :Integer;
+begin
+     _S := Sqrt( 1 - Pow2( X ) );
+
+     _Ps[ 0, 0 ] := 1;
+
+     ///// N = M
+     for M := 1 to DegN do _Ps[ M, M ] := P01( M, _Ps[ M-1, M-1 ] );
+
+     ///// N = M+1
+     for M := 0 to DegN-1 do _Ps[ M+1, M ] := PN01( M, _Ps[ M, M ] );
+
+     ///// M+2 <= N
+     for M := 0 to DegN do
+     begin
+          for N := M+2 to DegN do _Ps[ N, M ] := PN012( N, M, _Ps[ N-2, M ], _Ps[ N-1, M ] );
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
