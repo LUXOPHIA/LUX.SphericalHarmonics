@@ -15,17 +15,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdNALFsTerm4
 
-     TdNALFsTerm4 = class( TdCacheNALFs )
+     TdNALFsTerm4 = class( TdMapNALFs )
      private
      protected
-       _CalcXs :TArray2<TdDouble>;
-       ///// A C C E S S O R
-       procedure SetDegN( const DegN_:Integer ); override;
-       function GetPs( const N_,M_:Integer ) :TdDouble; override;
+       _S :TdDouble;
        ///// M E T H O D
        function PN0( const N_:Integer ) :TdDouble;
        function PN1( const N_:Integer ) :TdDouble;
+       function P01( const M_:Integer; const P0_:TdDouble ) :TdDouble;
+       function PN01( const M_:Integer; const PN0_:TdDouble ) :TdDouble;
        function PNM22( const N_,M_:Integer; const P00_,P02_,P20_:TdDouble ) :TdDouble;
+       procedure CalcPs; override;
      public
      end;
 
@@ -43,42 +43,6 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-//////////////////////////////////////////////////////////////// A C C E S S O R
-
-procedure TdNALFsTerm4.SetDegN( const DegN_:Integer );
-var
-   N, M :Integer;
-begin
-     inherited;
-
-     SetLength( _CalcXs, DegN+1 );
-     for N := 0 to DegN do
-     begin
-          SetLength( _CalcXs[ N ], N+1 );
-          for M := 0 to N do _CalcXs[ N, M ] := TdDouble.NaN;
-     end;
-end;
-
-//------------------------------------------------------------------------------
-
-function TdNALFsTerm4.GetPs( const N_,M_:Integer ) :TdDouble;
-begin
-     if N_ < M_ then Exit( 0 );
-
-     if _CalcXs[ N_, M_ ] <> X then
-     begin
-          case M_ of
-            0: _NPs[ N_, M_ ] := PN0( N_ );
-            1: _NPs[ N_, M_ ] := PN1( N_ );
-          else _NPs[ N_, M_ ] := PNM22( N_, M_, Ps[ N_-2, M_-2 ], Ps[ N_-2, M_ ], Ps[ N_, M_-2 ] );
-          end;
-
-          _CalcXs[ N_, M_ ] := X;
-     end;
-
-     Result := _NPs[ N_, M_ ];
-end;
-
 //////////////////////////////////////////////////////////////////// M E T H O D
 
 function TdNALFsTerm4.PN0( const N_:Integer ) :TdDouble;
@@ -91,6 +55,20 @@ end;
 function TdNALFsTerm4.PN1( const N_:Integer ) :TdDouble;
 begin
      Result := dNLegendreCos( ArcCos( X ), N_ ) / Sqrt( N_ * ( N_ + 1 ) );
+end;
+
+//------------------------------------------------------------------------------
+
+function TdNALFsTerm4.P01( const M_:Integer; const P0_:TdDouble ) :TdDouble;
+begin
+     Result := -Sqrt( ( 2 * M_ + 1 ) / ( 2 * M_ ) ) * _S * P0_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TdNALFsTerm4.PN01( const M_:Integer; const PN0_:TdDouble ) :TdDouble;
+begin
+     Result := Sqrt( 2 * M_ + 3 ) * X * PN0_;
 end;
 
 //------------------------------------------------------------------------------
@@ -120,6 +98,33 @@ begin
                 / (              ( NM1 - 1 ) * ( NM1     ) ) );
 
      Result := A00 * P00_ + A02 * P02_ - A20 * P20_;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TdNALFsTerm4.CalcPs;
+var
+   N, M :Integer;
+begin
+     _S := Roo2( 1 - Pow2( X ) );
+
+     ///// M = 0
+     for N := 0 to DegN do _NPs[ N, 0 ] := PN0( N );
+
+     ///// M = 1
+     for N := 1 to DegN do _NPs[ N, 1 ] := PN1( N );
+
+     ///// N = M
+     for M := 2 to DegN do _NPs[ M, M ] := P01( M, _NPs[ M-1, M-1 ] );
+
+     ///// N = M+1
+     for M := 2 to DegN-1 do _NPs[ M+1, M ] := PN01( M, _NPs[ M, M ] );
+
+     ///// M+2 <= N
+     for M := 2 to DegN do
+     begin
+          for N := M+2 to DegN do _NPs[ N, M ] := PNM22( N, M, _NPs[ N-2, M-2 ], _NPs[ N-2, M ], _NPs[ N, M-2 ] );
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public

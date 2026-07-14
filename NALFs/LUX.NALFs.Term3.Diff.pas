@@ -14,20 +14,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdNALFsTerm3
 
-     TdNALFsTerm3 = class( TdCacheNALFs )
+     TdNALFsTerm3 = class( TdMapNALFs )
      private
      protected
-       _S     :TdDouble;
-       _MaxM  :Integer;
-       _MaxNs :TArray<Integer>;
-       ///// A C C E S S O R
-       procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:TdDouble ); override;
-       function GetPs( const N_,M_:Integer ) :TdDouble; override;
+       _S :TdDouble;
        ///// M E T H O D
        function P01( const M_:Integer; const P0_:TdDouble ) :TdDouble;
        function PN01( const M_:Integer; const PN0_:TdDouble ) :TdDouble;
        function PN012( const N_,M_:Integer; const PN0_,PN1_:TdDouble ) :TdDouble;
+       procedure CalcPs; override;
      public
      end;
 
@@ -44,72 +39,6 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-//////////////////////////////////////////////////////////////// A C C E S S O R
-
-procedure TdNALFsTerm3.SetDegN( const DegN_:Integer );
-var
-   M :Integer;
-begin
-     inherited;
-
-     if DegN < _MaxM then _MaxM := DegN;
-
-     SetLength( _MaxNs, DegN+1 );
-     for M := 0 to _MaxM do
-     begin
-          if DegN < _MaxNs[ M ] then _MaxNs[ M ] := DegN;
-     end;
-     for M := _MaxM+1 to DegN do _MaxNs[ M ] := M;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TdNALFsTerm3.SetX( const X_:TdDouble );
-var
-   M :Integer;
-begin
-     inherited;
-
-     _MaxM := 0;
-
-     for M := 0 to _DegN do _MaxNs[ M ] := M;
-
-     _S := Roo2( 1 - Pow2( X ) );
-end;
-
-//------------------------------------------------------------------------------
-
-function TdNALFsTerm3.GetPs( const N_,M_:Integer ) :TdDouble;
-var
-   M, N :Integer;
-begin
-     if _MaxM < M_ then
-     begin
-          ///// N = M
-          for M := _MaxM+1 to M_ do _NPs[ M, M ] := P01( M, _NPs[ M-1, M-1 ] );
-
-          _MaxM := M_;
-     end;
-
-     if _MaxNs[ M_ ] < N_ then
-     begin
-          ///// N = M+1
-          if _MaxNs[ M_ ] = M_ then
-          begin
-               _NPs[ M_+1, M_ ] := PN01( M_, _NPs[ M_, M_ ] );
-
-               _MaxNs[ M_ ] := M_+1;
-          end;
-
-          ///// M+2 <= N
-          for N := _MaxNs[ M_ ]+1 to N_ do _NPs[ N, M_ ] := PN012( N, M_, _NPs[ N-2, M_ ], _NPs[ N-1, M_ ] );
-
-          _MaxNs[ M_ ] := N_;
-     end;
-
-     Result := _NPs[ N_, M_ ];
-end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
 
@@ -140,6 +69,29 @@ begin
      B := Roo2( ( N2 + 1 ) * ( NuM - 1 ) * ( NnM - 1 ) / ( ( N2 - 3 ) * NM2 ) );
 
      Result := A * X * PN1_ - B * PN0_;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TdNALFsTerm3.CalcPs;
+var
+   N, M :Integer;
+begin
+     _S := Roo2( 1 - Pow2( X ) );
+
+     _NPs[ 0, 0 ] := 1/Sqrt(2);
+
+     ///// N = M
+     for M := 1 to DegN do _NPs[ M, M ] := P01( M, _NPs[ M-1, M-1 ] );
+
+     ///// N = M+1
+     for M := 0 to DegN-1 do _NPs[ M+1, M ] := PN01( M, _NPs[ M, M ] );
+
+     ///// M+2 <= N
+     for M := 0 to DegN do
+     begin
+          for N := M+2 to DegN do _NPs[ N, M ] := PN012( N, M, _NPs[ N-2, M ], _NPs[ N-1, M ] );
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
