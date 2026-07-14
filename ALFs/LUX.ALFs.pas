@@ -50,14 +50,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheALFs
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapALFs
 
-     TCacheALFs = class( TCoreALFs )
+     TMapALFs = class( TCoreALFs )
      private
      protected
        _Ps :TArray2<Double>;
        ///// A C C E S S O R
        procedure SetDegN( const DegN_:Integer ); override;
+       procedure SetX( const X_:Double ); override;
+       function GetPs( const N_,M_:Integer ) :Double; override;
+       ///// M E T H O D
+       procedure CalcPs; virtual; abstract;
      public
      end;
 
@@ -149,7 +153,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCacheALFs
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapALFs
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -157,7 +161,7 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TCacheALFs.SetDegN( const DegN_:Integer );
+procedure TMapALFs.SetDegN( const DegN_:Integer );
 var
    N :Integer;
 begin
@@ -166,7 +170,23 @@ begin
      SetLength( _Ps, DegN+1 );
      for N := 0 to DegN do SetLength( _Ps[ N ], N+1 );
 
-     _Ps[ 0, 0 ] := 1;
+     CalcPs;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TMapALFs.SetX( const X_:Double );
+begin
+     inherited;
+
+     CalcPs;
+end;
+
+//------------------------------------------------------------------------------
+
+function TMapALFs.GetPs( const N_,M_:Integer ) :Double;
+begin
+     Result := _Ps[ N_, M_ ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
