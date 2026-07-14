@@ -18,7 +18,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        X2 :Double;
        S  :Double;
-       ///// M E T H O D
+       ///// A C C E S S O R
+       procedure SetX( const X_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
      public
        ///// M E T H O D
@@ -94,12 +95,19 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-//////////////////////////////////////////////////////////////////// M E T H O D
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+procedure TALFsN8.SetX( const X_:Double );
+begin
+     inherited;
+
+     X2 := Pow2( X );  S := Sqrt( 1 - X2 );
+end;
+
+//------------------------------------------------------------------------------
 
 function TALFsN8.GetPs( const N_,M_:Integer ) :Double;
 begin
-     X2 := Pow2( X );  S := Sqrt( 1 - X2 );
-
      case N_ of
        0: case M_ of
             0: Result := P00;
