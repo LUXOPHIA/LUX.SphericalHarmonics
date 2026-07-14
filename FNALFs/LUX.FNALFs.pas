@@ -26,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _ALFs :TALFs_;
-       _NFs  :TArray2<Double>;  upNFs:Boolean;
+       _NFs  :TArray2<Double>;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure SetDegN( const DegN_:Integer ); override;
@@ -101,7 +101,7 @@ procedure TALFsToFNALFs<TALFs_>.SetDegN( const DegN_:Integer );
 begin
      inherited;
 
-     _ALFs.DegN := DegN_;  upNFs := True;
+     _ALFs.DegN := DegN_;  InitNFs;
 end;
 
 //------------------------------------------------------------------------------
@@ -129,13 +129,6 @@ end;
 
 function TALFsToFNALFs<TALFs_>.GetNFs( const N_,M_:Integer ) :Double;
 begin
-     if upNFs then
-     begin
-          upNFs := False;
-
-          InitNFs;
-     end;
-
      Result := _NFs[ N_, M_ ];
 end;
 
