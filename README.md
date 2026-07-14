@@ -10,9 +10,9 @@ This library computes Spherical Harmonics and the Associated Legendre Functions 
 
 | Unit | Class | Description |
 |:---|:---|:---|
-| `LUX.ALFs` | `TALFs` / `TCoreALFs` / `TCacheALFs` | Base classes for ALFs $P_n^m(x)$ |
+| `LUX.ALFs` | `TALFs` / `TCoreALFs` / `TMapALFs` | Base classes for ALFs $P_n^m(x)$ |
 | `LUX.ALFs.N8` | `TALFsN8` | Explicit polynomials, degree $n \le 8$ |
-| `LUX.ALFs.Term3` | `TALFsTerm3` | 3-term recurrence with caching |
+| `LUX.ALFs.Term3` | `TALFsTerm3` | 3-term recurrence |
 | `LUX.NALFs` | `TNALFs`, `TALFsToNALFs<T>` | Normalized ALFs $\tilde{P}_n^m(x)$ |
 | `LUX.NALFs.Term3` | `TNALFsTerm3` | 3-term recurrence (normalized) |
 | `LUX.NALFs.Term4` | `TNALFsTerm4` | 4-term recurrence (normalized) |

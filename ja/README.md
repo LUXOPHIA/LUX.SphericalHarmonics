@@ -10,9 +10,9 @@ Delphi (Object Pascal) 用 球面調和関数ライブラリ。
 
 | ユニット | クラス | 説明 |
 |:---|:---|:---|
-| `LUX.ALFs` | `TALFs` / `TCoreALFs` / `TCacheALFs` | ルジャンドル陪関数 $P_n^m(x)$ の基底クラス |
+| `LUX.ALFs` | `TALFs` / `TCoreALFs` / `TMapALFs` | ルジャンドル陪関数 $P_n^m(x)$ の基底クラス |
 | `LUX.ALFs.N8` | `TALFsN8` | 明示的多項式（次数 $n \le 8$） |
-| `LUX.ALFs.Term3` | `TALFsTerm3` | 3項漸化式（キャッシュ付き） |
+| `LUX.ALFs.Term3` | `TALFsTerm3` | 3項漸化式 |
 | `LUX.NALFs` | `TNALFs`, `TALFsToNALFs<T>` | 正規化ルジャンドル陪関数 $\tilde{P}_n^m(x)$ |
 | `LUX.NALFs.Term3` | `TNALFsTerm3` | 3項漸化式（正規化） |
 | `LUX.NALFs.Term4` | `TNALFsTerm4` | 4項漸化式（正規化） |
