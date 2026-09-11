@@ -29,9 +29,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _X    :TdDouble;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
-       procedure SetDegN( const DegN_:Integer ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
      public
      end;
 
@@ -42,8 +42,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _NPs :TArray2<TdDouble>;
        ///// A C C E S S O R
-       procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
        procedure CalcPs; virtual; abstract;
@@ -59,9 +59,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _NFs   :TArray2<TdDouble>;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
-       procedure SetDegN( const DegN_:Integer ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        function GetNFs( const N_,M_:Integer ) :TdDouble; virtual;
        ///// M E T H O D
@@ -105,10 +105,8 @@ begin
      Result := _DegN;
 end;
 
-procedure TdCoreNALFs.SetDegN( const DegN_:Integer );
+procedure TdCoreNALFs.DoSetDegN( const DegN_:Integer );
 begin
-     inherited;
-
      _DegN := DegN_;
 end;
 
@@ -119,10 +117,8 @@ begin
      Result := _X;
 end;
 
-procedure TdCoreNALFs.SetX( const X_:TdDouble );
+procedure TdCoreNALFs.DoSetX( const X_:TdDouble );
 begin
-     inherited;
-
      _X := X_;
 end;
 
@@ -134,7 +130,7 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TdMapNALFs.SetDegN( const DegN_:Integer );
+procedure TdMapNALFs.DoSetDegN( const DegN_:Integer );
 var
    N :Integer;
 begin
@@ -148,7 +144,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TdMapNALFs.SetX( const X_:TdDouble );
+procedure TdMapNALFs.DoSetX( const X_:TdDouble );
 begin
      inherited;
 
@@ -175,10 +171,8 @@ begin
      Result := _dALFs.DegN;
 end;
 
-procedure TdALFsToNALFs<TdALFs_>.SetDegN( const DegN_:Integer );
+procedure TdALFsToNALFs<TdALFs_>.DoSetDegN( const DegN_:Integer );
 begin
-     inherited;
-
      _dALFs.DegN := DegN_;  InitNFs;
 end;
 
@@ -189,10 +183,8 @@ begin
      Result := _dALFs.X;
 end;
 
-procedure TdALFsToNALFs<TdALFs_>.SetX( const X_:TdDouble );
+procedure TdALFsToNALFs<TdALFs_>.DoSetX( const X_:TdDouble );
 begin
-     inherited;
-
      _dALFs.X := X_;
 end;
 

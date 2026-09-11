@@ -30,9 +30,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _NFs   :TArray2<TdDouble>;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
-       procedure SetDegN( const DegN_:Integer ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        function GetNFs( const N_,M_:Integer ) :TdDouble; virtual;
        ///// M E T H O D
@@ -55,9 +55,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _dNALFs :TdNALFs_;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
-       procedure SetDegN( const DegN_:Integer ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        function GetNFs( const N_,M_:Integer ) :TdDouble; virtual;
      public
@@ -98,10 +98,8 @@ begin
      Result := _dALFs.DegN;
 end;
 
-procedure TdALFsToFNALFs<TdALFs_>.SetDegN( const DegN_:Integer );
+procedure TdALFsToFNALFs<TdALFs_>.DoSetDegN( const DegN_:Integer );
 begin
-     inherited;
-
      _dALFs.DegN := DegN_;  InitNFs;
 end;
 
@@ -112,10 +110,8 @@ begin
      Result := _dALFs.X;
 end;
 
-procedure TdALFsToFNALFs<TdALFs_>.SetX( const X_:TdDouble );
+procedure TdALFsToFNALFs<TdALFs_>.DoSetX( const X_:TdDouble );
 begin
-     inherited;
-
      _dALFs.X := X_;
 end;
 
@@ -197,10 +193,8 @@ begin
      Result := _dNALFs.DegN;
 end;
 
-procedure TdNALFsToFNALFs<TdNALFs_>.SetDegN( const DegN_:Integer );
+procedure TdNALFsToFNALFs<TdNALFs_>.DoSetDegN( const DegN_:Integer );
 begin
-     inherited;
-
      _dNALFs.DegN := DegN_;
 end;
 
@@ -211,10 +205,8 @@ begin
      Result := _dNALFs.X;
 end;
 
-procedure TdNALFsToFNALFs<TdNALFs_>.SetX( const X_:TdDouble );
+procedure TdNALFsToFNALFs<TdNALFs_>.DoSetX( const X_:TdDouble );
 begin
-     inherited;
-
      _dNALFs.X := X_;
 end;
 

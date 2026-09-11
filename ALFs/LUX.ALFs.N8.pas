@@ -19,7 +19,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        X2 :Double;
        S  :Double;
        ///// A C C E S S O R
-       procedure SetX( const X_:Double ); override;
+       procedure DoSetX( const X_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
      public
        ///// M E T H O D
@@ -97,7 +97,7 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TALFsN8.SetX( const X_:Double );
+procedure TALFsN8.DoSetX( const X_:Double );
 begin
      inherited;
 

@@ -20,7 +20,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        X2 :TdDouble;
        S  :TdDouble;
        ///// A C C E S S O R
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
      public
        ///// M E T H O D
@@ -98,7 +98,7 @@ uses System.Math;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TdALFsN8.SetX( const X_:TdDouble );
+procedure TdALFsN8.DoSetX( const X_:TdDouble );
 begin
      inherited;
 

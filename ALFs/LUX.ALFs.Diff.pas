@@ -20,9 +20,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _OnChange :TDelegates;
        ///// A C C E S S O R
        function GetDegN :Integer; virtual; abstract;
-       procedure SetDegN( const DegN_:Integer ); virtual;
+       procedure SetDegN( const DegN_:Integer );
+       procedure DoSetDegN( const DegN_:Integer ); virtual; abstract;
        function GetX :TdDouble; virtual; abstract;
-       procedure SetX( const X_:TdDouble ); virtual;
+       procedure SetX( const X_:TdDouble );
+       procedure DoSetX( const X_:TdDouble ); virtual; abstract;
        function GetPs( const N_,M_:Integer ) :TdDouble; virtual; abstract;
      public
        constructor Create; overload;
@@ -45,9 +47,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _X    :TdDouble;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
-       procedure SetDegN( const DegN_:Integer ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
      public
      end;
 
@@ -58,8 +60,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Ps :TArray2<TdDouble>;
        ///// A C C E S S O R
-       procedure SetDegN( const DegN_:Integer ); override;
-       procedure SetX( const X_:TdDouble ); override;
+       procedure DoSetDegN( const DegN_:Integer ); override;
+       procedure DoSetX( const X_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
        procedure CalcPs; virtual; abstract;
@@ -84,6 +86,8 @@ implementation //###############################################################
 
 procedure TdALFs.SetDegN( const DegN_:Integer );
 begin
+     DoSetDegN( DegN_ );
+
      OnChange.Run( Self );
 end;
 
@@ -91,6 +95,8 @@ end;
 
 procedure TdALFs.SetX( const X_:TdDouble );
 begin
+     DoSetX( X_ );
+
      OnChange.Run( Self );
 end;
 
@@ -131,10 +137,8 @@ begin
      Result := _DegN;
 end;
 
-procedure TdCoreALFs.SetDegN( const DegN_:Integer );
+procedure TdCoreALFs.DoSetDegN( const DegN_:Integer );
 begin
-     inherited;
-
      _DegN := DegN_;
 end;
 
@@ -145,10 +149,8 @@ begin
      Result := _X;
 end;
 
-procedure TdCoreALFs.SetX( const X_:TdDouble );
+procedure TdCoreALFs.DoSetX( const X_:TdDouble );
 begin
-     inherited;
-
      _X := X_;
 end;
 
@@ -162,7 +164,7 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TdMapALFs.SetDegN( const DegN_:Integer );
+procedure TdMapALFs.DoSetDegN( const DegN_:Integer );
 var
    N :Integer;
 begin
@@ -176,7 +178,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TdMapALFs.SetX( const X_:TdDouble );
+procedure TdMapALFs.DoSetX( const X_:TdDouble );
 begin
      inherited;
 
