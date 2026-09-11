@@ -222,9 +222,7 @@ begin
 
      _dALFs.OnChange.Add( OnUpALFs );
 
-     inherited Create;
-
-     _dALFs.DegN := DegN_;
+     inherited;
 end;
 
 destructor TdSPHarmonics<TdNALFs_>.Destroy;
@@ -270,9 +268,7 @@ begin
 
      _dALFs.OnChange.Add( OnUpALFs );
 
-     inherited Create;
-
-     _dALFs.DegN := DegN_;
+     inherited;
 end;
 
 destructor TdRSPHarmonics<TdFNALFs_>.Destroy;
