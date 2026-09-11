@@ -27,7 +27,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// A C C E S S O R
        procedure OnUpALFs( Sender:TObject );
        function GetALFs :TALFs;
-       procedure SetALFs( const ALFs_:TALFs );
        function GetDegN :Integer;
        procedure SetDegN( const DegN_:Integer );
        function GetAngleX :Double;
@@ -38,7 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const DegN_:Integer ); overload;
        ///// P R O P E R T Y
-       property ALFs                        :TALFs    read GetALFs   write SetALFs  ;
+       property ALFs                        :TALFs    read GetALFs                 ;
        property DegN                        :Integer  read GetDegN   write SetDegN  ;
        property AngleX                      :Double   read GetAngleX write SetAngleX;
        property AngleY                      :Double   read GetAngleY write SetAngleY;
@@ -102,17 +101,6 @@ end;
 function TSPHarmonics.GetALFs :TALFs;
 begin
      Result := _ALFs;
-end;
-
-procedure TSPHarmonics.SetALFs( const ALFs_:TALFs );
-begin
-     if Assigned( _ALFs ) then _ALFs.OnChange.Del( OnUpALFs );
-
-     _ALFs := ALFs_;
-
-     if Assigned( _ALFs ) then _ALFs.OnChange.Add( OnUpALFs );
-
-     OnUpALFs( Self );
 end;
 
 //------------------------------------------------------------------------------
