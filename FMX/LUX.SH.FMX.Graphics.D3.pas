@@ -116,6 +116,7 @@ begin
      _SPHarm := SPHarm_;
 
      upGeometry := True;
+     upTopology := True;
 
      Repaint;
 end;
