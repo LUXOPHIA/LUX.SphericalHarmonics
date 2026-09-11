@@ -202,14 +202,14 @@ var
    T :TDouble2D;
    M :TDoubleM4;
 begin
-     if SPHarm.DegN <> N then SPHarm.DegN := N;
-
      with _Polygons.VertexBuffer do
      begin
           if not Assigned( SPHarm ) then
           begin
                Length := 0;  Exit;
           end;
+
+          if SPHarm.DegN <> N then SPHarm.DegN := N;
 
           Length := ( _DivX + 1 ) * ( _DivY + 1 );
 
