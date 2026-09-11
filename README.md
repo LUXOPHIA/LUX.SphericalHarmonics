@@ -504,15 +504,15 @@ No formula is differentiated by hand and no finite difference is taken: `TdNALFs
   ┃  ┣・TALFsN8                     ･･･ LUX.ALFs.N8  explicit, n <= 8
   ┃  ┗・TMapALFs                    ･･･ LUX.ALFs
   ┃     ┗・TALFsTerm3               ･･･ LUX.ALFs.Term3  (2.4) + 8 relations
-  ┗・TNALFs                          ･･･ LUX.NALFs
-     ┣・TCoreNALFs                   ･･･ LUX.NALFs
-     ┃  ┗・TMapNALFs                ･･･ LUX.NALFs
-     ┃     ┣・TNALFsTerm3           ･･･ LUX.NALFs.Term3  eq. (2.7)(2.12)(2.13)
-     ┃     ┗・TNALFsTerm4           ･･･ LUX.NALFs.Term4  (2.8)-(2.11)(2.14)
-     ┣・TALFsToNALFs<TALFs_>         ･･･ LUX.NALFs  eq. (2.5) as factor table
-     ┗・TFNALFs                      ･･･ LUX.FNALFs
-        ┣・TALFsToFNALFs<TALFs_>     ･･･ LUX.FNALFs  eq. (2.15) from P
-        ┗・TNALFsToFNALFs<TNALFs_>   ･･･ LUX.FNALFs  eq. (2.15) from P~
+  ┣・TNALFs                          ･･･ LUX.NALFs
+  ┃  ┣・TCoreNALFs                   ･･･ LUX.NALFs
+  ┃  ┃  ┗・TMapNALFs                ･･･ LUX.NALFs
+  ┃  ┃     ┣・TNALFsTerm3           ･･･ LUX.NALFs.Term3  eq. (2.7)(2.12)(2.13)
+  ┃  ┃     ┗・TNALFsTerm4           ･･･ LUX.NALFs.Term4  (2.8)-(2.11)(2.14)
+  ┃  ┗・TALFsToNALFs<TALFs_>         ･･･ LUX.NALFs  eq. (2.5) as factor table
+  ┗・TFNALFs                      ･･･ LUX.FNALFs
+     ┣・TALFsToFNALFs<TALFs_>     ･･･ LUX.FNALFs  eq. (2.15) from P
+     ┗・TNALFsToFNALFs<TNALFs_>   ･･･ LUX.FNALFs  eq. (2.15) from P~
 
 ・TSPHarmonics                        ･･･ LUX.SH
   ┣・TSPHarmonics<TNALFs_:TNALFs>    ･･･ LUX.SH  SHs[n,m], RSHs[n,m]

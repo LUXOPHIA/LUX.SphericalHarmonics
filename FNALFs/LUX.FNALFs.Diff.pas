@@ -15,7 +15,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdFNALFs :Fully Normalized Associated Legendre functions
 
-     TdFNALFs = class( TdNALFs )
+     TdFNALFs = class( TdALFs )
      private
      protected
      public

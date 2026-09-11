@@ -504,15 +504,15 @@ f\!\left(a + a'\,\varepsilon\right) = f(a) + f'(a)\,a'\,\varepsilon
   ┃  ┣・TALFsN8                     ･･･ LUX.ALFs.N8  明示的、n <= 8
   ┃  ┗・TMapALFs                    ･･･ LUX.ALFs
   ┃     ┗・TALFsTerm3               ･･･ LUX.ALFs.Term3  式 (2.4) ＋ 8 関係式
-  ┗・TNALFs                          ･･･ LUX.NALFs
-     ┣・TCoreNALFs                   ･･･ LUX.NALFs
-     ┃  ┗・TMapNALFs                ･･･ LUX.NALFs
-     ┃     ┣・TNALFsTerm3           ･･･ LUX.NALFs.Term3  式 (2.7)(2.12)(2.13)
-     ┃     ┗・TNALFsTerm4           ･･･ LUX.NALFs.Term4  式 (2.8)-(2.11)(2.14)
-     ┣・TALFsToNALFs<TALFs_>         ･･･ LUX.NALFs  式 (2.5) の係数表
-     ┗・TFNALFs                      ･･･ LUX.FNALFs
-        ┣・TALFsToFNALFs<TALFs_>     ･･･ LUX.FNALFs  式 (2.15)：P から
-        ┗・TNALFsToFNALFs<TNALFs_>   ･･･ LUX.FNALFs  式 (2.15)：P~ から
+  ┣・TNALFs                          ･･･ LUX.NALFs
+  ┃  ┣・TCoreNALFs                   ･･･ LUX.NALFs
+  ┃  ┃  ┗・TMapNALFs                ･･･ LUX.NALFs
+  ┃  ┃     ┣・TNALFsTerm3           ･･･ LUX.NALFs.Term3  式 (2.7)(2.12)(2.13)
+  ┃  ┃     ┗・TNALFsTerm4           ･･･ LUX.NALFs.Term4  式 (2.8)-(2.11)(2.14)
+  ┃  ┗・TALFsToNALFs<TALFs_>         ･･･ LUX.NALFs  式 (2.5) の係数表
+  ┗・TFNALFs                      ･･･ LUX.FNALFs
+     ┣・TALFsToFNALFs<TALFs_>     ･･･ LUX.FNALFs  式 (2.15)：P から
+     ┗・TNALFsToFNALFs<TNALFs_>   ･･･ LUX.FNALFs  式 (2.15)：P~ から
 
 ・TSPHarmonics                        ･･･ LUX.SH
   ┣・TSPHarmonics<TNALFs_:TNALFs>    ･･･ LUX.SH  SHs[n,m], RSHs[n,m]
