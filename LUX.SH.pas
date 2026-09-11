@@ -224,6 +224,8 @@ constructor TSPHarmonics<TNALFs_>.Create;
 begin
      _ALFs := TNALFs_.Create;
 
+     _ALFs.X := Cos( _AngleY );
+
      _ALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -232,6 +234,8 @@ end;
 constructor TSPHarmonics<TNALFs_>.Create( const DegN_:Integer );
 begin
      _ALFs := TNALFs_.Create;
+
+     _ALFs.X := Cos( _AngleY );
 
      _ALFs.OnChange.Add( OnUpALFs );
 
@@ -270,6 +274,8 @@ constructor TRSPHarmonics<TFNALFs_>.Create;
 begin
      _ALFs := TFNALFs_.Create;
 
+     _ALFs.X := Cos( _AngleY );
+
      _ALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -278,6 +284,8 @@ end;
 constructor TRSPHarmonics<TFNALFs_>.Create( const DegN_:Integer );
 begin
      _ALFs := TFNALFs_.Create;
+
+     _ALFs.X := Cos( _AngleY );
 
      _ALFs.OnChange.Add( OnUpALFs );
 
