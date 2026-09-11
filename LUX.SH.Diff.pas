@@ -211,6 +211,8 @@ constructor TdSPHarmonics<TdNALFs_>.Create;
 begin
      _dALFs := TdNALFs_.Create;
 
+     _AngleY := ArcCos( _dALFs.X );
+
      _dALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -219,6 +221,8 @@ end;
 constructor TdSPHarmonics<TdNALFs_>.Create( const DegN_:Integer );
 begin
      _dALFs := TdNALFs_.Create;
+
+     _AngleY := ArcCos( _dALFs.X );
 
      _dALFs.OnChange.Add( OnUpALFs );
 
@@ -257,6 +261,8 @@ constructor TdRSPHarmonics<TdFNALFs_>.Create;
 begin
      _dALFs := TdFNALFs_.Create;
 
+     _AngleY := ArcCos( _dALFs.X );
+
      _dALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -265,6 +271,8 @@ end;
 constructor TdRSPHarmonics<TdFNALFs_>.Create( const DegN_:Integer );
 begin
      _dALFs := TdFNALFs_.Create;
+
+     _AngleY := ArcCos( _dALFs.X );
 
      _dALFs.OnChange.Add( OnUpALFs );
 
