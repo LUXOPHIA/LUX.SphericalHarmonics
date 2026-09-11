@@ -605,6 +605,24 @@ Swapping `TNALFsTerm4` for `TNALFsTerm3`, or for `TALFsToNALFs<TALFsTerm3>` or `
 
 To visualise a single harmonic, drop a `TSPHarmonics3D` into a FireMonkey 3D scene, assign a `TdSPHarmonics` descendant to its `SPHarm` property and set `N` and `M`. The component samples $\bigl|\sqrt{4\pi}\,\overline{Y}_n^m\bigr|$ as the radius over a `DivX` by `DivY` grid and takes its normals from the dual-number derivatives of §2.13.
 
+### 4.1. Angle input and differentiation
+
+`TALFs` / `TdALFs` and their normalization adapters provide an `Angle` property and a `SetAngle` method.
+
+```pascal
+ALFs.Angle := Theta;
+dALFs.SetAngle( TdDouble.Create( Theta, 1 ) );
+ThetaAndDerivative := dALFs.Angle;
+```
+
+Angle input sets `X = Cos(Angle)` and the internal `S = Sin(Angle)` before evaluating coefficients and notifying `OnChange`. The angle is not stored separately: its getter uses `ArcTan2(S, X)`. It returns the principal value in −π..π and does not retain complete turns. At a branch boundary, the dual component represents the local angular derivative, not a derivative across the principal-value jump.
+
+Existing `X` input computes `S = Sqrt(1-X²)` (`Roo2` for dual numbers). The usual ALFs correspondence uses angles in 0..π. Outside that interval, angle input evaluates the angular continuation using signed `Sin(Angle)`.
+
+At `X = ±1`, first-order dual `X` alone cannot generally determine the angular derivative. Use `Angle` or `SetAngle` to evaluate angular derivatives at the poles. `TdSPHarmonics.AngleY` uses this path. Singular endpoint derivatives with respect to `X` are not replaced with finite values.
+
+Custom ALFs subclasses must implement `GetAngle` and `DoSetAngle`, or inherit their Core/Map implementations. `CalcPs` must use the Core class's `_S` instead of reconstructing it from `X`, which would discard the angular derivative. `TexToMatrix` and the mesh's pole-avoidance sampling remain unchanged.
+
 ## 5. License
 
 Released under the [MIT License](LICENSE).

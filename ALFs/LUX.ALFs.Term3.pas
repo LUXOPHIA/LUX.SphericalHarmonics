@@ -16,7 +16,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TALFsTerm3 = class( TMapALFs )
      private
      protected
-       _S :Double;
        ///// M E T H O D
        function P01( const M_:Integer; const P0_:Double ) :Double;
        function PN01( const M_:Integer; const PN0_:Double ) :Double;
@@ -104,8 +103,6 @@ procedure TALFsTerm3.CalcPs;
 var
    N, M :Integer;
 begin
-     _S := Sqrt( 1 - Pow2( X ) );
-
      _Ps[ 0, 0 ] := 1;
 
      ///// N = M

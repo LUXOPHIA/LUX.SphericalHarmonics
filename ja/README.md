@@ -605,6 +605,24 @@ end;
 
 単一の調和関数を可視化するには、FireMonkey 3D シーンに `TSPHarmonics3D` を配置し、`SPHarm` プロパティに `TdSPHarmonics` の子孫を割り当て、`N` と `M` を設定します。このコンポーネントは `DivX` × `DivY` の格子上で $\bigl|\sqrt{4\pi}\,\overline{Y}_n^m\bigr|$ を半径としてサンプリングし、法線を 2.13 節の二重数の導関数から得ます。
 
+### 4.1. 角度からの評価と微分
+
+`TALFs` / `TdALFs` と、その正規化クラスは `Angle` プロパティおよび `SetAngle` メソッドを提供します。
+
+```pascal
+ALFs.Angle := Theta;
+dALFs.SetAngle( TdDouble.Create( Theta, 1 ) );
+ThetaAndDerivative := dALFs.Angle;
+```
+
+角度設定では `X = Cos(Angle)` と内部の `S = Sin(Angle)` を先に揃え、係数を更新してから `OnChange` を通知します。角度自体は重複保持せず、`ArcTan2(S, X)` から取得します。取得値は主値 −π～π で、回転数を保持しません。極での微分は、この主値表示に対応する局所的な角度の微分です。
+
+既存の `X` 設定は `S = Sqrt(1-X²)`（微分版では `Roo2`）を用います。従来の ALFs と対応する角度の範囲は 0～π です。範囲外の角度設定では、符号付きの `Sin(Angle)` を用いた角度関数として評価します。
+
+微分版で `X = ±1` を直接設定した場合、角度の微分は `X` の一次微分情報だけでは一般に復元できません。極で角度に対する微分を計算する場合は `Angle` または `SetAngle` を使用してください。`TdSPHarmonics.AngleY` もこの経路を使用します。`X` に対する端点での微分を有限値に置き換える処理は行いません。
+
+独自の ALFs 派生クラスでは `GetAngle` と `DoSetAngle` を実装します。Core/Map クラスの派生では既存の実装を利用できます。`CalcPs` 内で `S` を `X` から作り直すと角度由来の微分を失うため、Core クラスが保持する `_S` を使用します。`TexToMatrix` とメッシュの極回避処理は変更していません。
+
 ## 5. ライセンス
 
 [MIT License](../LICENSE) の下で公開されています。

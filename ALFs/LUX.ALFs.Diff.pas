@@ -25,15 +25,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetX :TdDouble; virtual; abstract;
        procedure SetX( const X_:TdDouble );
        procedure DoSetX( const X_:TdDouble ); virtual; abstract;
+       function GetAngle :TdDouble; virtual; abstract;
+       procedure DoSetAngle( const Angle_:TdDouble ); virtual; abstract;
        function GetPs( const N_,M_:Integer ) :TdDouble; virtual; abstract;
      public
        constructor Create; overload;
        constructor Create( const DegN_:Integer ); overload;
        destructor Destroy; override;
+       procedure SetAngle( const Angle_:TdDouble );
        ///// P R O P E R T Y
        property DegN                      :Integer  read GetDegN write SetDegN;
        property X                         :TdDouble read GetX    write SetX   ;
        property Ps[ const N_,M_:Integer ] :TdDouble read GetPs                ; default;
+       property Angle                     :TdDouble read GetAngle write SetAngle;
        ///// E V E N T
        property OnChange :TDelegates read _OnChange;
      end;
@@ -45,12 +49,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _DegN :Integer;
        _X    :TdDouble;
+       _S    :TdDouble;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
        procedure DoSetX( const X_:TdDouble ); override;
+       function GetAngle :TdDouble; override;
+       procedure DoSetAngle( const Angle_:TdDouble ); override;
      public
+       constructor Create; overload;
+       constructor Create( const DegN_:Integer ); overload;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapALFs
@@ -62,6 +71,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// A C C E S S O R
        procedure DoSetDegN( const DegN_:Integer ); override;
        procedure DoSetX( const X_:TdDouble ); override;
+       procedure DoSetAngle( const Angle_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        ///// M E T H O D
        procedure CalcPs; virtual; abstract;
@@ -96,6 +106,15 @@ end;
 procedure TdALFs.SetX( const X_:TdDouble );
 begin
      DoSetX( X_ );
+
+     OnChange.Run( Self );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TdALFs.SetAngle( const Angle_:TdDouble );
+begin
+     DoSetAngle( Angle_ );
 
      OnChange.Run( Self );
 end;
@@ -152,9 +171,35 @@ end;
 procedure TdCoreALFs.DoSetX( const X_:TdDouble );
 begin
      _X := X_;
+     _S := Roo2( 1 - Pow2( X_ ) );
+end;
+
+function TdCoreALFs.GetAngle :TdDouble;
+begin
+     Result := ArcTan2( _S, _X );
+end;
+
+procedure TdCoreALFs.DoSetAngle( const Angle_:TdDouble );
+begin
+     _X := Cos( Angle_ );
+     _S := Sin( Angle_ );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TdCoreALFs.Create;
+begin
+     _S := 1;
+
+     inherited;
+end;
+
+constructor TdCoreALFs.Create( const DegN_:Integer );
+begin
+     _S := 1;
+
+     inherited;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdMapALFs
 
@@ -179,6 +224,13 @@ end;
 //------------------------------------------------------------------------------
 
 procedure TdMapALFs.DoSetX( const X_:TdDouble );
+begin
+     inherited;
+
+     CalcPs;
+end;
+
+procedure TdMapALFs.DoSetAngle( const Angle_:TdDouble );
 begin
      inherited;
 

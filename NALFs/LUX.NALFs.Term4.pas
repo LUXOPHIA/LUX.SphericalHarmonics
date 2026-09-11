@@ -17,7 +17,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TNALFsTerm4 = class( TMapNALFs )
      private
      protected
-       _S :Double;
        ///// M E T H O D
        function PN0( const N_:Integer ) :Double;
        function PN1( const N_:Integer ) :Double;
@@ -48,14 +47,14 @@ uses System.Math;
 
 function TNALFsTerm4.PN0( const N_:Integer ) :Double;
 begin
-     Result := NLegendre( X, N_ );
+     Result := NLegendreCos( Angle, N_ );
 end;
 
 //------------------------------------------------------------------------------
 
 function TNALFsTerm4.PN1( const N_:Integer ) :Double;
 begin
-     Result := dNLegendreCos( ArcCos( X ), N_ ) / Sqrt( N_ * ( N_ + 1 ) );
+     Result := dNLegendreCos( Angle, N_ ) / Sqrt( N_ * ( N_ + 1 ) );
 end;
 
 //------------------------------------------------------------------------------
@@ -107,8 +106,6 @@ procedure TNALFsTerm4.CalcPs;
 var
    N, M :Integer;
 begin
-     _S := Sqrt( 1 - Pow2( X ) );
-
      ///// M = 0
      for N := 0 to DegN do _NPs[ N, 0 ] := PN0( N );
 

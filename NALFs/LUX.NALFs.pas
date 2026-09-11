@@ -26,12 +26,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _DegN :Integer;
        _X    :Double;
+       _S    :Double;
        ///// A C C E S S O R
        function GetDegN :Integer; override;
        procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure DoSetX( const X_:Double ); override;
+       function GetAngle :Double; override;
+       procedure DoSetAngle( const Angle_:Double ); override;
      public
+       constructor Create; overload;
+       constructor Create( const DegN_:Integer ); overload;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
@@ -43,6 +48,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// A C C E S S O R
        procedure DoSetDegN( const DegN_:Integer ); override;
        procedure DoSetX( const X_:Double ); override;
+       procedure DoSetAngle( const Angle_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
        ///// M E T H O D
        procedure CalcPs; virtual; abstract;
@@ -61,6 +67,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :Double; override;
        procedure DoSetX( const X_:Double ); override;
+       function GetAngle :Double; override;
+       procedure DoSetAngle( const Angle_:Double ); override;
        function GetPs( const N_,M_:Integer ) :Double; override;
        function GetNFs( const N_,M_:Integer ) :Double; virtual;
        ///// M E T H O D
@@ -78,6 +86,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
 implementation //############################################################### ■
+
+uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
@@ -119,6 +129,34 @@ end;
 procedure TCoreNALFs.DoSetX( const X_:Double );
 begin
      _X := X_;
+     _S := Roo2( 1 - Pow2( X_ ) );
+end;
+
+function TCoreNALFs.GetAngle :Double;
+begin
+     Result := ArcTan2( _S, _X );
+end;
+
+procedure TCoreNALFs.DoSetAngle( const Angle_:Double );
+begin
+     _X := Cos( Angle_ );
+     _S := Sin( Angle_ );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TCoreNALFs.Create;
+begin
+     _S := 1;
+
+     inherited;
+end;
+
+constructor TCoreNALFs.Create( const DegN_:Integer );
+begin
+     _S := 1;
+
+     inherited;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMapNALFs
@@ -144,6 +182,13 @@ end;
 //------------------------------------------------------------------------------
 
 procedure TMapNALFs.DoSetX( const X_:Double );
+begin
+     inherited;
+
+     CalcPs;
+end;
+
+procedure TMapNALFs.DoSetAngle( const Angle_:Double );
 begin
      inherited;
 
@@ -185,6 +230,16 @@ end;
 procedure TALFsToNALFs<TALFs_>.DoSetX( const X_:Double );
 begin
      _ALFs.X := X_;
+end;
+
+function TALFsToNALFs<TALFs_>.GetAngle :Double;
+begin
+     Result := _ALFs.Angle;
+end;
+
+procedure TALFsToNALFs<TALFs_>.DoSetAngle( const Angle_:Double );
+begin
+     _ALFs.Angle := Angle_;
 end;
 
 //------------------------------------------------------------------------------

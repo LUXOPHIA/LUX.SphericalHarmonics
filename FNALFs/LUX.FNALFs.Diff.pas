@@ -33,6 +33,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
        procedure DoSetX( const X_:TdDouble ); override;
+       function GetAngle :TdDouble; override;
+       procedure DoSetAngle( const Angle_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        function GetNFs( const N_,M_:Integer ) :TdDouble; virtual;
        ///// M E T H O D
@@ -58,6 +60,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DoSetDegN( const DegN_:Integer ); override;
        function GetX :TdDouble; override;
        procedure DoSetX( const X_:TdDouble ); override;
+       function GetAngle :TdDouble; override;
+       procedure DoSetAngle( const Angle_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
        function GetNFs( const N_,M_:Integer ) :TdDouble; virtual;
      public
@@ -113,6 +117,16 @@ end;
 procedure TdALFsToFNALFs<TdALFs_>.DoSetX( const X_:TdDouble );
 begin
      _dALFs.X := X_;
+end;
+
+function TdALFsToFNALFs<TdALFs_>.GetAngle :TdDouble;
+begin
+     Result := _dALFs.Angle;
+end;
+
+procedure TdALFsToFNALFs<TdALFs_>.DoSetAngle( const Angle_:TdDouble );
+begin
+     _dALFs.Angle := Angle_;
 end;
 
 //------------------------------------------------------------------------------
@@ -208,6 +222,16 @@ end;
 procedure TdNALFsToFNALFs<TdNALFs_>.DoSetX( const X_:TdDouble );
 begin
      _dNALFs.X := X_;
+end;
+
+function TdNALFsToFNALFs<TdNALFs_>.GetAngle :TdDouble;
+begin
+     Result := _dNALFs.Angle;
+end;
+
+procedure TdNALFsToFNALFs<TdNALFs_>.DoSetAngle( const Angle_:TdDouble );
+begin
+     _dNALFs.Angle := Angle_;
 end;
 
 //------------------------------------------------------------------------------

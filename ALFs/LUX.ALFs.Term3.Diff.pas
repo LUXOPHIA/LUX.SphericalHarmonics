@@ -17,7 +17,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdALFsTerm3 = class( TdMapALFs )
      private
      protected
-       _S :TdDouble;
        ///// M E T H O D
        function P01( const M_:Integer; const P0_:TdDouble ) :TdDouble;
        function PN01( const M_:Integer; const PN0_:TdDouble ) :TdDouble;
@@ -105,8 +104,6 @@ procedure TdALFsTerm3.CalcPs;
 var
    N, M :Integer;
 begin
-     _S := Roo2( 1 - Pow2( X ) );
-
      _Ps[ 0, 0 ] := 1;
 
      ///// N = M

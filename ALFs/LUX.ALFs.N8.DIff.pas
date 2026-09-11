@@ -18,9 +18,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        X2 :TdDouble;
-       S  :TdDouble;
        ///// A C C E S S O R
        procedure DoSetX( const X_:TdDouble ); override;
+       procedure DoSetAngle( const Angle_:TdDouble ); override;
        function GetPs( const N_,M_:Integer ) :TdDouble; override;
      public
        ///// M E T H O D
@@ -102,7 +102,14 @@ procedure TdALFsN8.DoSetX( const X_:TdDouble );
 begin
      inherited;
 
-     X2 := Pow2( X );  S := Roo2( 1 - X2 );
+     X2 := Pow2( X );
+end;
+
+procedure TdALFsN8.DoSetAngle( const Angle_:TdDouble );
+begin
+     inherited;
+
+     X2 := Pow2( X );
 end;
 
 //------------------------------------------------------------------------------
@@ -204,7 +211,7 @@ end;
 
 function TdALFsN8.P11 :TdDouble;
 begin
-     Result := -S;
+     Result := -_S;
 end;
 
 //------------------------------------------------------------------------------
@@ -216,12 +223,12 @@ end;
 
 function TdALFsN8.P21 :TdDouble;
 begin
-     Result := -3 * X * S;
+     Result := -3 * X * _S;
 end;
 
 function TdALFsN8.P22 :TdDouble;
 begin
-     Result := 3 * ( 1 - X2 );  //= 3 * Pow2( S )
+     Result := 3 * ( 1 - X2 );  //= 3 * Pow2( _S )
 end;
 
 //------------------------------------------------------------------------------
@@ -233,17 +240,17 @@ end;
 
 function TdALFsN8.P31 :TdDouble;
 begin
-     Result := -3/2 * ( 5 * X2 - 1 ) * S;
+     Result := -3/2 * ( 5 * X2 - 1 ) * _S;
 end;
 
 function TdALFsN8.P32 :TdDouble;
 begin
-     Result := 15 * X * ( 1 - X2 );  //= 15 * X * Pow2( S )
+     Result := 15 * X * ( 1 - X2 );  //= 15 * X * Pow2( _S )
 end;
 
 function TdALFsN8.P33 :TdDouble;
 begin
-     Result := -15 * Pow3( S );
+     Result := -15 * Pow3( _S );
 end;
 
 //------------------------------------------------------------------------------
@@ -255,22 +262,22 @@ end;
 
 function TdALFsN8.P41 :TdDouble;
 begin
-     Result := -5/2 * S * ( X * ( 7 * X2 - 3 ) );
+     Result := -5/2 * _S * ( X * ( 7 * X2 - 3 ) );
 end;
 
 function TdALFsN8.P42 :TdDouble;
 begin
-     Result := 15/2 * ( 1 - X2 ) * ( 7 * X2 - 1 );  //= 15/2 * Pow2( S ) * ( 7 * X2 - 1 )
+     Result := 15/2 * ( 1 - X2 ) * ( 7 * X2 - 1 );  //= 15/2 * Pow2( _S ) * ( 7 * X2 - 1 )
 end;
 
 function TdALFsN8.P43 :TdDouble;
 begin
-     Result := -105 * X * Pow3( S );
+     Result := -105 * X * Pow3( _S );
 end;
 
 function TdALFsN8.P44 :TdDouble;
 begin
-     Result := 105 * Pow2( 1 - X2 );  //= 105 * Pow4( S )
+     Result := 105 * Pow2( 1 - X2 );  //= 105 * Pow4( _S )
 end;
 
 //------------------------------------------------------------------------------
@@ -282,27 +289,27 @@ end;
 
 function TdALFsN8.P51 :TdDouble;
 begin
-     Result := -15/8 * S * ( ( 21 * X2 - 14 ) * X2 + 1 );
+     Result := -15/8 * _S * ( ( 21 * X2 - 14 ) * X2 + 1 );
 end;
 
 function TdALFsN8.P52 :TdDouble;
 begin
-     Result := 105/2 * X * ( 1 - X2 ) * ( 3 * X2 - 1 );  //= 105/2 * X * Pow2( S ) * ( 3 * X2 - 1 )
+     Result := 105/2 * X * ( 1 - X2 ) * ( 3 * X2 - 1 );  //= 105/2 * X * Pow2( _S ) * ( 3 * X2 - 1 )
 end;
 
 function TdALFsN8.P53 :TdDouble;
 begin
-     Result := -105/2 * Pow3( S ) * ( 9 * X2 - 1 );
+     Result := -105/2 * Pow3( _S ) * ( 9 * X2 - 1 );
 end;
 
 function TdALFsN8.P54 :TdDouble;
 begin
-     Result := 945 * X * Pow2( 1 - X2 );  //= 945 * X * Pow4( S )
+     Result := 945 * X * Pow2( 1 - X2 );  //= 945 * X * Pow4( _S )
 end;
 
 function TdALFsN8.P55 :TdDouble;
 begin
-     Result := -945 * Pow5( S );
+     Result := -945 * Pow5( _S );
 end;
 
 //------------------------------------------------------------------------------
@@ -314,32 +321,32 @@ end;
 
 function TdALFsN8.P61 :TdDouble;
 begin
-     Result := -21/8 * X * S * ( ( 33 * X2 - 30 ) * X2 + 5 );
+     Result := -21/8 * X * _S * ( ( 33 * X2 - 30 ) * X2 + 5 );
 end;
 
 function TdALFsN8.P62 :TdDouble;
 begin
-     Result := 105/8 * ( 1 - X2 ) * ( ( 33 * X2 - 18 ) * X2 + 1 );  //= 105/8 * Pow2( S ) * ( ( 33 * X2 - 18 ) * X2 + 1 )
+     Result := 105/8 * ( 1 - X2 ) * ( ( 33 * X2 - 18 ) * X2 + 1 );  //= 105/8 * Pow2( _S ) * ( ( 33 * X2 - 18 ) * X2 + 1 )
 end;
 
 function TdALFsN8.P63 :TdDouble;
 begin
-     Result := -315/2 * X * Pow3( S ) * ( 11 * X2 - 3 );
+     Result := -315/2 * X * Pow3( _S ) * ( 11 * X2 - 3 );
 end;
 
 function TdALFsN8.P64 :TdDouble;
 begin
-     Result := 945/2 * Pow2( 1 - X2 ) * ( 11 * X2 - 1 );  //= 945/2 * Pow4( S ) * ( 11 * X2 - 1 )
+     Result := 945/2 * Pow2( 1 - X2 ) * ( 11 * X2 - 1 );  //= 945/2 * Pow4( _S ) * ( 11 * X2 - 1 )
 end;
 
 function TdALFsN8.P65 :TdDouble;
 begin
-     Result := -10395 * X * Pow5( S );
+     Result := -10395 * X * Pow5( _S );
 end;
 
 function TdALFsN8.P66 :TdDouble;
 begin
-     Result := 10395 * Pow3( 1 - X2 );  //= 10395 * Pow6( S )
+     Result := 10395 * Pow3( 1 - X2 );  //= 10395 * Pow6( _S )
 end;
 
 //------------------------------------------------------------------------------
@@ -351,7 +358,7 @@ end;
 
 function TdALFsN8.P71 :TdDouble;
 begin
-     Result := -7/16 * S * ( ( ( 429 * X2 - 495 ) * X2 + 135 ) * X2 - 5 );
+     Result := -7/16 * _S * ( ( ( 429 * X2 - 495 ) * X2 + 135 ) * X2 - 5 );
 end;
 
 function TdALFsN8.P72 :TdDouble;
@@ -361,7 +368,7 @@ end;
 
 function TdALFsN8.P73 :TdDouble;
 begin
-     Result := -315/8 * Pow3( S ) * ( ( 143 * X2 - 66 ) * X2 + 3 );
+     Result := -315/8 * Pow3( _S ) * ( ( 143 * X2 - 66 ) * X2 + 3 );
 end;
 
 function TdALFsN8.P74 :TdDouble;
@@ -371,7 +378,7 @@ end;
 
 function TdALFsN8.P75 :TdDouble;
 begin
-     Result := -10395/2 * Pow5( S ) * ( 13 * X2 - 1 );
+     Result := -10395/2 * Pow5( _S ) * ( 13 * X2 - 1 );
 end;
 
 function TdALFsN8.P76 :TdDouble;
@@ -381,7 +388,7 @@ end;
 
 function TdALFsN8.P77 :TdDouble;
 begin
-     Result := -135135 * IntPower( S, 7 );
+     Result := -135135 * IntPower( _S, 7 );
 end;
 
 //------------------------------------------------------------------------------
@@ -393,42 +400,42 @@ end;
 
 function TdALFsN8.P81 :TdDouble;
 begin
-     Result := -9/16 * X * S * ( ( ( 715 * X2 - 1001 ) * X2 + 385 ) * X2 - 35 );
+     Result := -9/16 * X * _S * ( ( ( 715 * X2 - 1001 ) * X2 + 385 ) * X2 - 35 );
 end;
 
 function TdALFsN8.P82 :TdDouble;
 begin
-     Result := 315/16 * ( 1 - X2 ) * ( ( ( 143 * X2 - 143 ) * X2 + 33 ) * X2 - 1 );  //= 315/16 * Pow2( S ) * ( ( ( 143 * X2 - 143 ) * X2 + 33 ) * X2 - 1 )
+     Result := 315/16 * ( 1 - X2 ) * ( ( ( 143 * X2 - 143 ) * X2 + 33 ) * X2 - 1 );  //= 315/16 * Pow2( _S ) * ( ( ( 143 * X2 - 143 ) * X2 + 33 ) * X2 - 1 )
 end;
 
 function TdALFsN8.P83 :TdDouble;
 begin
-     Result := -3465/8 * X * Pow3( S ) * ( ( 39 * X2 - 26 ) * X2 + 3 );
+     Result := -3465/8 * X * Pow3( _S ) * ( ( 39 * X2 - 26 ) * X2 + 3 );
 end;
 
 function TdALFsN8.P84 :TdDouble;
 begin
-     Result := 10395/8 * Pow2( 1 - X2 ) * ( ( 65 * X2 - 26 ) * X2 + 1 );  //= 10395/8 * Pow4( S ) * ( ( 65 * X2 - 26 ) * X2 + 1 )
+     Result := 10395/8 * Pow2( 1 - X2 ) * ( ( 65 * X2 - 26 ) * X2 + 1 );  //= 10395/8 * Pow4( _S ) * ( ( 65 * X2 - 26 ) * X2 + 1 )
 end;
 
 function TdALFsN8.P85 :TdDouble;
 begin
-     Result := -135135/2 * X * Pow5( S ) * ( 5 * X2 - 1 );
+     Result := -135135/2 * X * Pow5( _S ) * ( 5 * X2 - 1 );
 end;
 
 function TdALFsN8.P86 :TdDouble;
 begin
-     Result := 135135/2 * Pow3( 1 - X2 ) * ( 15 * X2 - 1 );  //= 135135/2 * Pow6( S ) * ( 15 * X2 - 1 )
+     Result := 135135/2 * Pow3( 1 - X2 ) * ( 15 * X2 - 1 );  //= 135135/2 * Pow6( _S ) * ( 15 * X2 - 1 )
 end;
 
 function TdALFsN8.P87 :TdDouble;
 begin
-     Result := -2027025 * X * IntPower( S, 7 );
+     Result := -2027025 * X * IntPower( _S, 7 );
 end;
 
 function TdALFsN8.P88 :TdDouble;
 begin
-     Result := 2027025 * Pow4( 1 - X2 );  //= 2027025 * Pow8( S )
+     Result := 2027025 * Pow4( 1 - X2 );  //= 2027025 * Pow8( _S )
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】

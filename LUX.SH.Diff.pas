@@ -22,7 +22,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _dALFs  :TdALFs;
        _AngleX :TdDouble;
-       _AngleY :TdDouble;
        ///// E V E N T
        _OnChange :TDelegates;
        ///// A C C E S S O R
@@ -132,16 +131,14 @@ end;
 
 function TdSPHarmonics.GetAngleY :TdDouble;
 begin
-     Result := _AngleY;
+     Result := _dALFs.Angle;
 end;
 
 procedure TdSPHarmonics.SetAngleY( const AngleY_:TdDouble );
 begin
-     if _AngleY = AngleY_ then Exit;
+     if AngleY = AngleY_ then Exit;
 
-     _AngleY := AngleY_;
-
-     _dALFs.X := Cos( _AngleY );
+     _dALFs.Angle := AngleY_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -211,8 +208,6 @@ constructor TdSPHarmonics<TdNALFs_>.Create;
 begin
      _dALFs := TdNALFs_.Create;
 
-     _AngleY := ArcCos( _dALFs.X );
-
      _dALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -221,8 +216,6 @@ end;
 constructor TdSPHarmonics<TdNALFs_>.Create( const DegN_:Integer );
 begin
      _dALFs := TdNALFs_.Create;
-
-     _AngleY := ArcCos( _dALFs.X );
 
      _dALFs.OnChange.Add( OnUpALFs );
 
@@ -261,8 +254,6 @@ constructor TdRSPHarmonics<TdFNALFs_>.Create;
 begin
      _dALFs := TdFNALFs_.Create;
 
-     _AngleY := ArcCos( _dALFs.X );
-
      _dALFs.OnChange.Add( OnUpALFs );
 
      inherited;
@@ -271,8 +262,6 @@ end;
 constructor TdRSPHarmonics<TdFNALFs_>.Create( const DegN_:Integer );
 begin
      _dALFs := TdFNALFs_.Create;
-
-     _AngleY := ArcCos( _dALFs.X );
 
      _dALFs.OnChange.Add( OnUpALFs );
 
